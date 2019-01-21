@@ -1,6 +1,6 @@
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using GadgetCMS.Areas.Identity.Data
+@inject SignInManager<GadgetCMSUser> SignInManager
+@inject UserManager<GadgetCMSUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
