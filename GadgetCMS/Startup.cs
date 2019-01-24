@@ -18,6 +18,7 @@ namespace GadgetCMS
 {
     public class Startup
     {
+        private string _connectionString = null;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,9 +36,10 @@ namespace GadgetCMS
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            _connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_connectionString));
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

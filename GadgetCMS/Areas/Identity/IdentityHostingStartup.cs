@@ -18,7 +18,7 @@ namespace GadgetCMS.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<GadgetCMSContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("GadgetCMSContextConnection")));
+                        context.Configuration["ConnectionStrings:GadgetCMSContextConnection"]));
 
                 services.AddDefaultIdentity<GadgetCMSUser>()
                     .AddEntityFrameworkStores<GadgetCMSContext>();
