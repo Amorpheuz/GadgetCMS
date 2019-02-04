@@ -6,13 +6,23 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+@if (ViewData["unVerifiedMail"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Please Verify your Email by <a asp-page="./ResendConfirmEmail" class="alert-link">Clicking Here</a> before trying to log-in.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <section>
             <form id="account" method="post">
                 <h4>Use a local account to log in.</h4>
                 <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger">
+                </div>
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" class="form-control" />
@@ -45,7 +55,7 @@
             </form>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-5 col-md-offset-2">
         <section>
             <h4>Use another service to log in.</h4>
             <hr />

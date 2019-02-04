@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using GadgetCMS.Areas.Identity.Data;
@@ -81,12 +82,12 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-
                 if (user != null)
                 {
                     if (!_signInManager.UserManager.IsEmailConfirmedAsync(user).Result)
                     {
-                        ModelState.AddModelError(string.Empty, "Please Verify your Email.");
+                        //ModelState.AddModelError("unVerifiedMail", "Please Verify your Email. If you need the Confirmation email resent, Click Here");
+                        ViewData["unVerifiedMail"] = true;
                         return Page();
                     }
                 }

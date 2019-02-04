@@ -1,0 +1,37 @@
+﻿@page
+@model GadgetCMS.Areas.Identity.Pages.Account.ResendConfirmEmailModel
+@{
+    ViewData["Title"] = "Resend Confirmation email";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <p class="text-danger">
+            @ViewData["Error"]
+        </p>
+        @{
+            if (ViewData["flag"] == null)
+            {
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="UserEmail" class="control-label"></label>
+                        <input asp-for="UserEmail" class="form-control"/>
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Submit" class="btn btn-primary"/>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <p>
+                    Please Check your email.
+                </p>
+                ViewData["flag"] = null;
+            }
+        }
+    </div>
+</div>
