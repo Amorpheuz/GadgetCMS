@@ -75,10 +75,20 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var user = _signInManager.UserManager.FindByEmailAsync(Input.Email).Result;
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
+                }
+
+                if (user != null)
+                {
+                    if (!_signInManager.UserManager.IsEmailConfirmedAsync(user).Result)
+                    {
+                        ModelState.AddModelError(string.Empty, "Please Verify your Email.");
+                        return Page();
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -91,6 +101,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 }
                 else
                 {
+                    
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }

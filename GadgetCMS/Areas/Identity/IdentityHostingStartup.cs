@@ -20,7 +20,10 @@ namespace GadgetCMS.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration["ConnectionStrings:GadgetCMSContextConnection"]));
 
-                services.AddDefaultIdentity<GadgetCMSUser>()
+                services.AddDefaultIdentity<GadgetCMSUser>(config =>
+                    {
+                        config.SignIn.RequireConfirmedEmail = true;
+                    })
                     .AddEntityFrameworkStores<GadgetCMSContext>();
             });
         }
