@@ -9,5 +9,7 @@ namespace GadgetCMS.Areas.Identity.Data
     // Add profile data for application users by adding properties to the GadgetCMSUser class
     public class GadgetCMSUser : IdentityUser
     {
+        [PersonalData]
+        public string Nickname { get; set; }
     }
 }

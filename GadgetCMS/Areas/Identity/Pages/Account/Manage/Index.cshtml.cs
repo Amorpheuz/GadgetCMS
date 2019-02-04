@@ -44,6 +44,11 @@ namespace GadgetCMS.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nickname")]
+            public string Nickname { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -66,6 +71,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = email,
+                Nickname = user.Nickname,
                 PhoneNumber = phoneNumber
             };
 
@@ -98,6 +104,11 @@ namespace GadgetCMS.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Nickname != user.Nickname)
+            {
+                user.Nickname = Input.Nickname;
+            }
+
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -108,6 +119,8 @@ namespace GadgetCMS.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
