@@ -115,10 +115,13 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new GadgetCMSUser { UserName = Input.Email, Email = Input.Email };
+                var user = new GadgetCMSUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true};
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    // Add a user to the default role, or any role you prefer here
+                    await _userManager.AddToRoleAsync(user, "Member");
+
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
