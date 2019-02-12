@@ -76,8 +76,28 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    if (provider.Name == "Google")
+                                    {
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary btn-google" value="@provider.Name" title="Log in using your @provider.DisplayName account" name="provider">
+                                                <span class=""><img src="~/googleLogo.svg" alt="Sign in with Google"></span>
+    
+                                                <span class="btn-inner--text">Sign in with Google</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    else if (provider.Name == "Facebook")
+                                    {
+                                        <div class="col-md-4">
+                                            <button class="btn btn-primary btn-facebook" type="submit" value="@provider.Name" title="Log in using your @provider.DisplayName account" name="provider">
+                                                <span class=""><img src="~/facebookLogo.svg" alt="Continue with Facebook" class="fb-logo"></span>
+
+                                                <span class="btn-inner--text">Continue with Facebook</span>
+                                            </button>
+                                        </div>
+                                    }
                                 }
+                                @*<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>*@
                             </p>
                         </div>
                     </form>

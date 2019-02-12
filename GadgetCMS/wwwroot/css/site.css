@@ -54,3 +54,28 @@ body {
     width: 100%;
     white-space: nowrap;
 }
+@font-face {
+    src: url('https://fonts.googleapis.com/css?family=Roboto');
+    font-family: 'Roboto';
+}
+
+.btn-google {
+    font-family: 'Roboto';
+    padding: 5px;
+    font-weight: normal;
+    margin: 5px;
+    text-transform: none;
+}
+
+.btn-facebook {
+    font-family: 'Roboto';
+    padding: 8px;
+    font-weight: normal;
+    background-color: #4267B2;
+    border-color: #4267b2;
+    margin: 5px;
+    text-transform: none;
+}
+.fb-logo {
+    height: 40px;
+}
