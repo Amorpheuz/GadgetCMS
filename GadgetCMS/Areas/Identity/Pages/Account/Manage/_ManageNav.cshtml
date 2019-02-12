@@ -1,4 +1,4 @@
-﻿@inject SignInManager<GadgetCMSUser> SignInManager
+@inject SignInManager<GadgetCMSUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
