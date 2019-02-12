@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
@@ -104,6 +104,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account.Manage
             {
                 var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
                 RecoveryCodes = recoveryCodes.ToArray();
+                TempData["RecoveryCodes"] = RecoveryCodes;
                 return RedirectToPage("./ShowRecoveryCodes");
             }
             else
