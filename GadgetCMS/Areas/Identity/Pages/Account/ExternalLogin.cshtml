@@ -10,7 +10,7 @@
 
 <p class="text-info">
     You've successfully authenticated with <strong>@Model.LoginProvider</strong>.
-    Please enter an email address for this site below and click the Register button to finish
+    Please confirm the email address for this site below and click the Register button to finish
     logging in.
 </p>
 
@@ -20,7 +20,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
+                <input asp-for="Input.Email" class="form-control" disabled/>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>

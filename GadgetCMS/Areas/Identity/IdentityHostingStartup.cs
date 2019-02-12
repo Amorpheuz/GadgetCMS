@@ -27,19 +27,25 @@ namespace GadgetCMS.Areas.Identity
                         config.SignIn.RequireConfirmedEmail = true;
                     })
                     .AddEntityFrameworkStores<GadgetCMSContext>().AddDefaultTokenProviders();
-                services.AddAuthentication().AddGoogle(o =>
-                {
-                    o.ClientId = context.Configuration["Authentication:Google:ClientId"];
-                    o.ClientSecret = context.Configuration["Authentication:Google:ClientSecret"];
-                    o.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
-                    o.ClaimActions.Clear();
-                    o.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-                    o.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-                    o.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
-                    o.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
-                    o.ClaimActions.MapJsonKey("urn:google:profile", "link");
-                    o.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
-                });
+                services.AddAuthentication()
+                    .AddGoogle(googleOptions =>
+                    {
+                        googleOptions.ClientId = context.Configuration["Authentication:Google:ClientId"];
+                        googleOptions.ClientSecret = context.Configuration["Authentication:Google:ClientSecret"];
+                        googleOptions.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
+                        googleOptions.ClaimActions.Clear();
+                        googleOptions.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                        googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+                        googleOptions.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+                        googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+                        googleOptions.ClaimActions.MapJsonKey("urn:google:profile", "link");
+                        googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+                    })
+                    .AddFacebook(facebookOptions =>
+                    {
+                        facebookOptions.AppId = context.Configuration["Authentication:Facebook:AppId"];
+                        facebookOptions.AppSecret = context.Configuration["Authentication:Facebook:AppSecret"];
+                    });
             });
         }
     }
