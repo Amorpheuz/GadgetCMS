@@ -63,7 +63,7 @@ body {
     margin: 5px;
 }
 
-.nav-link.btn {
+.nav-link.btn, .btn-no-margin {
     margin: 0px;
 }
 
@@ -97,4 +97,7 @@ body {
 .navbar-collapse.collapsing {
     margin-top: 50px;
     z-index: 1000;
+}
+.table td {
+    padding: 10px;
 }
