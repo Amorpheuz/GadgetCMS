@@ -32,17 +32,14 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
-                        @*@if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                Admin
+                                <a class="nav-link" asp-area="Dashboard" asp-page="/Index">Dashboard</a>
                             </li>
-                        }*@
+                        }
                     </ul>
                 </div>
             </div>
