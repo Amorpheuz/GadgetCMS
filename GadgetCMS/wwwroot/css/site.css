@@ -89,3 +89,16 @@ body {
 #mainNav {
     width: 100%;
 }
+
+.navbar-collapse.collapse.show {
+    margin-top: 50px;
+    z-index: 1000;
+}
+.navbar-collapse.collapsing {
+    margin-top: 50px;
+    z-index: 1000;
+}
+.container {
+    z-index: -1;
+    position: relative;
+}
