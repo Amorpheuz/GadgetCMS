@@ -7,8 +7,6 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link href="~/lib/nucleo/css/nucleo.css" rel="stylesheet">
-        <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
@@ -17,11 +15,13 @@
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
+    <link href="~/lib/nucleo/css/nucleo.css" rel="stylesheet">
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-default mb-3 text-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-default mb-3 text-light headroom" id="mainNav">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">GadgetCMS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -42,12 +42,6 @@
                             <li class="nav-item">
                                 Admin
                             </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                Member
-                            </li>
                         }*@
                     </ul>
                 </div>
@@ -56,7 +50,7 @@
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" id="main">
             @RenderBody()
         </main>
     </div>
@@ -85,6 +79,17 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
     </environment>
+    <script src="lib/headroom/headroom.min.js" asp-append-version="true"></script>
+    <script>
+        var myElement = document.getElementById("mainNav");
+        var headroom = new Headroom(myElement,
+            {
+                onPin: function() {
+                    document.getElementById("main").style.paddingTop = "100px";
+                }
+            });
+        headroom.init();
+    </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
