@@ -98,7 +98,3 @@ body {
     margin-top: 50px;
     z-index: 1000;
 }
-.container {
-    z-index: -1;
-    position: relative;
-}
