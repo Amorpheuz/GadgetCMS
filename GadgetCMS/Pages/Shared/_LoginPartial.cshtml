@@ -1,3 +1,5 @@
+@using System.Security.Cryptography
+@using System.Text
 @using GadgetCMS.Areas.Identity.Data
 @inject SignInManager<GadgetCMSUser> SignInManager
 @inject UserManager<GadgetCMSUser> UserManager
@@ -6,12 +8,40 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        @User.Identity.Name
+        <div class="dropdown">
+            <button class="btn dropdown-toggle-split avatar avatar-sm" type="button" id="avaDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @{
+                    var email = @User.Identity.Name.Trim().ToLower();
+                    var emailHash = "";
+                    using (MD5 md5Hash = MD5.Create())
+                    {
+                        var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(email));
+                        var sBuilder = new StringBuilder();
+                        foreach (var t in data)
+                        {
+                            sBuilder.Append(t.ToString("x2"));
+                        }
+                        emailHash = "https://www.gravatar.com/avatar/" + sBuilder.ToString() + "?d=identicon";
+                    }<img alt="Image placeholder" src="@emailHash" class="rounded-circle">
+                }
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a>
+                @if (User.IsInRole("Admin"))
+                {
+                        <a class="dropdown-item" asp-area="Dashboard" asp-page="/Index">Dashboard</a>
+                }
+                <a class="dropdown-item" asp-area="" asp-page="/Privacy">Privacy</a>
+                <div class="dropdown-divider"></div>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button type="submit" class="btn btn-link text-light">Logout</button>
+                </form>
+            </div>
+        </div>
     </li>
     <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
-            <button  type="submit" class="nav-link btn btn-link">Logout</button>
-        </form>
+        
     </li>
 }
 else

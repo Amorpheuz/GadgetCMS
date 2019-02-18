@@ -43,3 +43,4 @@ namespace GadgetCMS
                 .UseStartup<Startup>();
     }
 }
+
