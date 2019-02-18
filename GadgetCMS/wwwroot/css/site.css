@@ -7,10 +7,12 @@ for details on configuring this project to bundle and minify static web assets. 
   word-break: break-all;
 }*/
 
-/* Sticky footer styles
--------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 html {
   font-size: 14px;
+  position: relative;
+  height: 100%;
 }
 @media (min-width: 768px) {
   html {
@@ -37,26 +39,8 @@ button.accept-policy {
   line-height: inherit;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    white-space: nowrap;
-}
-@font-face {
-    src: url('https://fonts.googleapis.com/css?family=Roboto');
-    font-family: 'Roboto';
+    z-index: -1;
 }
 
 .btn {
@@ -68,14 +52,14 @@ body {
 }
 
 .btn-google {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     padding: 5px;
     font-weight: normal;
     text-transform: none;
 }
 
 .btn-facebook {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     padding: 8px;
     font-weight: normal;
     background-color: #4267B2;
@@ -92,11 +76,16 @@ body {
 
 .navbar-collapse.collapse.show {
     margin-top: 50px;
-    z-index: 1000;
+    z-index: 0;
+}
+
+body, .container {
+    position: relative;
+    z-index: -1;
 }
 .navbar-collapse.collapsing {
     margin-top: 50px;
-    z-index: 1000;
+    z-index: 0;
 }
 .table td {
     padding: 10px;
