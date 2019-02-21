@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
 @model LoginModel
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
 
 @{
     ViewData["Title"] = "Log in";
@@ -42,6 +45,9 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.Recaptcha(RecaptchaSettings.Value)
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary">Log in</button>
                 </div>
                 <div class="form-group">
@@ -81,7 +87,7 @@
                                         <div class="col-md-4">
                                             <button type="submit" class="btn btn-primary btn-google" value="@provider.Name" title="Log in using your @provider.DisplayName account" name="provider">
                                                 <span class=""><img src="~/googleLogo.svg" alt="Sign in with Google"></span>
-    
+
                                                 <span class="btn-inner--text">Sign in with Google</span>
                                             </button>
                                         </div>

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using reCAPTCHA.AspNetCore;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -19,11 +20,13 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<GadgetCMSUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private IRecaptchaService _recaptcha;
 
-        public LoginModel(SignInManager<GadgetCMSUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<GadgetCMSUser> signInManager, ILogger<LoginModel> logger, IRecaptchaService recaptcha)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _recaptcha = recaptcha;
         }
 
         [BindProperty]
@@ -71,10 +74,12 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
+            var recaptcha = await _recaptcha.Validate(Request);
+            if (!recaptcha.success)
+                ModelState.AddModelError("Recaptcha", "There was an error validating recaptcha. Please try again!");
+
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 var user = _signInManager.UserManager.FindByEmailAsync(Input.Email).Result;
                 if (result.Succeeded)
@@ -86,7 +91,6 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 {
                     if (!_signInManager.UserManager.IsEmailConfirmedAsync(user).Result)
                     {
-                        //ModelState.AddModelError("unVerifiedMail", "Please Verify your Email. If you need the Confirmation email resent, Click Here");
                         ViewData["unVerifiedMail"] = true;
                         return Page();
                     }
