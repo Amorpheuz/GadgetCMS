@@ -17,6 +17,7 @@ using GadgetCMS.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using reCAPTCHA.AspNetCore;
 
 namespace GadgetCMS
 {
@@ -61,6 +62,8 @@ namespace GadgetCMS
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettingsv2"));
+            services.AddTransient<IRecaptchaService, RecaptchaService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
