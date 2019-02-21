@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using reCAPTCHA.AspNetCore;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -20,17 +21,20 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         private readonly UserManager<GadgetCMSUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private IRecaptchaService _recaptcha;
 
         public RegisterModel(
             UserManager<GadgetCMSUser> userManager,
             SignInManager<GadgetCMSUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            IRecaptchaService recaptcha)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _recaptcha = recaptcha;
         }
 
         [BindProperty]
@@ -70,6 +74,9 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+            var recaptcha = await _recaptcha.Validate(Request);
+            if (!recaptcha.success)
+                ModelState.AddModelError("Recaptcha", "There was an error validating recaptcha. Please try again!");
             if (ModelState.IsValid)
             {
                 var user = new GadgetCMSUser { UserName = Input.Email, Email = Input.Email, Nickname = Input.Nickname};
