@@ -13,8 +13,8 @@ namespace GadgetCMS.Data
 
         [Required]
         public  string ArticleName { get; set; }
+        
 
-        [Required]
         public DateTime ArticleLastUpdate { get; set; }
 
         [Required]

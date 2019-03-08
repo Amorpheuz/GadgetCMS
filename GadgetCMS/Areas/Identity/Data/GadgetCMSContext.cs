@@ -31,16 +31,8 @@ namespace GadgetCMS.Models
                 .HasDefaultValue(false);
 
             modelBuilder.Entity<GadgetCMSUser>()
-                .Property(c => c.BanStatus)
-                .HasConversion(new BoolToZeroOneConverter<short>());
-
-            modelBuilder.Entity<GadgetCMSUser>()
                 .Property(c => c.StarReview)
                 .HasDefaultValue(false);
-
-            modelBuilder.Entity<GadgetCMSUser>()
-                .Property(c => c.StarReview)
-                .HasConversion(new BoolToZeroOneConverter<short>());
 
             //ArticleLog
             modelBuilder.Entity<ArticleLog>()

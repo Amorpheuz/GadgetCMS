@@ -30,22 +30,14 @@ namespace GadgetCMS.Data
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleVisible)
                 .HasDefaultValue(true);
-
-            modelBuilder.Entity<Article>()
-                .Property(c => c.ArticleVisible)
-                .HasConversion(new BoolToZeroOneConverter<short>());
-
+            
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleEditLock)
                 .HasDefaultValue(false);
 
             modelBuilder.Entity<Article>()
-                .Property(c => c.ArticleEditLock)
-                .HasConversion(new BoolToZeroOneConverter<short>());
-
-            modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleCreated)
-                .HasDefaultValueSql("CONVERT(date, GETDATE())");
+                .HasDefaultValueSql("GETDATE()");
 
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Article>()
@@ -59,16 +51,8 @@ namespace GadgetCMS.Data
                 .HasDefaultValue(false);
 
             modelBuilder.Entity<GadgetCMSUser>()
-                .Property(c => c.BanStatus)
-                .HasConversion(new BoolToZeroOneConverter<short>());
-
-            modelBuilder.Entity<GadgetCMSUser>()
                 .Property(c => c.StarReview)
                 .HasDefaultValue(false);
-
-            modelBuilder.Entity<GadgetCMSUser>()
-                .Property(c => c.StarReview)
-                .HasConversion(new BoolToZeroOneConverter<short>());
 
             //---------------------------------------------------------------------
             //Review
@@ -77,7 +61,7 @@ namespace GadgetCMS.Data
 
             modelBuilder.Entity<Review>()
                 .Property(c => c.ReviewCreated)
-                .HasDefaultValueSql("CONVERT(date, GETDATE())");
+                .HasDefaultValueSql("GETDATE()");
 
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Review>()
@@ -87,10 +71,6 @@ namespace GadgetCMS.Data
             modelBuilder.Entity<Review>()
                 .Property(c => c.ReviewVisible)
                 .HasDefaultValue(true);
-
-            modelBuilder.Entity<Article>()
-                .Property(c => c.ArticleEditLock)
-                .HasConversion(new BoolToZeroOneConverter<short>());
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }

@@ -21,8 +21,7 @@ namespace GadgetCMS.Data
 
         [Required]
         public string ReviewContent { get; set; }
-
-        [Required]
+        
         public DateTime ReviewLastUpdate { get; set; }
 
         [Required]

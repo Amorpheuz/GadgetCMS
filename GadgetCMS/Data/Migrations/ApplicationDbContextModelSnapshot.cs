@@ -33,11 +33,11 @@ namespace GadgetCMS.Data.Migrations
 
                     b.Property<DateTime>("ArticleCreated")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CONVERT(date, GETDATE())");
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<short>("ArticleEditLock")
+                    b.Property<bool>("ArticleEditLock")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue((short)0);
+                        .HasDefaultValue(false);
 
                     b.Property<string>("ArticleLastEditedBy")
                         .IsRequired();
@@ -48,9 +48,9 @@ namespace GadgetCMS.Data.Migrations
                     b.Property<string>("ArticleName")
                         .IsRequired();
 
-                    b.Property<short>("ArticleVisible")
+                    b.Property<bool>("ArticleVisible")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue((short)1);
+                        .HasDefaultValue(true);
 
                     b.HasKey("ArticleId");
 
@@ -87,7 +87,7 @@ namespace GadgetCMS.Data.Migrations
 
                     b.Property<DateTime>("ReviewCreated")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CONVERT(date, GETDATE())");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("ReviewLastUpdate")
                         .ValueGeneratedOnAddOrUpdate();
@@ -275,15 +275,15 @@ namespace GadgetCMS.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<short>("BanStatus")
+                    b.Property<bool>("BanStatus")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue((short)0);
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Nickname");
 
-                    b.Property<short>("StarReview")
+                    b.Property<bool>("StarReview")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue((short)0);
+                        .HasDefaultValue(false);
 
                     b.HasDiscriminator().HasValue("GadgetCMSUser");
                 });
