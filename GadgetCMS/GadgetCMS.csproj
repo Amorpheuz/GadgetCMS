@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20190308092101_CreateArticleArticleLogReview.cs" />
     <Compile Remove="Data\Migrations\20190308092101_CreateArticleArticleLogReview.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190308113412_RemoveRequiredLastUpdate.cs" />
+    <Compile Remove="Data\Migrations\20190308113412_RemoveRequiredLastUpdate.Designer.cs" />
   </ItemGroup>
 
 
