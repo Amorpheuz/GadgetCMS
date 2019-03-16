@@ -1,0 +1,49 @@
+﻿@page
+@model GadgetCMS.Pages.Review.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    var userId = ViewBag.UserId;
+}
+
+<h1>Create</h1>
+
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Review.UserId" class="control-label"></label>
+                <input asp-for="Review.UserId" class ="form-control" value="@userId" hidden>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.ArticleId" class="control-label"></label>
+                <select asp-for="Review.ArticleId" class ="form-control" asp-items="ViewBag.ArticleId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.ReviewRating" class="control-label"></label>
+                <input asp-for="Review.ReviewRating" class="form-control" />
+                <span asp-validation-for="Review.ReviewRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.ReviewContent" class="control-label"></label>
+                <input asp-for="Review.ReviewContent" class="form-control" />
+                <span asp-validation-for="Review.ReviewContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
