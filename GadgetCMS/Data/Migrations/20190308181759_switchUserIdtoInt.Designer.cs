@@ -4,14 +4,16 @@ using GadgetCMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GadgetCMS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190308181759_switchUserIdtoInt")]
+    partial class switchUserIdtoInt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,7 +80,9 @@ namespace GadgetCMS.Data.Migrations
 
             modelBuilder.Entity("GadgetCMS.Data.Review", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("tempkey")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ArticleId");
 
@@ -98,7 +102,9 @@ namespace GadgetCMS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.HasKey("UserId", "ArticleId");
+                    b.Property<int>("UserId");
+
+                    b.HasKey("tempkey");
 
                     b.HasIndex("ArticleId");
 
@@ -306,11 +312,6 @@ namespace GadgetCMS.Data.Migrations
                     b.HasOne("GadgetCMS.Data.Article", "Article")
                         .WithMany()
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GadgetCMS.Areas.Identity.Data.GadgetCMSUser", "GadgetCmsUser")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

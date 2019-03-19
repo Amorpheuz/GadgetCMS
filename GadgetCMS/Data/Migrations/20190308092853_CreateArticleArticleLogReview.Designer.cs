@@ -4,14 +4,16 @@ using GadgetCMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GadgetCMS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190308092853_CreateArticleArticleLogReview")]
+    partial class CreateArticleArticleLogReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,11 @@ namespace GadgetCMS.Data.Migrations
 
                     b.Property<DateTime>("ArticleCreated")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("CONVERT(date, GETDATE())");
 
-                    b.Property<bool>("ArticleEditLock")
+                    b.Property<short>("ArticleEditLock")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(false);
+                        .HasDefaultValue((short)0);
 
                     b.Property<string>("ArticleLastEditedBy")
                         .IsRequired();
@@ -48,9 +50,9 @@ namespace GadgetCMS.Data.Migrations
                     b.Property<string>("ArticleName")
                         .IsRequired();
 
-                    b.Property<bool>("ArticleVisible")
+                    b.Property<short>("ArticleVisible")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                        .HasDefaultValue((short)1);
 
                     b.HasKey("ArticleId");
 
@@ -87,7 +89,7 @@ namespace GadgetCMS.Data.Migrations
 
                     b.Property<DateTime>("ReviewCreated")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("CONVERT(date, GETDATE())");
 
                     b.Property<DateTime>("ReviewLastUpdate")
                         .ValueGeneratedOnAddOrUpdate();
@@ -275,15 +277,15 @@ namespace GadgetCMS.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<bool>("BanStatus")
+                    b.Property<short>("BanStatus")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(false);
+                        .HasDefaultValue((short)0);
 
                     b.Property<string>("Nickname");
 
-                    b.Property<bool>("StarReview")
+                    b.Property<short>("StarReview")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(false);
+                        .HasDefaultValue((short)0);
 
                     b.HasDiscriminator().HasValue("GadgetCMSUser");
                 });
