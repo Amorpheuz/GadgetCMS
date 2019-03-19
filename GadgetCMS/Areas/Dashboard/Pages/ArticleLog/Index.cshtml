@@ -1,0 +1,55 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.ArticleLog.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleLog[0].ArticleLogType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleLog[0].ArticleLogContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleLog[0].Article)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleLog[0].GadgetCmsUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ArticleLog) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleLogType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleLogContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Article.ArticleAuthor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GadgetCmsUser.Id)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
