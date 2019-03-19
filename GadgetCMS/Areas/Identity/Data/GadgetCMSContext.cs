@@ -41,6 +41,28 @@ namespace GadgetCMS.Models
             //Review
             modelBuilder.Entity<Review>()
                 .HasKey(c => new { c.UserId, c.ArticleId });
+
+            //Article
+            modelBuilder.Entity<Article>()
+                .Property(c => c.ArticleVisible)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Article>()
+                .Property(c => c.ArticleEditLock)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Article>()
+                .Property(c => c.ArticleCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            //Need to set Trigger for LastUpdate on add or update in Database
+            modelBuilder.Entity<Article>()
+                .Property(c => c.ArticleLastUpdate)
+                .ValueGeneratedOnAddOrUpdate();
         }
+
+        public DbSet<GadgetCMS.Data.Review> Review { get; set; }
+
+        public DbSet<GadgetCMS.Data.Article> Article { get; set; }
     }
 }

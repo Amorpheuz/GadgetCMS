@@ -1,7 +1,6 @@
 ﻿@page
 @using GadgetCMS.Areas.Identity.Data
 @model GadgetCMS.Pages.Review.IndexModel
-@inject SignInManager<GadgetCMSUser> SignInManager
 @inject UserManager<GadgetCMSUser> UserManager
 
 @{
@@ -70,10 +69,12 @@
                     @if (item.UserId == UserManager.GetUserId(User))
                     {
                         <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a>
-                        Html.DisplayText(" | ");
+                    } |
+                    <a asp-page="./Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a> |
+                    @if (item.UserId == UserManager.GetUserId(User))
+                    {
+                        <a asp-page="./Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
                     }
-                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
                 </td>
             </tr>
         }

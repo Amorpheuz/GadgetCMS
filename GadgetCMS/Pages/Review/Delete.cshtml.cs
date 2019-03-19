@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using GadgetCMS.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace GadgetCMS.Pages.Review
 {
     public class DeleteModel : PageModel
     {
-        private readonly GadgetCMS.Data.ApplicationDbContext _context;
+        private readonly GadgetCMSContext _context;
 
-        public DeleteModel(GadgetCMS.Data.ApplicationDbContext context)
+        public DeleteModel(GadgetCMSContext context)
         {
             _context = context;
         }
@@ -21,16 +23,16 @@ namespace GadgetCMS.Pages.Review
         [BindProperty]
         public Data.Review Review { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(int id, string userEmail)
         {
-            if (id == null)
+            if (userEmail == null || id == null)
             {
                 return NotFound();
             }
 
             Review = await _context.Review
                 .Include(r => r.Article)
-                .Include(r => r.GadgetCmsUser).FirstOrDefaultAsync(m => m.UserId == id);
+                .Include(r => r.GadgetCmsUser).FirstOrDefaultAsync(m => m.ArticleId == id && m.GadgetCmsUser.Email == userEmail);
 
             if (Review == null)
             {
@@ -39,14 +41,17 @@ namespace GadgetCMS.Pages.Review
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (id == null)
+            string userId = Review.UserId;
+            int articleId = Review.ArticleId;
+
+            if (userId == null || articleId == null)
             {
                 return NotFound();
             }
 
-            Review = await _context.Review.FindAsync(id);
+            Review = await _context.Review.FindAsync(userId,articleId);
 
             if (Review != null)
             {

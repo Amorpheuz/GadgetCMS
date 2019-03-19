@@ -19,6 +19,8 @@
     <Compile Remove="Data\Migrations\20190308181008_switchUserIdtoInt.Designer.cs" />
     <Compile Remove="Data\Migrations\20190308181608_switchUserIdtoInt.cs" />
     <Compile Remove="Data\Migrations\20190308181608_switchUserIdtoInt.Designer.cs" />
+    <Compile Remove="Migrations\20190316103320_test.cs" />
+    <Compile Remove="Migrations\20190316103320_test.Designer.cs" />
   </ItemGroup>
 
 
