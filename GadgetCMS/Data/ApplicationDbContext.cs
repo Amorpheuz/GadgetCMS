@@ -71,6 +71,16 @@ namespace GadgetCMS.Data
             modelBuilder.Entity<Review>()
                 .Property(c => c.ReviewVisible)
                 .HasDefaultValue(true);
+
+            //---------------------------------------------------------------------
+            //CategoryParentParameter
+            modelBuilder.Entity<CategoryParentParameter>()
+                .HasKey(c => new {c.CategoryId, c.ParentParameterId});
+
+            //---------------------------------------------------------------------
+            //ArticleParameter
+            modelBuilder.Entity<ArticleParameter>()
+                .HasKey(c => new { c.ArticleId, c.ParameterId });
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }
