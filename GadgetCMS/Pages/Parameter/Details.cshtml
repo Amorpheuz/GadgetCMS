@@ -1,0 +1,44 @@
+﻿@page
+@model GadgetCMS.Pages.Parameter.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Parameter</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Parameter.ParameterName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Parameter.ParameterName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Parameter.ParameterDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Parameter.ParameterDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Parameter.ParameterUnit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Parameter.ParameterUnit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Parameter.ParentParameter)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Parameter.ParentParameter.ParentParameterDescription)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Parameter.ParameterId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
