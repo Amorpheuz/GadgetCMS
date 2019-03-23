@@ -20,7 +20,7 @@ namespace GadgetCMS.Pages.Article
 
         public IActionResult OnGet()
         {
-        ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryDescription");
+        ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryDescription");
             return Page();
         }
 
