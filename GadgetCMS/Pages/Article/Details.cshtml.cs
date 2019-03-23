@@ -27,7 +27,8 @@ namespace GadgetCMS.Pages.Article
                 return NotFound();
             }
 
-            Article = await _context.Article.FirstOrDefaultAsync(m => m.ArticleId == id);
+            Article = await _context.Article
+                .Include(a => a.Category).FirstOrDefaultAsync(m => m.ArticleId == id);
 
             if (Article == null)
             {

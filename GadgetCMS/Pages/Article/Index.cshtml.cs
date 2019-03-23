@@ -22,7 +22,8 @@ namespace GadgetCMS.Pages.Article
 
         public async Task OnGetAsync()
         {
-            Article = await _context.Article.ToListAsync();
+            Article = await _context.Article
+                .Include(a => a.Category).ToListAsync();
         }
     }
 }
