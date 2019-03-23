@@ -59,6 +59,16 @@ namespace GadgetCMS.Models
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleLastUpdate)
                 .ValueGeneratedOnAddOrUpdate();
+
+            //---------------------------------------------------------------------
+            //CategoryParentParameter
+            modelBuilder.Entity<CategoryParentParameter>()
+                .HasKey(c => new { c.CategoryId, c.ParentParameterId });
+
+            //---------------------------------------------------------------------
+            //ArticleParameter
+            modelBuilder.Entity<ArticleParameter>()
+                .HasKey(c => new { c.ArticleId, c.ParameterId });
         }
 
         public DbSet<GadgetCMS.Data.Review> Review { get; set; }
