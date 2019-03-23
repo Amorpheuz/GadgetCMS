@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -88,5 +88,7 @@ namespace GadgetCMS.Data
         public DbSet<GadgetCMS.Data.Review> Review { get; set; }
 
         public DbSet<GadgetCMS.Data.ArticleLog> ArticleLog { get; set; }
+
+        public DbSet<GadgetCMS.Data.ArticlePicture> ArticlePicture { get; set; }
     }
 }

@@ -1,0 +1,49 @@
+﻿@page
+@model GadgetCMS.Pages.ArticlePicture.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticlePicture[0].ArticlePictureBytes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticlePicture[0].ArticlePictureCaption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticlePicture[0].Article)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ArticlePicture) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticlePictureBytes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticlePictureCaption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Article.ArticleAuthor)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ArticlePictureId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ArticlePictureId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ArticlePictureId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
