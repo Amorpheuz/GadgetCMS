@@ -11,7 +11,7 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table-responsive table-bordered">
     <thead>
         <tr>
             <th>
@@ -72,7 +72,7 @@
                 @Html.DisplayFor(modelItem => item.ArticleEditLock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryDescription)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a> |

@@ -25,7 +25,7 @@ namespace GadgetCMS.Pages.Review
 
         public async Task<IActionResult> OnGetAsync(int id, string userEmail)
         {
-            if (userEmail == null || id == null)
+            if (userEmail == null)
             {
                 return NotFound();
             }
@@ -46,7 +46,7 @@ namespace GadgetCMS.Pages.Review
             string userId = Review.UserId;
             int articleId = Review.ArticleId;
 
-            if (userId == null || articleId == null)
+            if (userId == null)
             {
                 return NotFound();
             }
