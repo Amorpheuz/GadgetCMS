@@ -11,7 +11,7 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table-responsive table-bordered">
     <thead>
         <tr>
             <th>
@@ -30,7 +30,11 @@
 @foreach (var item in Model.ArticlePicture) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ArticlePictureBytes)
+                @{
+                    var base64 = Convert.ToBase64String(item.ArticlePictureBytes);
+                    var imgSrc = $"data:image/gif;base64,{base64}";
+                }
+                <img src="@imgSrc" class="img-fluid"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArticlePictureCaption)
