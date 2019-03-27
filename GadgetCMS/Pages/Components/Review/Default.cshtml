@@ -1,0 +1,85 @@
+﻿@model System.Collections.Generic.List<GadgetCMS.Data.Review>
+@using GadgetCMS.Areas.Identity.Data
+@inject UserManager<GadgetCMSUser> UserManager
+
+<h2>Reviews</h2>
+
+@if (Model.FirstOrDefault() == null)
+{
+    <text>No Reviews Yet</text>
+}
+else
+{
+    <table class="table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewRating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewLastUpdate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewCreated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewVisible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Article)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().GadgetCmsUser)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewRating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewContent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewLastUpdate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewCreated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewVisible)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.ArticleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GadgetCmsUser.Email)
+                    </td>
+                    <td>
+                        @if (item.UserId == UserManager.GetUserId(User))
+                        {
+                            <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a>
+                            <text> | </text>
+                        }
+                        <a asp-page="./Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
+                        @if (item.UserId == UserManager.GetUserId(User))
+                        {
+                            <text> | </text>
+                            <a asp-page="./Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+

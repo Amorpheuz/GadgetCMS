@@ -67,6 +67,7 @@
             @Html.DisplayFor(model => model.Article.Category.CategoryDescription)
         </dd>
     </dl>
+    @await Component.InvokeAsync("Review",Model.Article.ArticleId)
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Article.ArticleId">Edit</a> |
