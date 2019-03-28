@@ -36,7 +36,7 @@ namespace GadgetCMS.Pages.Parameter
             {
                 return NotFound();
             }
-           ViewData["ParentParameterId"] = new SelectList(_context.ParentParameter, "ParentParameterId", "ParentParameterDescription");
+           ViewData["ParentParameterId"] = new SelectList(_context.ParentParameter, "ParentParameterId", "ParentParameterName");
             return Page();
         }
 

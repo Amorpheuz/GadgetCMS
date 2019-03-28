@@ -20,7 +20,7 @@ namespace GadgetCMS.Pages.Parameter
 
         public IActionResult OnGet()
         {
-        ViewData["ParentParameterId"] = new SelectList(_context.ParentParameter, "ParentParameterId", "ParentParameterDescription");
+        ViewData["ParentParameterId"] = new SelectList(_context.ParentParameter, "ParentParameterId", "ParentParameterName");
             return Page();
         }
 
