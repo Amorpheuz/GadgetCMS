@@ -21,7 +21,7 @@ namespace GadgetCMS.Pages.Review
 
         public Data.Review Review { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id, string userEmail)
+        public async Task<IActionResult> OnGetAsync(int? id, string userEmail)
         {
             if (userEmail == null || id == null)
             {
