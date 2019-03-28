@@ -1,0 +1,49 @@
+﻿@page
+@model GadgetCMS.Pages.ArticleParameter.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleParameter[0].ParameterVal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleParameter[0].Article)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleParameter[0].Parameter)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ArticleParameter) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParameterVal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Article.ArticleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parameter.ParameterName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ArticleId" asp-route-pId="@item.ParameterId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ArticleId" asp-route-pId="@item.ParameterId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ArticleId" asp-route-pId="@item.ParameterId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

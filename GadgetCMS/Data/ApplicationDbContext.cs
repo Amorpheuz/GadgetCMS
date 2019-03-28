@@ -98,5 +98,7 @@ namespace GadgetCMS.Data
         public DbSet<GadgetCMS.Data.Parameter> Parameter { get; set; }
 
         public DbSet<GadgetCMS.Data.CategoryParentParameter> CategoryParentParameter { get; set; }
+
+        public DbSet<GadgetCMS.Data.ArticleParameter> ArticleParameter { get; set; }
     }
 }
