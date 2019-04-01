@@ -1,0 +1,12 @@
+﻿@model System.Collections.Generic.List<GadgetCMS.Data.ArticlePicture>
+
+<h2>Gallery</h2>
+
+<div class="carousel" data-flickity='{ "imagesLoaded": true, "percentPosition": false, "fullscreen": true, "wrapAround" : true, "autoPlay": true }'>
+    @foreach (var item in Model)
+    {
+        var base64 = Convert.ToBase64String(item.ArticlePictureBytes);
+        var imgSrc = $"data:image/gif;base64,{base64}";
+        <img src="@imgSrc" class="caro-image" alt="@item.ArticlePictureCaption"/>
+    }
+</div>

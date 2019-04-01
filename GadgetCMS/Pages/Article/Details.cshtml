@@ -67,6 +67,7 @@
             @Html.DisplayFor(model => model.Article.Category.CategoryDescription)
         </dd>
     </dl>
+    @await Component.InvokeAsync("ArticlePicture",Model.Article.ArticleId)
     @await Component.InvokeAsync("ArticleParameter", Model.Article.ArticleId)
     @await Component.InvokeAsync("Review",Model.Article.ArticleId)
 </div>
