@@ -1,0 +1,51 @@
+﻿@model List<ArticleParameter>
+@{
+    var flag = 0;
+}
+<h2>Specifications</h2>
+
+@if (Model.FirstOrDefault() == null)
+{
+    <text>No Reviews Yet</text>
+}
+else
+{
+    <table class="table-responsive table-bordered">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Parameter.ParentParameter.ParentParameterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Parameter.ParameterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ParameterVal)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.GroupBy(m => m.Parameter.ParentParameter.ParentParameterName))
+            {
+                <tr>
+                    <td rowspan="@group.Count()">@Html.DisplayFor(model => group.Key)</td>
+                    <td>@Html.DisplayFor(model => group.FirstOrDefault().Parameter.ParameterName)</td>
+                    <td>@Html.DisplayFor(modelItem => group.FirstOrDefault().ParameterVal)</td>
+                </tr>
+                foreach (var item in group)
+                {
+                    if (item.Parameter.ParameterName == group.FirstOrDefault().Parameter.ParameterName)
+                    {
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => item.Parameter.ParameterName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ParameterVal)</td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+}
