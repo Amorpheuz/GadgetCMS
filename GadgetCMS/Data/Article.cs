@@ -37,7 +37,7 @@ namespace GadgetCMS.Data
         public bool? ArticleEditLock { get; set; }
 
         [Range(0,5)]
-        public int ArticleRating { get; set; }
+        public double ArticleRating { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
