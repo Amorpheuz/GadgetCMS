@@ -39,6 +39,10 @@ namespace GadgetCMS.Data
                 .Property(c => c.ArticleCreated)
                 .HasDefaultValueSql("GETDATE()");
 
+            modelBuilder.Entity<Article>()
+                .Property(c => c.ArticleRating)
+                .HasDefaultValue(0);
+
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleLastUpdate)

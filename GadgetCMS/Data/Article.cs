@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -30,10 +31,13 @@ namespace GadgetCMS.Data
         public  string ArticleLastEditedBy { get; set; }
 
         [Required]
-        public bool ArticleVisible { get; set; }
+        public bool? ArticleVisible { get; set; }
 
         [Required]
-        public bool ArticleEditLock { get; set; }
+        public bool? ArticleEditLock { get; set; }
+
+        [Range(0,5)]
+        public int ArticleRating { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
