@@ -11,6 +11,8 @@
 <div>
     <h4>Article</h4>
     <hr />
+    <h4>Rating</h4>
+    @await Component.InvokeAsync("RatingDisplay",Model.Article.ArticleId)
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.ArticleName)
