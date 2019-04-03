@@ -23,36 +23,69 @@ namespace GadgetCMS.ViewComponents
         {
             _context = context;
         }
-
-        public IViewComponentResult Invoke(int articleId)
+        
+        public IViewComponentResult Invoke(int articleId, string userId)
         {
-            var ratingControlValues = new List<string>();
-            var ratingControlInitialValue = "";
-
-            ratingControlValues.Add("");
-            ratingControlValues.Add("1");
-            ratingControlValues.Add("2");
-            ratingControlValues.Add("3");
-            ratingControlValues.Add("4");
-            ratingControlValues.Add("5");
-
-            ratingControlInitialValue = _context.Article.Where(r => r.ArticleId == articleId).Select(r => r.ArticleRating).First().ToString();
-
-            List<SelectListItem> ratings = ratingControlValues.Select(
-                myValue => new SelectListItem
-                {
-                    Value = myValue,
-                    Text = myValue
-                }).ToList();
-
-            RingControlModel ratingControlModel = new RingControlModel
+            if(userId == "")
             {
-                SelectedListItems = ratings,
-                RatingControlValue = ratingControlInitialValue,
-                RatingControlIdValue = "rating"+articleId
-            };
+                var ratingControlValues = new List<string>();
+                var ratingControlInitialValue = "";
 
-            return View(ratingControlModel);
+                ratingControlValues.Add("");
+                ratingControlValues.Add("1");
+                ratingControlValues.Add("2");
+                ratingControlValues.Add("3");
+                ratingControlValues.Add("4");
+                ratingControlValues.Add("5");
+
+                ratingControlInitialValue = _context.Article.Where(r => r.ArticleId == articleId).Select(r => r.ArticleRating).First().ToString();
+
+                List<SelectListItem> ratings = ratingControlValues.Select(
+                    myValue => new SelectListItem
+                    {
+                        Value = myValue,
+                        Text = myValue
+                    }).ToList();
+
+                RingControlModel ratingControlModel = new RingControlModel
+                {
+                    SelectedListItems = ratings,
+                    RatingControlValue = ratingControlInitialValue,
+                    RatingControlIdValue = "rating" + articleId
+                };
+
+                return View(ratingControlModel);
+            }
+            else
+            {
+                var ratingControlValues = new List<string>();
+                var ratingControlInitialValue = "";
+
+                ratingControlValues.Add("");
+                ratingControlValues.Add("1");
+                ratingControlValues.Add("2");
+                ratingControlValues.Add("3");
+                ratingControlValues.Add("4");
+                ratingControlValues.Add("5");
+
+                ratingControlInitialValue = _context.Review.Where(r => r.ArticleId == articleId && r.UserId == userId).Select(r => r.ReviewRating).First().ToString();
+
+                List<SelectListItem> ratings = ratingControlValues.Select(
+                    myValue => new SelectListItem
+                    {
+                        Value = myValue,
+                        Text = myValue
+                    }).ToList();
+
+                RingControlModel ratingControlModel = new RingControlModel
+                {
+                    SelectedListItems = ratings,
+                    RatingControlValue = ratingControlInitialValue,
+                    RatingControlIdValue = "rating" + articleId
+                };
+
+                return View(ratingControlModel);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
     <h4>Article</h4>
     <hr />
     <h4>Rating</h4>
-    @await Component.InvokeAsync("RatingDisplay",Model.Article.ArticleId)
+    @await Component.InvokeAsync("RatingDisplay",new { articleId = Model.Article.ArticleId, userId = ""})
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.ArticleName)
