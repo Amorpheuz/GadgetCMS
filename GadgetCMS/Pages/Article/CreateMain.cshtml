@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Article.CategoryId" class="control-label"></label>
-                <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect"></select>
             </div>
             <div class="form-group">
                 <label class="control-label">Upload  Pictures</label>
@@ -61,6 +61,9 @@
                 <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden />
                 <span asp-validation-for="ArticlePictures.ArticleId" class="text-danger"></span>
             </div>
+            <div id="paramList">
+
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" id="submiter"/>
             </div>
@@ -82,6 +85,27 @@
             document.getElementById("ImageCheck").innerHTML = "";
         }
     }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#catSelect").change(function () {
+            var options = { };
+            var catId = $(this).children("option:selected").val();
+            options.url = "/article/CreateMain?handler=FetchParameter&id=" + catId;
+            options.type = "GET";
+            options.datatype = "json";
+            options.success = function (data) {
+                console.log(options.url);               
+                console.log(data);
+                $("#paramList").append(data + "");
+            };
+            options.error = function (xhr, status, error) {
+                $("#paramList").html("Error while making Ajax call!");
+                console.log("error!"+"\nAn AJAX error occured: " + status + "\nError: " + error);
+            };
+            $.ajax(options);
+        });
+    });
 </script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

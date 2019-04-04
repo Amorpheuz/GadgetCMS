@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace GadgetCMS.Pages.Article
 {
@@ -22,7 +23,7 @@ namespace GadgetCMS.Pages.Article
 
         public IActionResult OnGet()
         {
-        ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+            ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
             return Page();
         }
 
@@ -31,6 +32,8 @@ namespace GadgetCMS.Pages.Article
 
         [BindProperty]
         public Data.ArticlePicture ArticlePictures { get; set; }
+
+        public List<Data.Parameter> parameters { get; set; }
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles)
         {
@@ -73,6 +76,19 @@ namespace GadgetCMS.Pages.Article
             }
 
             return RedirectToPage("./Index");
+        }
+
+        public IActionResult OnGetFetchParameter(int id)
+        {
+            List<Data.CategoryParentParameter> temp = _context.CategoryParentParameter
+                .Include(r => r.ParentParameter)
+                .ThenInclude(r => r.Parameters)
+                .Where(r => r.CategoryId == id).ToList();
+               
+            parameters = temp.Select(r => r.ParentParameter.Parameters).First();
+
+            JsonResult jsonResult = new JsonResult(parameters);
+            return jsonResult;
         }
     }
 }
