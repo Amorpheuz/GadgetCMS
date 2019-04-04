@@ -1,0 +1,70 @@
+﻿@page
+@model GadgetCMS.Pages.Article.CreateMainModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Article.ArticleName" class="control-label"></label>
+                <input asp-for="Article.ArticleName" class="form-control" />
+                <span asp-validation-for="Article.ArticleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Article.ArticleContent" class="control-label"></label>
+                <input asp-for="Article.ArticleContent" class="form-control" />
+                <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Article.ArticleAuthor" class="control-label"></label>
+                <input asp-for="Article.ArticleAuthor" class="form-control" />
+                <span asp-validation-for="Article.ArticleAuthor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Article.ArticleLastEditedBy" class="control-label"></label>
+                <input asp-for="Article.ArticleLastEditedBy" class="form-control" />
+                <span asp-validation-for="Article.ArticleLastEditedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Article.CategoryId" class="control-label"></label>
+                <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" accept="image/png, image/jpeg" id="upFiles" name="upFiles" multiple>
+                    <label class="custom-file-label" for="upFiles">Choose file</label>
+                </div>
+                <span asp-validation-for="ArticlePictures.ArticlePictureBytes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticlePictures.ArticlePictureCaption" class="control-label"></label>
+                <input asp-for="ArticlePictures.ArticlePictureCaption" class="form-control" />
+                <span asp-validation-for="ArticlePictures.ArticlePictureCaption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticlePictures.ArticleId" class="control-label"></label>
+                <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

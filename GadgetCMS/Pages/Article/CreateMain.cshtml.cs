@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,29 +7,38 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
-namespace GadgetCMS.Pages.ArticlePicture
+namespace GadgetCMS.Pages.Article
 {
-    public class CreateModel : PageModel
+    public class CreateMainModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
 
-        public CreateModel(GadgetCMS.Data.ApplicationDbContext context)
+        public CreateMainModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-            ViewData["ArticleId"] = new SelectList(_context.Article, "ArticleId", "ArticleName");
+        ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
             return Page();
         }
 
         [BindProperty]
-        public Data.ArticlePicture ArticlePicture { get; set; }
+        public Data.Article Article { get; set; }
+
+        [BindProperty]
+        public Data.ArticlePicture ArticlePictures { get; set; }
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles)
         {
+            _context.Article.Add(Article);
+            await _context.SaveChangesAsync();
+
+            var articleId = _context.Article.Select(a => a.ArticleId).Last();
+
             foreach (var upFile in upFiles)
             {
                 if (upFile != null || upFile.ContentType.ToLower().StartsWith("image/"))
@@ -40,10 +48,10 @@ namespace GadgetCMS.Pages.ArticlePicture
 
                     System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
 
-                    Data.ArticlePicture upArticlePicture= new Data.ArticlePicture()
+                    Data.ArticlePicture upArticlePicture = new Data.ArticlePicture()
                     {
-                        ArticleId = ArticlePicture.ArticleId,
-                        ArticlePictureCaption = ArticlePicture.ArticlePictureCaption,
+                        ArticleId = articleId,
+                        ArticlePictureCaption = ArticlePictures.ArticlePictureCaption,
                         ArticlePictureBytes = ms.ToArray()
                     };
 
@@ -51,6 +59,7 @@ namespace GadgetCMS.Pages.ArticlePicture
                     await _context.SaveChangesAsync();
                 }
             }
+
             return RedirectToPage("./Index");
         }
     }
