@@ -34,6 +34,18 @@ namespace GadgetCMS.Pages.Article
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles)
         {
+            if(upFiles == null)
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                ViewData["ImageCheck"] = false;
+                return Page();
+            }
+            else if(!ModelState.IsValid)
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                return Page();
+            }
+
             _context.Article.Add(Article);
             await _context.SaveChangesAsync();
 

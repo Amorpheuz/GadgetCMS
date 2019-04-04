@@ -30,10 +30,8 @@ namespace GadgetCMS.Data
         [Required]
         public  string ArticleLastEditedBy { get; set; }
 
-        [Required]
         public bool? ArticleVisible { get; set; }
 
-        [Required]
         public bool? ArticleEditLock { get; set; }
 
         [Range(0,5)]

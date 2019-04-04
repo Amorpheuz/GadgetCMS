@@ -13,7 +13,6 @@ namespace GadgetCMS.Data
         [Key]
         public int ArticlePictureId { get; set; }
 
-        [Required]
         [DisplayName("Article Picture")]
         public byte[] ArticlePictureBytes { get; set; }
 
