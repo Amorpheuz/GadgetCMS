@@ -24,6 +24,12 @@ namespace GadgetCMS.Pages.Article
         public IActionResult OnGet()
         {
             ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+            int id = _context.Category.Select(r => r.CategoryId).FirstOrDefault();
+            List<Data.CategoryParentParameter> temp = _context.CategoryParentParameter
+                .Include(r => r.ParentParameter)
+                .ThenInclude(r => r.Parameters)
+                .Where(r => r.CategoryId == id).ToList();
+            parameters = temp.Select(r => r.ParentParameter.Parameters).ToList();
             return Page();
         }
 
@@ -35,9 +41,9 @@ namespace GadgetCMS.Pages.Article
 
         public List<List<Data.Parameter>> parameters { get; set; }
 
-        public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles)
+        public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles, ICollection<string> vals, ICollection<int> valIds)
         {
-            if(upFiles == null)
+            if(upFiles == null || valIds == null || vals == null)
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
                 ViewData["ImageCheck"] = false;
@@ -73,6 +79,19 @@ namespace GadgetCMS.Pages.Article
                     _context.ArticlePicture.Add(upArticlePicture);
                     await _context.SaveChangesAsync();
                 }
+            }
+
+            for (int i = 0; i < vals.Count; i++)
+            {
+                Data.ArticleParameter articleParameter = new Data.ArticleParameter()
+                {
+                    ArticleId = articleId,
+                    ParameterId = valIds.ElementAt(i),
+                    ParameterVal = vals.ElementAt(i)
+                };
+
+                _context.ArticleParameter.Add(articleParameter);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
