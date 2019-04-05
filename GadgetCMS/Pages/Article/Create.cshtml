@@ -102,7 +102,7 @@
         $("#catSelect").change(function () {
             var options = {};
             var catId = $(this).children("option:selected").val();
-            options.url = "/article/CreateMain?handler=FetchParameter&id=" + catId;
+            options.url = "/article/Create?handler=FetchParameter&id=" + catId;
             options.type = "GET";
             options.datatype = "json";
             options.success = function (data) {
