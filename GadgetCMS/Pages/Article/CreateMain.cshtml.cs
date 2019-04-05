@@ -33,7 +33,7 @@ namespace GadgetCMS.Pages.Article
         [BindProperty]
         public Data.ArticlePicture ArticlePictures { get; set; }
 
-        public List<Data.Parameter> parameters { get; set; }
+        public List<List<Data.Parameter>> parameters { get; set; }
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles)
         {
@@ -84,8 +84,8 @@ namespace GadgetCMS.Pages.Article
                 .Include(r => r.ParentParameter)
                 .ThenInclude(r => r.Parameters)
                 .Where(r => r.CategoryId == id).ToList();
-               
-            parameters = temp.Select(r => r.ParentParameter.Parameters).First();
+            
+            parameters = temp.Select(r => r.ParentParameter.Parameters).ToList();
 
             JsonResult jsonResult = new JsonResult(parameters);
             return jsonResult;
