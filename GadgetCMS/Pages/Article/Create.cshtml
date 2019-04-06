@@ -15,7 +15,7 @@
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="createForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Article.ArticleName" class="control-label"></label>
@@ -24,7 +24,54 @@
             </div>
             <div class="form-group">
                 <label asp-for="Article.ArticleContent" class="control-label"></label>
-                <input asp-for="Article.ArticleContent" class="form-control" />
+                <div id="quill-container">
+                    <div id="toolbar-container">
+                        <span class="ql-formats">
+                            <button class="ql-header" value="1"></button>
+                            <button class="ql-header" value="2"></button>
+                            <button class="ql-header" value="3"></button>
+                            <button class="ql-blockquote"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-direction" value="rtl"></button>
+                            <select class="ql-align"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-font"></select>
+                            <select class="ql-size"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-script" value="sub"></button>
+                            <button class="ql-script" value="super"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-indent" value="-1"></button>
+                            <button class="ql-indent" value="+1"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                            <button class="ql-image"></button>
+                            <button class="ql-video"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-clean"></button>
+                        </span>
+                    </div>
+                    <div id="editor-container"></div>
+                </div>
+                <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden/>
                 <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
             </div>
             <input asp-for="Article.ArticleAuthor" class="form-control" value="@user.Email" hidden />
@@ -125,6 +172,23 @@
             $.ajax(options);
         });
     });
+</script>
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: '#toolbar-container'
+        },
+        placeholder: 'Enter Article Content',
+        theme: 'snow'
+    });
+
+    var form = document.querySelector('#createForm');
+    form.onsubmit = function () {
+        var content = document.querySelector("input[name='Article.ArticleContent']");
+        content.value = JSON.stringify(quill.getContents());
+        alert(content.value);
+    };
 </script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
