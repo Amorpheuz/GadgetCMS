@@ -7,12 +7,13 @@
     ViewData["Title"] = "Create";
     Layout = "~/Pages/Shared/_Layout.cshtml";
     var user = await UserManager.GetUserAsync(User);
+    var captionError = ViewBag.CaptionError;
 }
 
 <h1>Create</h1>
 
-<h4>Article</h4>
 <hr />
+<h4>Article</h4>
 <div class="row">
     <div class="col-md-6">
         <form method="post" enctype="multipart/form-data" id="createForm">
@@ -71,7 +72,7 @@
                     </div>
                     <div id="editor-container"></div>
                 </div>
-                <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden/>
+                <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden />
                 <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
             </div>
             <input asp-for="Article.ArticleAuthor" class="form-control" value="@user.Email" hidden />
@@ -79,6 +80,7 @@
             <div class="form-group">
                 <label asp-for="Article.CategoryId" class="control-label"></label>
                 <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect"></select>
+                <small class="form-text text-muted">Select a Category to Load paramerters for that Category.</small>
             </div>
             <div class="form-group">
                 <label class="control-label">Upload  Pictures</label>
@@ -93,18 +95,27 @@
                     }
                 </span>
                 <span asp-validation-for="ArticlePictures.ArticlePictureBytes" class="text-danger"></span>
+                <small class="form-text text-muted">Select Pictures to be Uploaded to Article's Gallery.</small>
+                <output id="image-list"></output>
             </div>
             <div class="form-group">
                 <label asp-for="ArticlePictures.ArticlePictureCaption" class="control-label"></label>
                 <input asp-for="ArticlePictures.ArticlePictureCaption" class="form-control" />
                 <span asp-validation-for="ArticlePictures.ArticlePictureCaption" class="text-danger"></span>
+                @if (captionError != null)
+                {
+                    <text class="text-danger">@captionError</text>
+                    captionError = null;
+                }
+                <small class="form-text text-muted">Enter Caption for each Picture seperated by <kbd>;</kbd></small>
             </div>
-            <div class="form-group">
-                <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden />
-                <span asp-validation-for="ArticlePictures.ArticleId" class="text-danger"></span>
-            </div>
+            <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden />
             <h4>Parameters</h4>
             <div id="paramList">
+                @{ 
+                    var temp = "";
+                    var temp2 = "";
+                }
                 @foreach (var item in Model.parameters)
                 {
                     foreach (var miniItem in item)
@@ -143,6 +154,32 @@
             document.getElementById("ImageCheck").innerHTML = "";
         }
     }
+
+    function handleFileSelect(evt) {
+        document.getElementById("image-list").innerHTML = "";
+        var files = evt.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            if (!f.type.match("image.*")) {
+                continue;
+            }
+            var reader = new FileReader();
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    var span = document.createElement("span");
+                    span.innerHTML =
+                        [
+                            '<img style="height: 75px; margin: 5px" class="img-thumbnail" src="',
+                            e.target.result,
+                            '" title="', escape(theFile.name),
+                            '"/>'
+                        ].join("");
+                    document.getElementById("image-list").insertBefore(span, null);
+                };
+            })(f);
+            reader.readAsDataURL(f);
+        }
+    }
+    document.getElementById("upFiles").addEventListener("change", handleFileSelect, false);
 </script>
 <script>
     $(document).ready(function () {

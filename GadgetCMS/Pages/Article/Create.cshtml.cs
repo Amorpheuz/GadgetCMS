@@ -24,12 +24,7 @@ namespace GadgetCMS.Pages.Article
         public IActionResult OnGet()
         {
             ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
-            int id = _context.Category.Select(r => r.CategoryId).FirstOrDefault();
-            List<Data.CategoryParentParameter> temp = _context.CategoryParentParameter
-                .Include(r => r.ParentParameter)
-                .ThenInclude(r => r.Parameters)
-                .Where(r => r.CategoryId == id).ToList();
-            parameters = temp.Select(r => r.ParentParameter.Parameters).ToList();
+            parameters = FindFirstParams();
             return Page();
         }
 
@@ -43,23 +38,44 @@ namespace GadgetCMS.Pages.Article
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> upFiles, ICollection<string> vals, ICollection<int> valIds)
         {
-            if(upFiles == null || valIds == null || vals == null)
+            if (upFiles == null || valIds == null || vals == null)
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                parameters = FindFirstParams();
                 ViewData["ImageCheck"] = false;
                 return Page();
             }
             else if(!ModelState.IsValid)
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                parameters = FindFirstParams();
                 return Page();
+            }
+
+            string[] captionList = ArticlePictures.ArticlePictureCaption.Split(";");
+            if (upFiles.Count != captionList.Count())
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                parameters = FindFirstParams();
+                ViewData["CaptionError"] = "Please enter caption for each image seperated by `;`";
+                return Page();
+            }
+            foreach (var item in captionList)
+            {
+                if (item == null || item == "" || item==" ")
+                {
+                    ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                    ViewData["CaptionError"] = "Empty or Missing Caption Detected, Please enter caption for each image seperated by `;`";
+                    parameters = FindFirstParams();
+                    return Page();
+                }
             }
 
             _context.Article.Add(Article);
             await _context.SaveChangesAsync();
 
             var articleId = _context.Article.Select(a => a.ArticleId).Last();
-
+            var counter = 0;
             foreach (var upFile in upFiles)
             {
                 if (upFile != null || upFile.ContentType.ToLower().StartsWith("image/"))
@@ -72,10 +88,9 @@ namespace GadgetCMS.Pages.Article
                     Data.ArticlePicture upArticlePicture = new Data.ArticlePicture()
                     {
                         ArticleId = articleId,
-                        ArticlePictureCaption = ArticlePictures.ArticlePictureCaption,
+                        ArticlePictureCaption = captionList[counter++],
                         ArticlePictureBytes = ms.ToArray()
                     };
-
                     _context.ArticlePicture.Add(upArticlePicture);
                     await _context.SaveChangesAsync();
                 }
@@ -108,6 +123,17 @@ namespace GadgetCMS.Pages.Article
 
             JsonResult jsonResult = new JsonResult(parameters);
             return jsonResult;
+        }
+
+        public List<List<Data.Parameter>> FindFirstParams()
+        {
+            int id = _context.Category.Select(r => r.CategoryId).FirstOrDefault();
+            List<Data.CategoryParentParameter> temp = _context.CategoryParentParameter
+                .Include(r => r.ParentParameter)
+                .ThenInclude(r => r.Parameters)
+                .Where(r => r.CategoryId == id).ToList();
+            var tempParam = temp.Select(r => r.ParentParameter.Parameters).ToList();
+            return tempParam;
         }
     }
 }
