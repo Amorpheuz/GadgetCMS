@@ -14,20 +14,26 @@ namespace GadgetCMS.Data
         public int ArticleId { get; set; }
 
         [Required]
+        [DisplayName("Article Title")]
         public  string ArticleName { get; set; }
-        
+
+        [DisplayName("Last Updated On")]
         public DateTime ArticleLastUpdate { get; set; }
 
         [Required]
+        [DisplayName("Created On")]
         public  DateTime ArticleCreated { get; set; }
 
         [Required]
+        [DisplayName("Content")]
         public string ArticleContent { get; set; }
 
         [Required]
+        [DisplayName("Author")]
         public  string ArticleAuthor { get; set; }
 
         [Required]
+        [DisplayName("Last Edited By")]
         public  string ArticleLastEditedBy { get; set; }
 
         public bool? ArticleVisible { get; set; }
@@ -35,9 +41,11 @@ namespace GadgetCMS.Data
         public bool? ArticleEditLock { get; set; }
 
         [Range(0,5)]
+        [DisplayName("Rating")]
         public double ArticleRating { get; set; }
 
         [Required]
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
