@@ -42,12 +42,14 @@ namespace GadgetCMS.Pages.Article
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
                 parameters = FindFirstParams();
+                CheckArticleContent();
                 ViewData["ImageCheck"] = false;
                 return Page();
             }
             else if(!ModelState.IsValid)
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                CheckArticleContent();
                 parameters = FindFirstParams();
                 return Page();
             }
@@ -57,6 +59,7 @@ namespace GadgetCMS.Pages.Article
             {
                 ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
                 parameters = FindFirstParams();
+                CheckArticleContent();
                 ViewData["CaptionError"] = "Please enter caption for each image seperated by `;`";
                 return Page();
             }
@@ -66,6 +69,7 @@ namespace GadgetCMS.Pages.Article
                 {
                     ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
                     ViewData["CaptionError"] = "Empty or Missing Caption Detected, Please enter caption for each image seperated by `;`";
+                    CheckArticleContent();
                     parameters = FindFirstParams();
                     return Page();
                 }
@@ -125,7 +129,7 @@ namespace GadgetCMS.Pages.Article
             return jsonResult;
         }
 
-        public List<List<Data.Parameter>> FindFirstParams()
+        private List<List<Data.Parameter>> FindFirstParams()
         {
             int id = _context.Category.Select(r => r.CategoryId).FirstOrDefault();
             List<Data.CategoryParentParameter> temp = _context.CategoryParentParameter
@@ -134,6 +138,14 @@ namespace GadgetCMS.Pages.Article
                 .Where(r => r.CategoryId == id).ToList();
             var tempParam = temp.Select(r => r.ParentParameter.Parameters).ToList();
             return tempParam;
+        }
+
+        private void CheckArticleContent()
+        {
+            if (Article.ArticleContent != null || Article.ArticleContent != "")
+            {
+                ViewData["ArticleContent"] = Article.ArticleContent;
+            }
         }
     }
 }

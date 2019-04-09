@@ -8,6 +8,12 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
     var user = await UserManager.GetUserAsync(User);
     var captionError = ViewBag.CaptionError;
+    var imageCheck = ViewBag.ImageCheck;
+    var articleContent = "";
+    if (ViewBag.ArticleContent != null)
+    {
+        articleContent = "quill.setContents("+ViewBag.ArticleContent+")";
+    }
 }
 <h1>Create</h1>
 
@@ -94,7 +100,7 @@
                                 <label class="custom-file-label" for="upFiles">Choose file</label>
                             </div>
                             <span class="text-danger" id="ImageCheck">
-                                @if (ViewData["ImageCheck"] != null)
+                                @if (imageCheck != null)
                                 {
                                     <text>No Pictures Selected</text>
                                 }
@@ -109,7 +115,7 @@
                             <span asp-validation-for="ArticlePictures.ArticlePictureCaption" class="text-danger"></span>
                             @if (captionError != null)
                             {
-                                <text>@captionError</text>
+                                <span class="text-danger">@captionError</span>
                                 captionError = null;
                             }
                             <small class="form-text text-muted">Enter Caption for each Picture seperated by <kbd>;</kbd></small>
@@ -224,6 +230,9 @@
             };
             $.ajax(options);
         });
+        $('#createForm').validate({
+          ignore: ".ql-container *"
+        });
     });
 </script>
 <script src="~/lib/quill/quill.min.js"></script>
@@ -242,6 +251,7 @@
         content.value = JSON.stringify(quill.getContents());
         alert(content.value);
     };
+    @Html.Raw(articleContent);
 </script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
