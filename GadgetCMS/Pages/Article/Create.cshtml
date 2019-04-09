@@ -9,128 +9,142 @@
     var user = await UserManager.GetUserAsync(User);
     var captionError = ViewBag.CaptionError;
 }
-
 <h1>Create</h1>
 
 <hr />
-<h4>Article</h4>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <form method="post" enctype="multipart/form-data" id="createForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Article.ArticleName" class="control-label"></label>
-                <input asp-for="Article.ArticleName" class="form-control" />
-                <span asp-validation-for="Article.ArticleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Article.ArticleContent" class="control-label"></label>
-                <div id="quill-container">
-                    <div id="toolbar-container">
-                        <span class="ql-formats">
-                            <button class="ql-header" value="1"></button>
-                            <button class="ql-header" value="2"></button>
-                            <button class="ql-header" value="3"></button>
-                            <button class="ql-blockquote"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-bold"></button>
-                            <button class="ql-italic"></button>
-                            <button class="ql-underline"></button>
-                            <button class="ql-strike"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-direction" value="rtl"></button>
-                            <select class="ql-align"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <select class="ql-font"></select>
-                            <select class="ql-size"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <select class="ql-color"></select>
-                            <select class="ql-background"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-script" value="sub"></button>
-                            <button class="ql-script" value="super"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-list" value="ordered"></button>
-                            <button class="ql-list" value="bullet"></button>
-                            <button class="ql-indent" value="-1"></button>
-                            <button class="ql-indent" value="+1"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-link"></button>
-                            <button class="ql-image"></button>
-                            <button class="ql-video"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-clean"></button>
-                        </span>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h4>Article</h4>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleName" class="control-label"></label>
+                            <input asp-for="Article.ArticleName" class="form-control" />
+                            <span asp-validation-for="Article.ArticleName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col">
+                            <label asp-for="Article.CategoryId" class="control-label"></label>
+                            <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect"></select>
+                            <small class="form-text text-muted">Select a Category to Load paramerters for that Category.</small>
+                        </div>
                     </div>
-                    <div id="editor-container"></div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleContent" class="control-label"></label>
+                            <div id="quill-container">
+                                <div id="toolbar-container">
+                                    <span class="ql-formats">
+                                        <button class="ql-header" value="1"></button>
+                                        <button class="ql-header" value="2"></button>
+                                        <button class="ql-header" value="3"></button>
+                                        <button class="ql-blockquote"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-direction" value="rtl"></button>
+                                        <select class="ql-align"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-font"></select>
+                                        <select class="ql-size"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-color"></select>
+                                        <select class="ql-background"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-script" value="sub"></button>
+                                        <button class="ql-script" value="super"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-list" value="ordered"></button>
+                                        <button class="ql-list" value="bullet"></button>
+                                        <button class="ql-indent" value="-1"></button>
+                                        <button class="ql-indent" value="+1"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-link"></button>
+                                        <button class="ql-image"></button>
+                                        <button class="ql-video"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-clean"></button>
+                                    </span>
+                                </div>
+                                <div id="editor-container"></div>
+                            </div>
+                            <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden />
+                            <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">Upload Pictures</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/png, image/jpeg" id="upFiles" name="upFiles" multiple
+                                       required>
+                                <label class="custom-file-label" for="upFiles">Choose file</label>
+                            </div>
+                            <span class="text-danger" id="ImageCheck">
+                                @if (ViewData["ImageCheck"] != null)
+                                {
+                                    <text>No Pictures Selected</text>
+                                }
+                            </span>
+                            <span asp-validation-for="ArticlePictures.ArticlePictureBytes" class="text-danger"></span>
+                            <small class="form-text text-muted">Select Pictures to be Uploaded to Article's Gallery.</small>
+                            <output id="image-list"></output>
+                        </div>
+                        <div class="form-group col">
+                            <label asp-for="ArticlePictures.ArticlePictureCaption" class="control-label"></label>
+                            <input asp-for="ArticlePictures.ArticlePictureCaption" class="form-control" />
+                            <span asp-validation-for="ArticlePictures.ArticlePictureCaption" class="text-danger"></span>
+                            @if (captionError != null)
+                            {
+                                <text>@captionError</text>
+                                captionError = null;
+                            }
+                            <small class="form-text text-muted">Enter Caption for each Picture seperated by <kbd>;</kbd></small>
+                        </div>
+                    </div>
+                    <input asp-for="Article.ArticleAuthor" class="form-control" value="@user.Email" hidden />
+                    <input asp-for="Article.ArticleLastEditedBy" class="form-control" value="@user.Email" hidden />
+                    <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden />
                 </div>
-                <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden />
-                <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
             </div>
-            <input asp-for="Article.ArticleAuthor" class="form-control" value="@user.Email" hidden />
-            <input asp-for="Article.ArticleLastEditedBy" class="form-control" value="@user.Email" hidden />
-            <div class="form-group">
-                <label asp-for="Article.CategoryId" class="control-label"></label>
-                <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect"></select>
-                <small class="form-text text-muted">Select a Category to Load paramerters for that Category.</small>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Upload  Pictures</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" accept="image/png, image/jpeg" id="upFiles" name="upFiles" multiple required>
-                    <label class="custom-file-label" for="upFiles">Choose file</label>
-                </div>
-                <span class="text-danger" id="ImageCheck">
-                    @if (ViewData["ImageCheck"] != null)
-                    {
-                        <text>No Pictures Selected</text>
-                    }
-                </span>
-                <span asp-validation-for="ArticlePictures.ArticlePictureBytes" class="text-danger"></span>
-                <small class="form-text text-muted">Select Pictures to be Uploaded to Article's Gallery.</small>
-                <output id="image-list"></output>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArticlePictures.ArticlePictureCaption" class="control-label"></label>
-                <input asp-for="ArticlePictures.ArticlePictureCaption" class="form-control" />
-                <span asp-validation-for="ArticlePictures.ArticlePictureCaption" class="text-danger"></span>
-                @if (captionError != null)
-                {
-                    <text class="text-danger">@captionError</text>
-                    captionError = null;
-                }
-                <small class="form-text text-muted">Enter Caption for each Picture seperated by <kbd>;</kbd></small>
-            </div>
-            <input asp-for="ArticlePictures.ArticleId" class="form-control" value="0" hidden />
             <h4>Parameters</h4>
             <div id="paramList">
-                @{ 
-                    var temp = "";
-                    var temp2 = "";
-                }
                 @foreach (var item in Model.parameters)
                 {
-                    foreach (var miniItem in item)
-                    {
-                        <div class='form-group'>
-                            <label class='control-label'>@miniItem.ParameterName</label>
-                            <div class='input-group'>
-                                <input type='text' name='vals' id='vals' class='form-control' required />
-                                <div class='input-group-append'>
-                                    <span class='input-group-text'>@miniItem.ParameterUnit</span>
+                    <h5>@item.First().ParentParameter.ParentParameterName</h5>
+                    <div class="card-columns">
+                        @foreach (var miniItem in item)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class='form-group'>
+                                        <label class='control-label'>@miniItem.ParameterName</label>
+                                        <div class='input-group'>
+                                            <input type='text' name='vals' id='vals' class='form-control' required />
+                                            <div class='input-group-append'>
+                                                <span class='input-group-text'>@miniItem.ParameterUnit</span>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted">@miniItem.ParameterDescription</small>
+                                        <input type='text' name='valIds' id='valIds' value='@miniItem.ParameterId' hidden />
+                                    </div>
                                 </div>
                             </div>
-                            <input type='text' name='valIds' id='valIds' value='@miniItem.ParameterId' hidden />
-                        </div>
-                    }
+                        }
+                    </div>
                 }
             </div>
             <div class="form-group">
@@ -139,9 +153,8 @@
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-page="Index"> Back to List</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 <script>
     document.getElementById("submiter").onclick = function () {
@@ -192,14 +205,17 @@
             options.success = function (data) {
                 $("#paramList").empty();
                 data.forEach(function (element) {
+                    $("#paramList").append("<h5>" + element[0].parentParameter.parentParameterName + "</h5> <div class='card-columns' id=col"+element[0].parentParameter.parentParameterName+">");
                     element.forEach(function (innerElement) {
-                        $("#paramList").append(
-                            "<div class='form-group'>" +
+                        $("#col"+innerElement.parentParameter.parentParameterName).append(
+                            "<div class='card'><div class='card-body'><div class='form-group'>" +
                             "<label class='control-label'>" + innerElement.parameterName + " </label> " +
                             "<div class='input-group'><input type='text' name='vals' id='vals'  class='form-control' required />" +
                             "<div class='input-group-append'><span class='input-group-text'>" + innerElement.parameterUnit + "</span></div></div>" +
-                            "<input type='text' name='valIds' id='valIds' value='" + innerElement.parameterId + "' hidden /></div>");
+                            "<small class='form-text text-muted'>" + innerElement.parameterDescription + "</small>" +
+                            "<input type='text' name='valIds' id='valIds' value='" + innerElement.parameterId + "' hidden /></div></div></div>");
                     });
+                    $('#paramList').append("</div>");
                 });
             };
             options.error = function (xhr, status, error) {
