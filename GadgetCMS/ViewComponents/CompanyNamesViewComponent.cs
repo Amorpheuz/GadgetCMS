@@ -1,5 +1,6 @@
 ﻿using GadgetCMS.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,19 @@ namespace GadgetCMS.ViewComponents
 
         public List<string> CompanyNames { get; set; }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int categoryId)
         {
-            CompanyNames = _context.ArticleParameter
-                .Where(a => a.ParameterId == 5).Select(a => a.ParameterVal).Distinct().ToList();
-
+            if (categoryId == 0)
+            {
+                CompanyNames = _context.ArticleParameter
+                    .Where(a => a.ParameterId == 5).Select(a => a.ParameterVal).Distinct().ToList();
+            }
+            else
+            {
+                CompanyNames = _context.ArticleParameter
+                    .Include(a => a.Article)
+                    .Where(a => a.ParameterId == 5 && a.Article.CategoryId == categoryId).Select(a => a.ParameterVal).Distinct().ToList();
+            }
             return View(CompanyNames);
         }
     }

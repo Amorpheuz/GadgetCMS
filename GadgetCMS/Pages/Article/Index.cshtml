@@ -11,6 +11,19 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+@{ 
+    if(ViewBag.ViewType != null)
+    {
+        if (ViewBag.ViewType == "Company")
+        {
+            await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId);
+        }
+    }
+    else
+    {
+        await Component.InvokeAsync("CompanyNames", 0);
+    }
+}
 <table class="table-responsive table-bordered">
     <thead>
         <tr>
@@ -45,41 +58,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Article) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleLastUpdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleAuthor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleLastEditedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleVisible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleEditLock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ArticleId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ArticleId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Article)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleLastUpdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleContent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleAuthor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleLastEditedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleVisible)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleEditLock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ArticleId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ArticleId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
