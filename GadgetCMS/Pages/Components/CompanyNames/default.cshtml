@@ -1,0 +1,19 @@
+﻿@model List<string>
+
+<div class="card mb-2">
+    <div class="card-body">
+        <h5 class="card-title">
+            Brands
+        </h5>
+        <div class="card-group">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <small><a asp-page="../Article/Index" asp-route-parameterVal="@item" asp-page-handler="Company">@item</a></small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
