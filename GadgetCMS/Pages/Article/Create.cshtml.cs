@@ -53,7 +53,14 @@ namespace GadgetCMS.Pages.Article
                 parameters = FindFirstParams();
                 return Page();
             }
-
+            if (vals.Contains(null))
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+                CheckArticleContent();
+                parameters = FindFirstParams();
+                ViewData["ValError"] = "Please fill all the parameter inputs";
+                return Page();
+            }
             string[] captionList = ArticlePictures.ArticlePictureCaption.Split(";");
             if (upFiles.Count != captionList.Count())
             {
