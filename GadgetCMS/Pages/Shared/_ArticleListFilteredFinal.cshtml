@@ -1,1 +1,54 @@
-﻿
+﻿@model Data.FilteredArticle
+
+@{
+
+
+    string[] parametervalues;
+
+    List<List<Data.ArticleParameter>> articleids_filtered = new List<List<Data.ArticleParameter>>();
+
+
+    List<int> FilteredArticleListFinal = new List<int>();
+
+
+    List<Data.ArticleParameter> articleid_temp = new List<Data.ArticleParameter>();
+
+    List<int> articles_listInt = new List<int>();
+    articles_listInt = Model.Articles.Select(c => c.ArticleId).ToList();
+
+    parametervalues = Model.ParameterValues.Split(";");
+    for (int i = 0; i < parametervalues.Length - 1; i++)
+    {
+        articleid_temp = Model.getValues(parametervalues[i]);
+        articleids_filtered.Add(articleid_temp);
+    }
+}
+
+@if (articleids_filtered != null)
+{
+    foreach (var articleidss in articleids_filtered)
+    {
+        foreach (var articleidsfetch in articleidss)
+        {
+            if (articles_listInt.Contains(Int32.Parse(articleidsfetch.ArticleId.ToString())))
+            {
+
+                //if (Model.FilteredArticleListFinal.Count > 0)
+                //{
+                if (!FilteredArticleListFinal.Contains(articleidsfetch.ArticleId))
+                {
+                    FilteredArticleListFinal.Add(articleidsfetch.ArticleId);
+
+                    <a asp-page="../Article/Details" asp-route-id="@articleidsfetch.ArticleId">@articleidsfetch.ArticleId</a> <br />
+                }
+                //}
+
+
+            }
+            //foreach (var articlesNameListFetchFiltered in Model.articles_list.Where(b => b.ArticleId == articleidsfetch.ArticleId))
+            //{
+
+            //}
+        }
+    }
+}
