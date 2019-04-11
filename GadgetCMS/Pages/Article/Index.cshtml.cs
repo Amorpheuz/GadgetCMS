@@ -25,6 +25,7 @@ namespace GadgetCMS.Pages.Article
             Article = await _context.Article
                 .Include(a => a.Category)
                 .Include(a => a.ArticlePictures)
+                .OrderByDescending(a => a.ArticleCreated)
                 .ToListAsync();
         }
 
