@@ -85,6 +85,11 @@ namespace GadgetCMS.Data
             //ArticleParameter
             modelBuilder.Entity<ArticleParameter>()
                 .HasKey(c => new { c.ArticleId, c.ParameterId });
+
+            //---------------------------------------------------------------------
+            //AdvancedSearch
+            modelBuilder.Entity<AdvancedSearch>()
+                .HasKey(c => c.AdvancedSearchId);
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }
