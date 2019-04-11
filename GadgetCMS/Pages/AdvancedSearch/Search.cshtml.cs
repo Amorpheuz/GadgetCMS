@@ -72,5 +72,43 @@ namespace GadgetCMS.Pages.AdvancedSearch
                 ViewData = new ViewDataDictionary<List<Data.Article>>(ViewData, articles_list)
             };
         }
+
+         public PartialViewResult OnGetFilterArticles(string categorySelection)
+        {
+            if(categorySelection != null)
+            {
+                category_selection_int = Int32.Parse(categorySelection);
+            }
+            
+            if(category_selection_int != null)
+            {
+                articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+                articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
+           
+                fetchParentParameter = _context.CategoryParentParameter.Where(c => c.CategoryId == category_selection_int)
+                    .Select(d => d.ParentParameterId).First();
+
+                parameters_list = _context.Parameter.Where(d => d.ParentParameterId == fetchParentParameter).ToList();
+                articleParameters_list = _context.ArticleParameter.ToList();
+
+                 AdvancedSearch = new Data.AdvancedSearch
+                {
+                Articles = articles_list,
+                Parameters = parameters_list,
+                ArticleParameters = articleParameters_list
+                };
+            }
+            else
+            {
+                AdvancedSearch = new Data.AdvancedSearch();
+            }
+            
+            return new PartialViewResult
+                {
+                    ViewName = "_FiltersList",
+                    ViewData = new ViewDataDictionary<Data.AdvancedSearch>(ViewData, AdvancedSearch)
+                };
+            
+        }
     }
 }
