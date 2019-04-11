@@ -254,7 +254,13 @@
     form.onsubmit = function () {
         var content = document.querySelector("input[name='Article.ArticleContent']");
         content.value = JSON.stringify(quill.getContents());
-        alert(content.value);
+        var categorySel = document.querySelector("input[name='Article.CategoryId']");
+        var category = categorySel.options(categorySel.selectedIndex).text;
+        if (confirm("Selected Article Category: " + category +". Press OK is correct, press cancel to change. You will not be able to change it in future")) {
+        }
+        else {
+            return false;
+        }
     };
     @Html.Raw(articleContent);
 </script>
