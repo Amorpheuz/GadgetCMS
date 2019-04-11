@@ -1,5 +1,65 @@
-﻿@page
-@model GadgetCMS.Pages.Shared._FiltersListModel
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Data.AdvancedSearch
+@{
+    List<string> articleparameters_param = new List<string>();
+    int checkboxcountA = 0;
+    string idset = null;
+}
+
+
+@if (Model != null)
+{
+
+    foreach (var parametersfetch in Model.Parameters) //Parameter Table according to category - TV/Mobile (For Parameter Name)
+    {
+        <h5>@Html.DisplayFor(modelItem => parametersfetch.ParameterName)</h5>
+        foreach (var articlesfetch2 in Model.Articles) //Articles according to category - TV/Mobile (For Article Name)
+        {
+            foreach (var articleParametersfetch in Model.ArticleParameters) //ArticleParameter according to Parameters (For Parameter Value)
+            {
+
+                if (articlesfetch2.ArticleId == articleParametersfetch.ArticleId)
+                {
+                    if (articleParametersfetch.ParameterId == parametersfetch.ParameterId)
+                    {
+                        if (articleparameters_param != null)
+                        {
+                            if (!articleparameters_param.Contains(articleParametersfetch.ParameterVal))
+                            {
+                                idset = "CheckboxCheck" + checkboxcountA.ToString();
+                                <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
+                                @articleParametersfetch.ParameterVal
+                                articleparameters_param.Add(articleParametersfetch.ParameterVal);
+                                checkboxcountA++;
+                                <br />
+                            }
+
+
+                        }
+                        else
+                        {
+                            idset = "CheckboxCheck" + checkboxcountA.ToString();
+                            <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
+
+                            articleparameters_param.Add(articleParametersfetch.ParameterVal.ToString());
+                            @articleParametersfetch.ParameterVal
+                            checkboxcountA++;
+                            <br />
+                        }
+
+
+                    }
+
+                }
+
+
+            }
+        }
+    }
+
+    <input type="hidden" value="@checkboxcountA" id="checkboxcount" />
+
+}
+else
+{
+    <h5>Error fetching Filters! Please Try Again</h5>
+}
