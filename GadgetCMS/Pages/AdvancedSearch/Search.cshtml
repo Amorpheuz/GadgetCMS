@@ -36,8 +36,8 @@
             $(function () {
                 $('#submit').on('click', function () {
                     var categorySelect = document.getElementById('SelectCategory').value;
-                    $('#ArList').load('/AdvancedSearch/SearchAjax?handler=SelectCategory&&categorySelection='+categorySelect);
-                    $('#FilList').load('/AdvancedSearch/SearchAjax?handler=FilterArticles&&categorySelection='+categorySelect);
+                    $('#ArList').load('/AdvancedSearch/Search?handler=SelectCategory&&categorySelection='+categorySelect);
+                    $('#FilList').load('/AdvancedSearch/Search?handler=FilterArticles&&categorySelection='+categorySelect);
 
                     return false;
 
@@ -52,7 +52,7 @@
                                 userselectedvalues += document.getElementById('CheckboxCheck'+i).value + ";";
                             }
                         }
-                        $('#ArList').load('/AdvancedSearch/SearchAjax?handler=FilterArticlesFinal&&categorySelection=' +categorySelect + '&&values=' +
+                        $('#ArList').load('/AdvancedSearch/Search?handler=FilterArticlesFinal&&categorySelection=' +categorySelect + '&&values=' +
                             userselectedvalues);
                         return false;
                     });
