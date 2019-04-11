@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace GadgetCMS.Pages.AdvancedSearch
 {
@@ -13,7 +14,7 @@ namespace GadgetCMS.Pages.AdvancedSearch
         
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         public string category_selection;
-        public int category_selection_int;
+        public int? category_selection_int;
         public List<Data.Article> articles_list = new List<Data.Article>();
         
         public List<Data.Parameter> parameters_list = new List<Data.Parameter>();
@@ -52,5 +53,24 @@ namespace GadgetCMS.Pages.AdvancedSearch
             articles_list = null;
         }
 
+        public PartialViewResult OnGetSelectCategory(string categorySelection)
+        {
+            if(categorySelection != null)
+            {
+                category_selection_int = Int32.Parse(categorySelection);   
+                
+            }
+            if(category_selection_int != null)
+            {
+                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+            }
+
+
+            return new PartialViewResult
+            {
+                ViewName = "_ArticleList",
+                ViewData = new ViewDataDictionary<List<Data.Article>>(ViewData, articles_list)
+            };
+        }
     }
 }
