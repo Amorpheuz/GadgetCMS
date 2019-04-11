@@ -11,17 +11,38 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-@{ 
-    if(ViewBag.ViewType != null)
+@{
+    if (ViewBag.ViewType != null)
     {
         if (ViewBag.ViewType == "Company")
         {
-            await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId);
+            <div>
+                @await Component.InvokeAsync("CategoryNames", "0")
+            </div>
+            <div>
+                @await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId)
+            </div>
+            ViewBag.ViewType = null;
+        }
+        if (ViewBag.ViewType == "Category")
+        {
+            <div>
+                @await Component.InvokeAsync("CategoryNames", "0")
+            </div>
+            <div>
+                @await Component.InvokeAsync("CompanyNames", 0)
+            </div>
+            ViewBag.ViewType = null;
         }
     }
     else
     {
-        await Component.InvokeAsync("CompanyNames", 0);
+        <div>
+            @await Component.InvokeAsync("CategoryNames", "0")
+        </div>
+        <div>
+            @await Component.InvokeAsync("CompanyNames", 0)
+        </div>
     }
 }
 <table class="table-responsive table-bordered">

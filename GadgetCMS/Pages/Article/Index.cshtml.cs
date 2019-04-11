@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,10 +25,21 @@ namespace GadgetCMS.Pages.Article
             Article = await _context.Article
                 .Include(a => a.Category).ToListAsync();
         }
+
+        public async Task OnGetCategoryAsync(int categoryId)
+        {
+            Article = await _context.Article
+                .Include(a => a.Category)
+                .Where(a => a.CategoryId == categoryId).ToListAsync();
+
+            ViewData["ViewType"] = "Category";
+        }
+
         public async Task OnGetCompanyAsync(string parameterVal)
         {
             var temp = await _context.ArticleParameter
                 .Include(a => a.Article)
+                    .ThenInclude(a => a.Category)
                 .Where(a => a.ParameterVal == parameterVal && a.ParameterId == 5).ToListAsync();
 
             Article = temp.Select(a => a.Article).ToList();

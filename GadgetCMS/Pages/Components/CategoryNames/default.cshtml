@@ -1,0 +1,19 @@
+﻿@model GadgetCMS.ViewComponents.CategoryDetails
+
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                Categories
+            </h5>
+            <div class="card-group">
+                @for (var i = 0; i < Model.CategoryNames.Count; i++)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <small><a asp-page="../Article/Index" asp-route-categoryId="@Model.CategoryIds.ElementAt(i)" asp-page-handler="Category">@Model.CategoryNames.ElementAt(i)</a></small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
