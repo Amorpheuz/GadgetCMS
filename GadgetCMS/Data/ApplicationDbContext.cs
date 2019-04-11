@@ -90,6 +90,11 @@ namespace GadgetCMS.Data
             //AdvancedSearch
             modelBuilder.Entity<AdvancedSearch>()
                 .HasKey(c => c.AdvancedSearchId);
+
+            //---------------------------------------------------------------------
+            //FilteredArticle
+            modelBuilder.Entity<FilteredArticle>()
+                .HasKey(c => c.FilteredArticleId);
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }
