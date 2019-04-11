@@ -5,116 +5,132 @@
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-@{
-    if (ViewBag.ViewType != null)
-    {
-        if (ViewBag.ViewType == "Company")
-        {
-            <div>
-                @await Component.InvokeAsync("CategoryNames", "0")
-            </div>
-            <div>
-                @await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId)
-            </div>
-            ViewBag.ViewType = null;
+<div class="row">
+    <div class="col-md-5">
+        <h1>
+            Article <small class="text-muted">
+            @if (ViewBag.ViewType != null)
+            {
+                if (ViewBag.ViewType == "Category")
+                {
+                    <text>- @Model.Article[0].Category.CategoryName</text>
+                }
+                else if (ViewBag.ViewType == "Company")
+                {
+                    <text>- @ViewBag.Company</text>
+                }
+            }</small>
+        </h1>
+    </div>
+    <div class="col-md-7">
+        <ul class="nav nav-pills">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">Sort Articles</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Recent</a>
+                    <a class="dropdown-item" href="#">Popular</a>
+                    <a class="dropdown-item" href="#">Rating</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Compare</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-page="./Create">Create New</a>
+            </li>
+            @if (ViewBag.ViewType != null)
+            {
+                <li class="nav-item">
+                    <a class="nav-link bg-danger text-white" asp-page="./Index">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        Clear Filters
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+            @foreach (var item in Model.Article)
+            {
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @Html.DisplayFor(modelItem => item.ArticleAuthor)
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.DisplayFor(modelItem => item.ArticleCreated)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a asp-page="./Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 d-flex justify-content-center">
+                                @{
+                                    var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="img-fluid" style="height:100px"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+    </div>
+    <div class="col-md-4">
+        @{
+            if (ViewBag.ViewType != null)
+            {
+                if (ViewBag.ViewType == "Company")
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @await Component.InvokeAsync("CategoryNames", ViewBag.Company)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @await Component.InvokeAsync("CompanyNames", 0)
+                        </div>
+                    </div>
+                    ViewBag.ViewType = null;
+                }
+                if (ViewBag.ViewType == "Category")
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @await Component.InvokeAsync("CategoryNames", "0")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId)
+                        </div>
+                    </div>
+                    ViewBag.ViewType = null;
+                }
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        @await Component.InvokeAsync("CategoryNames", "0")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        @await Component.InvokeAsync("CompanyNames", 0)
+                    </div>
+                </div>
+            }
         }
-        if (ViewBag.ViewType == "Category")
-        {
-            <div>
-                @await Component.InvokeAsync("CategoryNames", "0")
-            </div>
-            <div>
-                @await Component.InvokeAsync("CompanyNames", 0)
-            </div>
-            ViewBag.ViewType = null;
-        }
-    }
-    else
-    {
-        <div>
-            @await Component.InvokeAsync("CategoryNames", "0")
-        </div>
-        <div>
-            @await Component.InvokeAsync("CompanyNames", 0)
-        </div>
-    }
-}
-<table class="table-responsive table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleLastUpdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleAuthor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleLastEditedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleVisible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].ArticleEditLock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Article[0].Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Article)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleLastUpdate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleCreated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleContent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleAuthor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleLastEditedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleVisible)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ArticleEditLock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ArticleId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ArticleId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    </div>
+</div>

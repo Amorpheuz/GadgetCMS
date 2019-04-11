@@ -23,13 +23,16 @@ namespace GadgetCMS.Pages.Article
         public async Task OnGetAsync()
         {
             Article = await _context.Article
-                .Include(a => a.Category).ToListAsync();
+                .Include(a => a.Category)
+                .Include(a => a.ArticlePictures)
+                .ToListAsync();
         }
 
         public async Task OnGetCategoryAsync(int categoryId)
         {
             Article = await _context.Article
                 .Include(a => a.Category)
+                .Include(a => a.ArticlePictures)
                 .Where(a => a.CategoryId == categoryId).ToListAsync();
 
             ViewData["ViewType"] = "Category";
@@ -40,9 +43,12 @@ namespace GadgetCMS.Pages.Article
             var temp = await _context.ArticleParameter
                 .Include(a => a.Article)
                     .ThenInclude(a => a.Category)
+                .Include(a => a.Article)
+                    .ThenInclude(a => a.ArticlePictures)
                 .Where(a => a.ParameterVal == parameterVal && a.ParameterId == 5).ToListAsync();
 
             Article = temp.Select(a => a.Article).ToList();
+            ViewData["Company"] = parameterVal;
             ViewData["ViewType"] = "Company";
         }
     }

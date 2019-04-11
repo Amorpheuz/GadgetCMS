@@ -8,10 +8,8 @@
             <div class="card-group">
                 @for (var i = 0; i < Model.CategoryNames.Count; i++)
                 {
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card"  style="padding: 5px;text-align: center">
                             <small><a asp-page="../Article/Index" asp-route-categoryId="@Model.CategoryIds.ElementAt(i)" asp-page-handler="Category">@Model.CategoryNames.ElementAt(i)</a></small>
-                        </div>
                     </div>
                 }
             </div>
