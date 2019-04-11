@@ -51,6 +51,8 @@ namespace GadgetCMS.Data
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
+        public bool? Featured {get;set;}
+
         public List<ArticleLog> ArticleLogs { get; set; }
         public List<Review> Reviews { get; set; }
         public List<ArticleParameter> ArticleParameters { get; set; }

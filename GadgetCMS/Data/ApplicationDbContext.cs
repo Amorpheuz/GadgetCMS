@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -43,6 +43,9 @@ namespace GadgetCMS.Data
                 .Property(c => c.ArticleRating)
                 .HasDefaultValue(0);
 
+            modelBuilder.Entity<Article>()
+                .Property(c => c.Featured)
+                .HasDefaultValue(false);
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleLastUpdate)
