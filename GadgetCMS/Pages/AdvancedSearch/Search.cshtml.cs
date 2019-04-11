@@ -110,5 +110,46 @@ namespace GadgetCMS.Pages.AdvancedSearch
                 };
             
         }
+
+        public PartialViewResult OnGetFilterArticlesFinal(string categorySelection,string values)
+        {
+            if(categorySelection != null && values != null)
+            {
+                category_selection_int = Int32.Parse(categorySelection);
+                if(category_selection_int != null)
+                {
+                     articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+                    articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
+
+                    //parametervalues = values.Split("!");
+                    //for (int i = 0; i < parametervalues.Length - 1; i++)
+                    //{
+                    //    articleid_temp = _context.ArticleParameter
+                    //        .Where(b => b.ArticleParameterValue == parametervalues[i]).ToList();
+                    //    articleids_filtered.Add(articleid_temp);
+                    //}
+
+                    FilteredArticle = new Data.FilteredArticle(_context)
+                    {
+                        ParameterValues = values,
+                        Articles = articles_list
+                
+                    };
+                }
+                
+           
+            }
+            else
+            {
+                FilteredArticle = new Data.FilteredArticle();
+                   
+            }
+
+            return new PartialViewResult
+            {
+                ViewName = "_ArticleListFilteredFinal",
+                ViewData = new ViewDataDictionary<Data.FilteredArticle>(ViewData, FilteredArticle)
+            };
+        }
     }
 }
