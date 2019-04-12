@@ -143,7 +143,23 @@
                     </div>
                 }
             </div>
-            <h4>Pictures</h4>
+            <div class="row mb-2">
+                <div class="col-md-3">
+                    <h4>Pictures</h4>
+                </div>
+                <div class="col-md-3">
+                    <div class="custom-file mr-2 mt-1">
+                        <input type="file" class="custom-file-input" id="upImages" name="upImages" multiple>
+                        <label class="custom-file-label" for="upImages">Choose Images</label>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-primary" onclick="addImage()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+                <div class="col-md-5">
+                    <p class="lead" id="selectedNumber"></p>
+                </div>
+            </div>
             <div class="card-columns">
                 @foreach (var item in Model.Article.ArticlePictures)
                 {
@@ -172,25 +188,55 @@
 
 <script>
     function delImage(PictureId) {
-            var options = {};
-            options.url = "/Article/Edit/" + PictureId + "?handler=DeletePic";
-            options.type = "POST";
-            options.contentType = "application/json";
-            options.dataType = "json";
-            options.beforeSend = function (xhr) {
-                    xhr.setRequestHeader("RequestVerificationToken", 
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-            };
+        var options = {};
+        options.url = "/Article/Edit/" + PictureId + "?handler=DeletePic";
+        options.type = "POST";
+        options.contentType = "application/json";
+        options.dataType = "json";
+        options.beforeSend = function (xhr) {
+            xhr.setRequestHeader("RequestVerificationToken",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        };
         options.success = function (data) {
-                if (data != "fail") {
-                    $(""+data).remove();
-                }
-            };
-            options.error = function () {
-                alert("Error while making Ajax call!");
-            };
-            $.ajax(options);
+            if (data != "fail") {
+                $("" + data).remove();
+            }
+        };
+        options.error = function () {
+            alert("Error while making Ajax call!");
+        };
+        $.ajax(options);
+    }
+
+    function addImage() {
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upImages").files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upImages").files[i];
+            formData.append("UploadImages", file);
         }
+        var options = {};
+        options.url = "/Article/Edit?handler=AddPic";
+        options.type = "POST";
+        options.data = formData;
+        options.processData = false;
+        options.contentType = false;
+        options.beforeSend = function (xhr) {
+            xhr.setRequestHeader("RequestVerificationToken",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        };
+        options.success = function (data) {
+            //Success
+            console.log(data);
+        };
+        options.complete = function () {
+            //Complete
+        };
+        options.error = function () {
+            alert("Error while making Ajax call!");
+        };
+        $.ajax(options);
+    }
 </script>
 <script src="~/lib/quill/quill.min.js"></script>
 <script>

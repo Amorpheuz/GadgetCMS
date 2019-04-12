@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace GadgetCMS.Pages.Article
 {
@@ -26,6 +28,8 @@ namespace GadgetCMS.Pages.Article
         public List<Data.ArticleParameter> ArticleParameters { get; set; }
 
         public List<IGrouping<int, Data.ArticleParameter>> ListParameters { get; set; }
+
+        private static int ArticleId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -53,6 +57,8 @@ namespace GadgetCMS.Pages.Article
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Set<Data.Category>(), "CategoryId", "CategoryName");
+
+            ArticleId = Article.ArticleId;
             return Page();
         }
 
@@ -99,6 +105,34 @@ namespace GadgetCMS.Pages.Article
                 return new JsonResult(status);
             }
             return new JsonResult(status);
+        }
+        
+        public IActionResult OnPostAddPic(List<IFormFile> UploadImages)
+        {
+            var artId = ArticleId;
+            foreach (var upFile in UploadImages)
+            {
+                if (upFile != null || upFile.ContentType.ToLower().StartsWith("image/"))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    upFile.OpenReadStream().CopyTo(ms);
+
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    
+
+                    Data.ArticlePicture upArticlePicture = new Data.ArticlePicture()
+                    {
+                        ArticleId = artId,
+                        ArticlePictureCaption = "-",
+                        ArticlePictureBytes = ms.ToArray()
+                    };
+                    _context.ArticlePicture.Add(upArticlePicture);
+                }
+            }
+            _context.SaveChanges();
+
+            List<Data.ArticlePicture> articlePictures = _context.ArticlePicture.Where(a => a.ArticleId == artId).ToList();
+            return new JsonResult(articlePictures);
         }
 
         private bool ArticleExists(int id)
