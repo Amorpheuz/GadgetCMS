@@ -1,0 +1,22 @@
+﻿@model List<Data.Article>
+@{
+    int i = 0;
+}
+@if (Model.FirstOrDefault() == null)
+{
+    <h6>No Recent Articles ATM.</h6>
+}
+else
+{
+    @foreach (var articles in Model)
+    {
+        if (i <= 5)
+        {
+            <h6>@articles.ArticleName</h6>
+        }
+
+        i++;
+    }
+}
+
+

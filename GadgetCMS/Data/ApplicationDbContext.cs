@@ -43,6 +43,10 @@ namespace GadgetCMS.Data
                 .Property(c => c.ArticleRating)
                 .HasDefaultValue(0);
 
+            modelBuilder.Entity<Article>()
+                .Property(c => c.Featured)
+                .HasDefaultValue(false);
+
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleLastUpdate)
@@ -85,6 +89,16 @@ namespace GadgetCMS.Data
             //ArticleParameter
             modelBuilder.Entity<ArticleParameter>()
                 .HasKey(c => new { c.ArticleId, c.ParameterId });
+
+            //---------------------------------------------------------------------
+            //AdvancedSearch
+            //modelBuilder.Entity<AdvancedSearch>()
+            //    .HasKey(c => c.AdvancedSearchId);
+
+            //---------------------------------------------------------------------
+            //FilteredArticle
+            //modelBuilder.Entity<FilteredArticle>()
+            //    .HasKey(c => c.FilteredArticleId);
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }
