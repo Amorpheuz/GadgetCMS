@@ -17,7 +17,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            articlesList = _context.Article.ToList();
+            articlesList = _context.Article.OrderByDescending(c => c.ArticleCreated).ToList();
             return View("Default",articlesList);
         }
     }

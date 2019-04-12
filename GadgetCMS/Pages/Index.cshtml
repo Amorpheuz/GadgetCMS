@@ -3,8 +3,48 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<head>
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>*@
+</head>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Featured Articles</h2>
+        <hr />
+        @await Component.InvokeAsync("ArticleFeatured")
+    </div>
+</div>
+<br />
+<br />
+<div class="row container-fluid">
+    <div class="col-md-8">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#recent" role="tab" aria-controls="pills-home" aria-selected="true">Recent</a></li>
+            <li class="nav-item"><a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#popular" role="tab" aria-controls="pills-profile" aria-selected="false">Popular</a></li>
+            <li class="nav-item"><a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#toprated" role="tab" aria-controls="pills-contact" aria-selected="false">Top-Rated</a></li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="recent" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h3>Recent</h3>
+                <hr />
+                @await Component.InvokeAsync("ArticleRecent")
+            </div>
+            <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h3>Popular</h3>
+                <hr />
+                @await Component.InvokeAsync("ArticlePopular")
+            </div>
+            <div class="tab-pane fade" id="toprated" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <h3>Top-Rated</h3>
+                <hr />
+                @await Component.InvokeAsync("ArticleTopRated")
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+
+    </div>
 </div>
