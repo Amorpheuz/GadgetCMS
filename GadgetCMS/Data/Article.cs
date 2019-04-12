@@ -14,8 +14,12 @@ namespace GadgetCMS.Data
         public int ArticleId { get; set; }
 
         [Required]
-        [DisplayName("Article Title")]
+        [DisplayName("Device Name")]
         public  string ArticleName { get; set; }
+
+        [Required]
+        [DisplayName("Catchphrase")]
+        public string ArticleSubtitle { get; set; }
 
         [DisplayName("Last Updated On")]
         public DateTime ArticleLastUpdate { get; set; }
