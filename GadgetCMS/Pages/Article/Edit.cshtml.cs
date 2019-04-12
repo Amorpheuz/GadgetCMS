@@ -87,6 +87,20 @@ namespace GadgetCMS.Pages.Article
             return RedirectToPage("./Index");
         }
 
+        public IActionResult OnPostDeletePic(int PictureId)
+        {
+            Data.ArticlePicture articlePicture = _context.ArticlePicture.Find(PictureId);
+            var status = "fail";
+            if (articlePicture != null)
+            {
+                _context.ArticlePicture.Remove(articlePicture);
+                _context.SaveChanges();
+                status = "#image" + PictureId;
+                return new JsonResult(status);
+            }
+            return new JsonResult(status);
+        }
+
         private bool ArticleExists(int id)
         {
             return _context.Article.Any(e => e.ArticleId == id);
