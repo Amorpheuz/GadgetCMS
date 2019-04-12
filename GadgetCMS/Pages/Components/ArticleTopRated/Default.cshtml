@@ -1,0 +1,35 @@
+﻿@model GadgetCMS.Data.ApplicationDbContext
+@{
+    IQueryable<int> articleIds = Model.Review.Select(g => g.ArticleId).Distinct();
+    List<double> ratingsAverage = new List<double>();
+    int i = 0;
+}
+@if (articleIds.Count() == 0)
+{
+    <h6>No Top Rated Articles ATM.</h6>
+}
+else
+{
+    @foreach (var articleIdsFE in articleIds)
+    {
+        ratingsAverage.Add(Model.Review.Where(c => c.ArticleId == articleIdsFE).Average(r => r.ReviewRating));
+
+    }
+
+    @foreach (var articleIdsFE2 in articleIds)
+    {
+        if (ratingsAverage != null)
+        {
+            if (ratingsAverage[i] >= 4.5)
+            {
+                <h6>@articleIdsFE2 - @ratingsAverage[i]</h6>
+            }
+            i++;
+        }
+        else
+        {
+            <h6>Trouble Fetching Ratings, Please Try Again.</h6>
+        }
+    }
+}
+
