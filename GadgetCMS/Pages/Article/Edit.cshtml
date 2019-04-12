@@ -1,71 +1,175 @@
 ﻿@page
+@using GadgetCMS.Areas.Identity.Data
 @model GadgetCMS.Pages.Article.EditModel
+@inject UserManager<GadgetCMSUser> UserManager
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var articleContent = "quill.setContents(" + Model.Article.ArticleContent + ")";
+    var user = await UserManager.GetUserAsync(User);
+    var i = 0;
 }
 
 <h1>Edit</h1>
 
-<h4>Article</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data" id="createForm">
             <input type="hidden" asp-for="Article.ArticleId" />
-            <div class="form-group">
-                <label asp-for="Article.ArticleName" class="control-label"></label>
-                <input asp-for="Article.ArticleName" class="form-control" />
-                <span asp-validation-for="Article.ArticleName" class="text-danger"></span>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col-sm-2">
+                            <h4>Article - Edit</h4>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                        <div class="form-group col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="Article.ArticleVisible">
+                                <label class="custom-control-label" asp-for="Article.ArticleVisible">Set Article Visible</label>
+                            </div>
+                            <span asp-validation-for="Article.ArticleVisible" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleName" class="control-label"></label>
+                            <input asp-for="Article.ArticleName" class="form-control" />
+                            <span asp-validation-for="Article.ArticleName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col">
+                            <label asp-for="Article.CategoryId" class="control-label"></label>
+                            <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect" readonly></select>
+                            <small class="form-text text-muted">Select a Category to Load paramerters for that Category.</small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleSubtitle" class="control-label"></label>
+                            <input asp-for="Article.ArticleSubtitle" class="form-control" />
+                            <span asp-validation-for="Article.ArticleSubtitle" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleContent" class="control-label"></label>
+                            <div id="quill-container">
+                                <div id="toolbar-container">
+                                    <span class="ql-formats">
+                                        <button class="ql-header" value="1"></button>
+                                        <button class="ql-header" value="2"></button>
+                                        <button class="ql-header" value="3"></button>
+                                        <button class="ql-blockquote"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-direction" value="rtl"></button>
+                                        <select class="ql-align"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-font"></select>
+                                        <select class="ql-size"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-color"></select>
+                                        <select class="ql-background"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-script" value="sub"></button>
+                                        <button class="ql-script" value="super"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-list" value="ordered"></button>
+                                        <button class="ql-list" value="bullet"></button>
+                                        <button class="ql-indent" value="-1"></button>
+                                        <button class="ql-indent" value="+1"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-link"></button>
+                                        <button class="ql-image"></button>
+                                        <button class="ql-video"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-clean"></button>
+                                    </span>
+                                </div>
+                                <div id="editor-container"></div>
+                            </div>
+                            <input asp-for="Article.ArticleContent" class="form-control" value="0" hidden />
+                            <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <input asp-for="Article.ArticleAuthor" class="form-control" value="@Model.Article.ArticleAuthor" hidden />
+                    <input type="text" asp-for="Article.ArticleCreated" class="form-control" value="@Model.Article.ArticleCreated.ToString()" />
+                    <input asp-for="Article.ArticleEditLock" class="form-control" value="@Model.Article.ArticleEditLock" hidden />
+                    <input asp-for="Article.Featured" class="form-control" value="@Model.Article.Featured" hidden />    
+                    <input asp-for="Article.ArticleRating" class="form-control" value="@Model.Article.ArticleRating" hidden />
+                    <input asp-for="Article.ArticleLastEditedBy" class="form-control" value="@user.Email" hidden />
+                </div>
+            </div>
+            <h4>Parameters</h4>
+            <div id="paramList">
+                @foreach (var item in Model.ListParameters)
+                {
+                    <h5>@item.First().Parameter.ParentParameter.ParentParameterName</h5>
+                    <div class="card-columns">
+                        @foreach (var miniItem in item)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class='form-group'>
+                                        <label class='control-label'>@miniItem.Parameter.ParameterName</label>
+                                        <div class='input-group'>
+                                            <input asp-for="@Model.ArticleParameters[i].ParameterVal" class='form-control' />
+                                            <div class='input-group-append'>
+                                                <span class='input-group-text'>@miniItem.Parameter.ParameterUnit</span>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted">@miniItem.Parameter.ParameterDescription</small>
+                                    </div>
+                                    <input asp-for="@Model.ArticleParameters[i].ParameterId" value="@miniItem.ParameterId" hidden />
+                                    <input asp-for="@Model.ArticleParameters[i].ArticleId" value="@miniItem.ArticleId" hidden />
+                                </div>
+                            </div>
+                            i++;
+                        }
+                    </div>
+                }
             </div>
             <div class="form-group">
-                <label asp-for="Article.ArticleCreated" class="control-label"></label>
-                <input asp-for="Article.ArticleCreated" class="form-control" />
-                <span asp-validation-for="Article.ArticleCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Article.ArticleContent" class="control-label"></label>
-                <input asp-for="Article.ArticleContent" class="form-control" />
-                <span asp-validation-for="Article.ArticleContent" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Article.ArticleAuthor" class="control-label"></label>
-                <input asp-for="Article.ArticleAuthor" class="form-control" />
-                <span asp-validation-for="Article.ArticleAuthor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Article.ArticleLastEditedBy" class="control-label"></label>
-                <input asp-for="Article.ArticleLastEditedBy" class="form-control" />
-                <span asp-validation-for="Article.ArticleLastEditedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Article.ArticleVisible" /> @Html.DisplayNameFor(model => model.Article.ArticleVisible)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Article.ArticleEditLock" /> @Html.DisplayNameFor(model => model.Article.ArticleEditLock)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Article.CategoryId" class="control-label"></label>
-                <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Make Changes" class="btn btn-primary" id="submiter" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: '#toolbar-container'
+        },
+        placeholder: 'Enter Article Content',
+        theme: 'snow'
+    });
+
+    var form = document.querySelector('#createForm');
+    form.onsubmit = function () {
+        var content = document.querySelector("input[name='Article.ArticleContent']");
+        content.value = JSON.stringify(quill.getContents());
+    };
+    @Html.Raw(articleContent);
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
