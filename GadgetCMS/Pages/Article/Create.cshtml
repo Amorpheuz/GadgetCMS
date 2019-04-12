@@ -24,8 +24,19 @@
         <form method="post" enctype="multipart/form-data" id="createForm">
             <div class="card mb-2">
                 <div class="card-body">
-                    <h4>Article</h4>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="col-sm-2">
+                            <h4>Article</h4>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                        <div class="form-group col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="Article.ArticleVisible" checked>
+                                <label class="custom-control-label" asp-for="Article.ArticleVisible">Set Article Visible</label>
+                            </div>
+                            <span asp-validation-for="Article.ArticleVisible" class="text-danger"></span>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col">
                             <label asp-for="Article.ArticleName" class="control-label"></label>
@@ -36,6 +47,13 @@
                             <label asp-for="Article.CategoryId" class="control-label"></label>
                             <select asp-for="Article.CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="catSelect"></select>
                             <small class="form-text text-muted">Select a Category to Load paramerters for that Category.</small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label asp-for="Article.ArticleSubtitle" class="control-label"></label>
+                            <input asp-for="Article.ArticleSubtitle" class="form-control" />
+                            <span asp-validation-for="Article.ArticleSubtitle" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-row">

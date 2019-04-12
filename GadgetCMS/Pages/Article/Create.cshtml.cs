@@ -81,11 +81,11 @@ namespace GadgetCMS.Pages.Article
                     return Page();
                 }
             }
-
             _context.Article.Add(Article);
             await _context.SaveChangesAsync();
 
-            var articleId = _context.Article.Select(a => a.ArticleId).Last();
+
+            var articleId = Article.ArticleId;
             var counter = 0;
             foreach (var upFile in upFiles)
             {
@@ -103,9 +103,9 @@ namespace GadgetCMS.Pages.Article
                         ArticlePictureBytes = ms.ToArray()
                     };
                     _context.ArticlePicture.Add(upArticlePicture);
-                    await _context.SaveChangesAsync();
                 }
             }
+            await _context.SaveChangesAsync();
 
             for (int i = 0; i < vals.Count; i++)
             {
@@ -117,8 +117,8 @@ namespace GadgetCMS.Pages.Article
                 };
 
                 _context.ArticleParameter.Add(articleParameter);
-                await _context.SaveChangesAsync();
             }
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

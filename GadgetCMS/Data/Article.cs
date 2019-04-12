@@ -40,9 +40,9 @@ namespace GadgetCMS.Data
         [DisplayName("Last Edited By")]
         public  string ArticleLastEditedBy { get; set; }
 
-        public bool? ArticleVisible { get; set; }
+        public bool ArticleVisible { get; set; }
 
-        public bool? ArticleEditLock { get; set; }
+        public bool ArticleEditLock { get; set; }
 
         [Range(0,5)]
         [DisplayName("Rating")]
@@ -55,7 +55,7 @@ namespace GadgetCMS.Data
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public bool? Featured {get;set;}
+        public bool Featured {get;set;}
 
         public List<ArticleLog> ArticleLogs { get; set; }
         public List<Review> Reviews { get; set; }
