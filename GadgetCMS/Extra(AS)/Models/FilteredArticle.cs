@@ -7,7 +7,7 @@ namespace GadgetCMS.Data
 {
     public class FilteredArticle
     {
-        public int FilteredArticleId {get;set;}
+        //public int FilteredArticleId {get;set;}
         public string ParameterValues {get;set;}
         public List<Data.Article> Articles {get;set;}
         private GadgetCMS.Data.ApplicationDbContext ApplicationDbContext{get;}

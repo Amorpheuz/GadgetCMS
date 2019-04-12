@@ -7,7 +7,7 @@ namespace GadgetCMS.Data
 {
     public class AdvancedSearch
     {
-        public int AdvancedSearchId {get;set;}
+        //public int AdvancedSearchId {get;set;}
 
         public List<Data.Article> Articles{get;set;}
         public List<Data.Parameter> Parameters {get;set;}

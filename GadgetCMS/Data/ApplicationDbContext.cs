@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -46,6 +46,7 @@ namespace GadgetCMS.Data
             modelBuilder.Entity<Article>()
                 .Property(c => c.Featured)
                 .HasDefaultValue(false);
+
             //Need to set Trigger for LastUpdate on add or update in Database
             modelBuilder.Entity<Article>()
                 .Property(c => c.ArticleLastUpdate)
@@ -91,13 +92,13 @@ namespace GadgetCMS.Data
 
             //---------------------------------------------------------------------
             //AdvancedSearch
-            modelBuilder.Entity<AdvancedSearch>()
-                .HasKey(c => c.AdvancedSearchId);
+            //modelBuilder.Entity<AdvancedSearch>()
+            //    .HasKey(c => c.AdvancedSearchId);
 
             //---------------------------------------------------------------------
             //FilteredArticle
-            modelBuilder.Entity<FilteredArticle>()
-                .HasKey(c => c.FilteredArticleId);
+            //modelBuilder.Entity<FilteredArticle>()
+            //    .HasKey(c => c.FilteredArticleId);
         }
 
         public DbSet<GadgetCMS.Data.Article> Article { get; set; }
