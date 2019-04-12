@@ -1,0 +1,18 @@
+﻿@model List<Data.Article>
+@{
+    Data.Article articles = new Data.Article();
+
+}
+
+@if (Model.FirstOrDefault() == null)
+{
+    <h6>No Popular Articles ATM.</h6>
+}
+else
+{
+    @foreach (var reviewsFE in Model)
+    {
+        <h6>@reviewsFE.ArticleName</h6>
+
+    }
+}
