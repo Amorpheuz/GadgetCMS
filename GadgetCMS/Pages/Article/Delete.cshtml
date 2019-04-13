@@ -4,20 +4,28 @@
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var articleContent = "quill.setContents("+Model.Article.ArticleContent+")";
 }
 
 <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
+<hr />
 <div>
-    <h4>Article</h4>
-    <hr />
+    <h4>Rating</h4>
+    @await Component.InvokeAsync("RatingDisplay", new { articleId = Model.Article.ArticleId, userId = "" })
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.ArticleName)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Article.ArticleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Article.ArticleSubtitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Article.ArticleSubtitle)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.ArticleLastUpdate)
@@ -35,7 +43,8 @@
             @Html.DisplayNameFor(model => model.Article.ArticleContent)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleContent)
+            <div id="editor-container">
+            </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.ArticleAuthor)
@@ -56,22 +65,37 @@
             @Html.DisplayFor(model => model.Article.ArticleVisible)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleEditLock)
+            @Html.DisplayNameFor(model => model.Article.Featured)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleEditLock)
+            @Html.DisplayFor(model => model.Article.Featured)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Article.Category)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.Category.CategoryDescription)
+            @Html.DisplayFor(model => model.Article.Category.CategoryName)
         </dd>
     </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Article.ArticleId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+    @await Component.InvokeAsync("ArticlePicture", Model.Article.ArticleId)
+    @await Component.InvokeAsync("ArticleParameter", Model.Article.ArticleId)
+    @await Component.InvokeAsync("Review", Model.Article.ArticleId)
+<hr />
+<form method="post">
+    <input type="hidden" asp-for="Article.ArticleId" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-page="./Index">Back to List</a>
+</form>
 </div>
+
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+      placeholder: 'Loading Text....'
+    });
+    $(document).ready(function () {
+        quill.enable(false);
+        $(".ql-editor").css("padding","0");
+    });
+    @Html.Raw(articleContent);
+</script>

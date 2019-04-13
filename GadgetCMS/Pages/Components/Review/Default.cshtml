@@ -10,8 +10,8 @@
 }
 else
 {
-    <table class="table-responsive table-bordered">
-        <thead>
+    <table class="table-responsive table">
+        <thead class="thead-light">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewRating)
@@ -28,13 +28,13 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().ReviewVisible)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().Article)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().GadgetCmsUser)
                 </th>
-                <th></th>
+                @*<th></th>*@
             </tr>
         </thead>
         <tbody>
@@ -56,13 +56,13 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.ReviewVisible)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Article.ArticleName)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.GadgetCmsUser.Email)
                     </td>
-                    <td>
+                    @*<td>
                         @if (item.UserId == UserManager.GetUserId(User))
                         {
                             <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a>
@@ -74,7 +74,7 @@ else
                             <text> | </text>
                             <a asp-page="./Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
                         }
-                    </td>
+                    </td>*@
                 </tr>
             }
         </tbody>
