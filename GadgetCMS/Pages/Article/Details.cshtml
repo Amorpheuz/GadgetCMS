@@ -4,76 +4,112 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var articleContent = "quill.setContents(" + Model.Article.ArticleContent + ")";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Article</h4>
-    <hr />
-    <h4>Rating</h4>
-    @await Component.InvokeAsync("RatingDisplay",new { articleId = Model.Article.ArticleId, userId = ""})
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleLastUpdate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleLastUpdate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleCreated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleCreated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleContent)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleContent)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleAuthor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleAuthor)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleLastEditedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleLastEditedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleVisible)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleVisible)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.ArticleEditLock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.ArticleEditLock)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Article.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Article.Category.CategoryDescription)
-        </dd>
-    </dl>
-    @await Component.InvokeAsync("ArticlePicture",Model.Article.ArticleId)
-    @await Component.InvokeAsync("ArticleParameter", Model.Article.ArticleId)
-    @await Component.InvokeAsync("Review",Model.Article.ArticleId)
-</div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Article.ArticleId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1>@Model.Article.ArticleName</h1>
+                    </div>
+                    <div class="col-md-4 pt-3 d-flex justify-content-end" id="ratingDisplay">
+                        @await Component.InvokeAsync("RatingDisplay", new { articleId = Model.Article.ArticleId, userId = "" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>
+                            <small class="text-muted">
+                                @Model.Article.ArticleSubtitle
+                            </small>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        @if (@Model.Article.Featured == true)
+                        {
+                            <h2 class="mt-2"><span class="badge badge-primary">Featured</span></h2>
+                        }
+                    </div>
+                    <div class="col-md-5">
+                        <p class="lead"><i class="fa fa-user" aria-hidden="true"></i> @Model.Article.ArticleAuthor</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="lead"><i class="fa fa-calendar" aria-hidden="true"></i> @Model.Article.ArticleCreated.ToShortDateString()</p>
+                    </div>
+                </div>
+                <ul class="nav nav-tabs card-header-tabs" id="articleTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
+                           aria-selected="true">Review</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="spec-tab" data-toggle="tab" href="#spec" role="tab" aria-controls="spec"
+                           aria-selected="false">Specifications</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="articleTabContent">
+                    <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+                        <div class="row">
+                            <div class="col-md-12 pb-5">
+                                @await Component.InvokeAsync("ArticlePicture", Model.Article.ArticleId)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="editor-container">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="spec" role="tabpanel" aria-labelledby="spec-tab">
+                        @await Component.InvokeAsync("ArticleParameter", Model.Article.ArticleId)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="card mt-4">
+        <div class="card-body">
+            @await Component.InvokeAsync("Review", Model.Article.ArticleId)
+        </div>
+    </div>
+</div>
+<script>
+    var stringToColour = function (str) {
+            var hash = 0;
+            for (var i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            var colour = '#';
+            for (var i = 0; i < 3; i++) {
+                var value = (hash >> (i * 8)) & 0xFF;
+                colour += ('00' + value.toString(16)).substr(-2);
+            }
+            return colour;
+        }
+
+        $('#bger').css('background-color', stringToColour("@Model.Article.ArticleName"));
+</script>
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+        placeholder: 'Loading Text....'
+    });
+    $(document).ready(function () {
+        quill.enable(false);
+        $(".ql-editor").css("padding", "0");
+    });
+    @Html.Raw(articleContent);
+</script>

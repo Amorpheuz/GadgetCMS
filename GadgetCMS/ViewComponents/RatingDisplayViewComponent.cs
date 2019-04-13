@@ -77,11 +77,13 @@ namespace GadgetCMS.ViewComponents
                         Text = myValue
                     }).ToList();
 
+                var tempId = userId.Substring(0,8);
+
                 RingControlModel ratingControlModel = new RingControlModel
                 {
                     SelectedListItems = ratings,
                     RatingControlValue = ratingControlInitialValue,
-                    RatingControlIdValue = "rating" + articleId
+                    RatingControlIdValue = "rating" + articleId + tempId
                 };
 
                 return View(ratingControlModel);
