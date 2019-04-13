@@ -153,17 +153,17 @@
                         <label class="custom-file-label" for="upImages">Choose Images</label>
                     </div>
                 </div>
-                <div class="col-md-6 mr-2 mt-1">
-                    <input type="text" class="form-control" id="upCaption" name="upCaption" placeholder="Enter Captions seperated by ;"/>
+                <div class="col-md-6">
+                    <input type="text" class="form-control mt-1" id="upCaption" name="upCaption" placeholder="Enter Captions seperated by ;"/>
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-primary" onclick="addImage()"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 </div>
                 <div class="col-md-2">
-                    <p class="lead" id="selectedNumber"></p>
+                    <p class="text-danger" id="errorImage"></p>
                 </div>
             </div>
-            <div class="card-columns">
+            <div class="card-columns" id="picCollection">
                 @foreach (var item in Model.Article.ArticlePictures)
                 {
                     var ider = "image" + item.ArticlePictureId;
@@ -231,8 +231,31 @@
                 $('input:hidden[name="__RequestVerificationToken"]').val());
         };
         options.success = function (data) {
-            //Success
-            console.log(data);
+            if (jQuery.type(data) === "string") {                                    
+                $('#errorImage').empty();
+                $('#errorImage').append(data);
+                if (data == "No Images Selected") {
+                    $('#upImages').addClass('is-invalid');
+                }
+                else {
+                    $('#errorImage').addClass("is-invalid");
+                }
+            }
+            else {
+                $('#picCollection').empty();
+                data.forEach(function (element) {
+                    var imageId = "image" + element.pictureId;
+                    var imageSrc = "data:image/gif;base64," + element.base64Str;
+                    $('#picCollection').append(
+                        "<div class='card p-2' id='" + imageId + "'>" +
+                            "<img class='img-thumbnail img-fluid' src='" + imageSrc + "' /><br />" +
+                            "<div class='d-flex justify-content-center mt-1'>" +
+                                "<button type='button' class='btn btn-danger' onclick='delImage(" + element.pictureId + ")'>Delete</button>" +
+                            "</div>" +
+                        "</div>"
+                    );
+                });
+            }
         };
         options.complete = function () {
             //Complete

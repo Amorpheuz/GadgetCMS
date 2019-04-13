@@ -115,6 +115,11 @@ namespace GadgetCMS.Pages.Article
                 var error = "Please enter captions";
                 return new JsonResult(error);
             }
+            if(UploadImages.Count == 0)
+            {
+                var error = "No Images Selected";
+                return new JsonResult(error);
+            }
             var captionArray = UploadCaptions.Split(";");
             if(UploadImages.Count != captionArray.Count())
             {
@@ -153,7 +158,18 @@ namespace GadgetCMS.Pages.Article
             _context.SaveChanges();
 
             List<Data.ArticlePicture> articlePictures = _context.ArticlePicture.Where(a => a.ArticleId == artId).ToList();
-            return new JsonResult(articlePictures);
+
+            var returnImages = new List<ReturnImage>();
+            foreach (var item in articlePictures)
+            {
+                var temp = new ReturnImage
+                {
+                    Base64Str = Convert.ToBase64String(item.ArticlePictureBytes),
+                    PictureId = item.ArticlePictureId
+                };
+                returnImages.Add(temp);
+            }
+            return new JsonResult(returnImages);
         }
 
         private bool ArticleExists(int id)
@@ -168,5 +184,12 @@ namespace GadgetCMS.Pages.Article
                 ViewData["ArticleContent"] = Article.ArticleContent;
             }
         }
+    }
+
+    public class ReturnImage
+    {
+        public string Base64Str { get; set; }
+
+        public int PictureId { get; set; }
     }
 }
