@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <input asp-for="Article.ArticleAuthor" class="form-control" value="@Model.Article.ArticleAuthor" hidden />
-                    <input type="text" asp-for="Article.ArticleCreated" class="form-control" value="@Model.Article.ArticleCreated.ToString()" />
+                    <input type="text" asp-for="Article.ArticleCreated" class="form-control" value="@Model.Article.ArticleCreated.ToString()" hidden />
                     <input asp-for="Article.ArticleEditLock" class="form-control" value="@Model.Article.ArticleEditLock" hidden />
                     <input asp-for="Article.Featured" class="form-control" value="@Model.Article.Featured" hidden />
                     <input asp-for="Article.ArticleRating" class="form-control" value="@Model.Article.ArticleRating" hidden />
@@ -143,20 +143,23 @@
                     </div>
                 }
             </div>
+            <div class="col-md-3">
+                <h4>Pictures</h4>
+            </div>
             <div class="row mb-2">
-                <div class="col-md-3">
-                    <h4>Pictures</h4>
-                </div>
                 <div class="col-md-3">
                     <div class="custom-file mr-2 mt-1">
                         <input type="file" class="custom-file-input" id="upImages" name="upImages" multiple>
                         <label class="custom-file-label" for="upImages">Choose Images</label>
                     </div>
                 </div>
+                <div class="col-md-6 mr-2 mt-1">
+                    <input type="text" class="form-control" id="upCaption" name="upCaption" placeholder="Enter Captions seperated by ;"/>
+                </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-primary" onclick="addImage()"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-2">
                     <p class="lead" id="selectedNumber"></p>
                 </div>
             </div>
@@ -165,14 +168,14 @@
                 {
                     var ider = "image" + item.ArticlePictureId;
                     <div class="card p-2" id="@ider">
-                            @{
-                                var base64 = Convert.ToBase64String(item.ArticlePictureBytes);
-                                var imgSrc = $"data:image/gif;base64,{base64}";
-                            }
-                            <img class="img-thumbnail img-fluid" src="@imgSrc" /><br />
-                            <div class="d-flex justify-content-center mt-1">
-                                <button type="button" class="btn btn-danger" onclick="delImage(@item.ArticlePictureId)">Delete</button>
-                            </div>
+                        @{
+                            var base64 = Convert.ToBase64String(item.ArticlePictureBytes);
+                            var imgSrc = $"data:image/gif;base64,{base64}";
+                        }
+                        <img class="img-thumbnail img-fluid" src="@imgSrc" /><br />
+                        <div class="d-flex justify-content-center mt-1">
+                            <button type="button" class="btn btn-danger" onclick="delImage(@item.ArticlePictureId)">Delete</button>
+                        </div>
                     </div>
                 }
             </div>
@@ -215,6 +218,8 @@
             var file = document.getElementById("upImages").files[i];
             formData.append("UploadImages", file);
         }
+        var captions = $('#upCaption').val();
+        formData.append("UploadCaptions", captions);
         var options = {};
         options.url = "/Article/Edit?handler=AddPic";
         options.type = "POST";

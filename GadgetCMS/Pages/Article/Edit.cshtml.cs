@@ -107,9 +107,29 @@ namespace GadgetCMS.Pages.Article
             return new JsonResult(status);
         }
         
-        public IActionResult OnPostAddPic(List<IFormFile> UploadImages)
+        public IActionResult OnPostAddPic(List<IFormFile> UploadImages, string UploadCaptions)
         {
             var artId = ArticleId;
+            if(UploadCaptions == null)
+            {
+                var error = "Please enter captions";
+                return new JsonResult(error);
+            }
+            var captionArray = UploadCaptions.Split(";");
+            if(UploadImages.Count != captionArray.Count())
+            {
+                var error = "Missing Captions";
+                return new JsonResult(error);
+            }
+            foreach (var item in captionArray)
+            {
+                if (item == null || item == "" || item == " ")
+                {
+                    var error = "Empty Caption Found";
+                    return new JsonResult(error);
+                }
+            }
+            var i = 0;
             foreach (var upFile in UploadImages)
             {
                 if (upFile != null || upFile.ContentType.ToLower().StartsWith("image/"))
@@ -123,11 +143,12 @@ namespace GadgetCMS.Pages.Article
                     Data.ArticlePicture upArticlePicture = new Data.ArticlePicture()
                     {
                         ArticleId = artId,
-                        ArticlePictureCaption = "-",
+                        ArticlePictureCaption = captionArray[i],
                         ArticlePictureBytes = ms.ToArray()
                     };
                     _context.ArticlePicture.Add(upArticlePicture);
                 }
+                i++;
             }
             _context.SaveChanges();
 
