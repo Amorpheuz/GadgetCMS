@@ -2,6 +2,11 @@
 @{
     int i = 0;
 }
+<style>
+    .font-smaller{
+        font-size:smaller;
+    }
+</style>
 @if (Model.FirstOrDefault() == null)
 {
     <h6>No Recent Articles ATM.</h6>
@@ -12,11 +17,47 @@ else
     {
         if (i <= 5)
         {
-            <h6>@articles.ArticleName</h6>
+            <div class="row">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="font-smaller">@articles.ArticleAuthor</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="font-smaller">@articles.ArticleCreated</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>@articles.ArticleName</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="font-smaller">@articles.ArticleRating</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="font-smaller"><a href="#">Edit</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                </div>
+            </div>
+            @*<h6>@articles.ArticleName</h6>*@
+            @*<ul>
+                <li><a href="#">Edit</a></li>
+            </ul>*@
+            <hr width="80%"/>
         }
 
         i++;
     }
+    <button type="button" class="btn btn-primary  position-right">Know More</button>
 }
 
 
