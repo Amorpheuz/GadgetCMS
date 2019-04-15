@@ -5,15 +5,51 @@
 }
 <head>
     @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>*@
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>*@
 </head>
+<style>
+    .rounded-edges-div {
+        border: solid;
+        border-radius: 25px;
+        border-color: black;
+        padding: 5%;
+    }
+
+    .position-right {
+        float: right;
+    }
+
+    .font-smaller{
+        font-size:smaller;
+    }
+    
+</style>
+<div class="row">
+    @*<div class="col-md-1">
+
+        </div>*@
+    <div class="col-md-9">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="button" id="button-addon2">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <h2>Featured Articles</h2>
         <hr />
         @await Component.InvokeAsync("ArticleFeatured")
+    </div>
+    <div class="col-md-3">
+
     </div>
 </div>
 <br />
@@ -25,18 +61,18 @@
             <li class="nav-item"><a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#popular" role="tab" aria-controls="pills-profile" aria-selected="false">Popular</a></li>
             <li class="nav-item"><a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#toprated" role="tab" aria-controls="pills-contact" aria-selected="false">Top-Rated</a></li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="recent" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="tab-content card" id="pills-tabContent">
+            <div class="tab-pane fade show active card-body" id="recent" role="tabpanel" aria-labelledby="pills-home-tab">
                 <h3>Recent</h3>
-                <hr />
+                <hr/>
                 @await Component.InvokeAsync("ArticleRecent")
             </div>
-            <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="tab-pane fade card-body" id="popular" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <h3>Popular</h3>
                 <hr />
                 @await Component.InvokeAsync("ArticlePopular")
             </div>
-            <div class="tab-pane fade" id="toprated" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div class="tab-pane fade card-body" id="toprated" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <h3>Top-Rated</h3>
                 <hr />
                 @await Component.InvokeAsync("ArticleTopRated")
@@ -44,7 +80,8 @@
         </div>
 
     </div>
-    <div class="col-md-4">
-
+    <div class="col-md-4" id="twitterFeed">
+        <a class="twitter-timeline" data-lang="en" data-width="300" data-height="900" href="https://twitter.com/kataria_alkesh/lists/techie-s-list?ref_src=twsrc%5Etfw">Twitter, at your Service.</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
 </div>
