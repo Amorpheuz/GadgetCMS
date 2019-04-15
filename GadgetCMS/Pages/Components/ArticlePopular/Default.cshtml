@@ -12,7 +12,43 @@ else
 {
     @foreach (var reviewsFE in Model)
     {
-        <h6>@reviewsFE.ArticleName</h6>
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="font-smaller">@reviewsFE.ArticleAuthor</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="font-smaller">@reviewsFE.ArticleCreated</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6>@reviewsFE.ArticleName</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="font-smaller">@reviewsFE.ArticleRating</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="font-smaller"><a href="#">Edit</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+        @*<h6>@articles.ArticleName</h6>*@
+        @*<ul>
+                <li><a href="#">Edit</a></li>
+            </ul>*@
+        <hr width="80%" />
 
     }
+    <button type="button" class="btn btn-primary  position-right">Know More</button>
 }
