@@ -5,21 +5,24 @@
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-<div class="row">
+
+<!--Yash-->
+@*<div class="row">
     <div class="col-md-5">
         <h1>
             Article <small class="text-muted">
-            @if (ViewBag.ViewType != null)
-            {
-                if (ViewBag.ViewType == "Category")
+                @if (ViewBag.ViewType != null)
                 {
-                    <text>- @Model.Article[0].Category.CategoryName</text>
+                    if (ViewBag.ViewType == "Category")
+                    {
+                        <text>- @Model.Article[0].Category.CategoryName</text>
+                    }
+                    else if (ViewBag.ViewType == "Company")
+                    {
+                        <text>- @ViewBag.Company</text>
+                    }
                 }
-                else if (ViewBag.ViewType == "Company")
-                {
-                    <text>- @ViewBag.Company</text>
-                }
-            }</small>
+            </small>
         </h1>
     </div>
     <div class="col-md-7">
@@ -136,4 +139,64 @@
             }
         }
     </div>
+</div>*@
+
+<!--Alkesh-->
+<div class="input-group mb-3">
+    @*<form>*@
+    @*<label asp-for="Article.CategoryId" class="control-label"></label>*@
+    <select asp-for="Article.CategoryId" class="form-control custom-select" name="Category" id="SelectCategory" asp-items="ViewBag.CategoryId"></select>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="submit">Select</button>
+    </div>
+    @*<button class="btn btn-primary" id="submit"> Submit </button>*@
+    <button class="btn btn-primary" id="btn_FiltersApply">Apply</button>
+    @*</form>*@
+
 </div>
+
+<div class="row">
+
+    <div class="col-md-8 card" id="ArList">
+
+    </div>
+    <div class="col-md-4 card" id="FilList">
+
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+            $(function () {
+
+                $('#submit').on('click', function () {
+                    var categorySelect = document.getElementById('SelectCategory').value;
+                    $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect);
+                    $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect);
+
+                    return false;
+
+                });
+                $('#btn_FiltersApply').on('click',
+                    function () {
+                        var categorySelect = document.getElementById('SelectCategory').value;
+                        var userselectedvalues = '';
+                        var values = document.getElementById('checkboxcount').value;
+                        for (var i = 0; i < values; i++) {
+                            if (document.getElementById('CheckboxCheck' + i).checked === true) {
+                                userselectedvalues += document.getElementById('CheckboxCheck' + i).value + ";";
+                            }
+                        }
+                        userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
+                        $('#ArList').load('/Article/Index?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
+                            userselectedvalues);
+                        return false;
+                    });
+            });
+
+
+    </script>
+
+}

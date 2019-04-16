@@ -1,0 +1,13 @@
+﻿@model List<Data.Article>
+
+@if (Model != null)
+{
+    foreach (var articlesfetch in Model)
+    {
+        <h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>
+    }
+}
+else
+{
+    <h5>Error! Please Select Category</h5>
+}
