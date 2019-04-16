@@ -35,7 +35,7 @@ namespace GadgetCMS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<bool?>("ArticleEditLock")
+                    b.Property<bool>("ArticleEditLock")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
@@ -55,13 +55,13 @@ namespace GadgetCMS.Data.Migrations
                     b.Property<string>("ArticleSubtitle")
                         .IsRequired();
 
-                    b.Property<bool?>("ArticleVisible")
+                    b.Property<bool>("ArticleVisible")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
                     b.Property<int>("CategoryId");
 
-                    b.Property<bool?>("Featured")
+                    b.Property<bool>("Featured")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
@@ -215,6 +215,9 @@ namespace GadgetCMS.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<double>("ReviewRating");
+
+                    b.Property<string>("ReviewTitle")
+                        .IsRequired();
 
                     b.Property<bool>("ReviewVisible")
                         .ValueGeneratedOnAdd()
