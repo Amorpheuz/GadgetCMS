@@ -120,3 +120,7 @@ body, .container {
 #ratingDisplay .br-theme-fontawesome-stars-o .br-widget a {
     font-size: 32px;
 }
+
+#reviewRater .br-theme-fontawesome-stars-o .br-widget a {
+    font-size: 46px;
+}

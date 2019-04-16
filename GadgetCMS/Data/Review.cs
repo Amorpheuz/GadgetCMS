@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,12 +15,15 @@ namespace GadgetCMS.Data
         public string UserId { get; set; }
 
         [Required]
+        [DisplayName("Article Name")]
         public int ArticleId { get; set; }
 
         [Required]
+        [DisplayName("Rating")]
         public double ReviewRating { get; set; }
 
         [Required]
+        [DisplayName("Content")]
         public string ReviewContent { get; set; }
         
         public DateTime ReviewLastUpdate { get; set; }
@@ -30,6 +34,9 @@ namespace GadgetCMS.Data
         [Required]
         public bool ReviewVisible { get; set; }
 
+        [Required]
+        [DisplayName("Review Title")]
+        public string ReviewTitle { get; set; }
 
         [ForeignKey("ArticleId")]
         public Article Article { get; set; }

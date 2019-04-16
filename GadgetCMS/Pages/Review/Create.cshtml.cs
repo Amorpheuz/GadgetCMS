@@ -22,9 +22,10 @@ namespace GadgetCMS.Pages.Review
             _userManager = userManager;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int articleId)
         {
-            ViewData["ArticleId"] = new SelectList(_context.Article, "ArticleId", "ArticleName");
+            ViewData["ArticleId"] = _context.Article.FirstOrDefault(a => a.ArticleId == articleId).ArticleId;
+            ViewData["ArticleName"] = _context.Article.FirstOrDefault(a => a.ArticleId == articleId).ArticleName;
             ViewData["UserId"] = _userManager.GetUserId(User);
             return Page();
         }
@@ -36,6 +37,13 @@ namespace GadgetCMS.Pages.Review
         {
             if (!ModelState.IsValid)
             {
+                if(Review.ReviewContent != null)
+                {
+                    ViewData["ReviewContent"] = Review.ReviewContent;
+                }
+                ViewData["ArticleId"] = _context.Article.FirstOrDefault(a => a.ArticleId == Review.ArticleId).ArticleId;
+                ViewData["ArticleName"] = _context.Article.FirstOrDefault(a => a.ArticleId == Review.ArticleId).ArticleName;
+                ViewData["UserId"] = _userManager.GetUserId(User);
                 return Page();
             }
 
