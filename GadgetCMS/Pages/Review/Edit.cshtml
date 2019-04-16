@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var articleName = Model.ArticleName;
+    var reviewContent = (ViewBag.ReviewContent != null) ? "quill.setContents("+ViewBag.ReviewContent+")" : "";
 }
 
 <h1>Edit</h1>
@@ -11,30 +13,89 @@
 <h4>Review</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="col-md-12">
+        <form method="post" id="reviewEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Review.UserId" />
             <input type="hidden" asp-for="Review.ArticleId" />
+            <input type="hidden" asp-for="Review.ReviewCreated" />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="Review.ArticleId" class="control-label"></label>
+                    <input type="text" class="form-control-plaintext" readonly value="@articleName" />
+                </div>
+                <div class="form-group col">
+                    <label asp-for="Review.ReviewRating" class="control-label"></label>
+                    <div id="reviewRater">
+                        <select id="ratingBar" style="font-size:24px;">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <input asp-for="Review.ReviewRating" class="form-control" hidden />
+                    <span asp-validation-for="Review.ReviewRating" class="text-danger"></span>
+                </div>
+            </div>
             <div class="form-group">
-                <label asp-for="Review.ReviewRating" class="control-label"></label>
-                <input asp-for="Review.ReviewRating" class="form-control" />
-                <span asp-validation-for="Review.ReviewRating" class="text-danger"></span>
+                <label asp-for="Review.ReviewTitle" class="control-label"></label>
+                <input asp-for="Review.ReviewTitle" class="form-control" />
+                <span asp-validation-for="Review.ReviewTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Review.ReviewContent" class="control-label"></label>
-                <input asp-for="Review.ReviewContent" class="form-control" />
+                <div id="quill-container">
+                    <div id="toolbar-container">
+                        <span class="ql-formats">
+                            <button class="ql-header" value="1"></button>
+                            <button class="ql-header" value="2"></button>
+                            <button class="ql-header" value="3"></button>
+                            <button class="ql-blockquote"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-direction" value="rtl"></button>
+                            <select class="ql-align"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-font"></select>
+                            <select class="ql-size"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-script" value="sub"></button>
+                            <button class="ql-script" value="super"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-indent" value="-1"></button>
+                            <button class="ql-indent" value="+1"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                            <button class="ql-image"></button>
+                            <button class="ql-video"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-clean"></button>
+                        </span>
+                    </div>
+                    <div id="editor-container"></div>
+                </div>
+                <input asp-for="Review.ReviewContent" class="form-control" hidden />
                 <span asp-validation-for="Review.ReviewContent" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Review.ReviewCreated" class="control-label"></label>
-                <input asp-for="Review.ReviewCreated" class="form-control" />
-                <span asp-validation-for="Review.ReviewCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Review.ReviewVisible" /> @Html.DisplayNameFor(model => model.Review.ReviewVisible)
-                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -46,6 +107,36 @@
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ratingBar').barrating('show', {
+            theme: 'fontawesome-stars-o',
+            showSelectedRating: true,
+            onSelect: function (value, text) {
+                $("input[name='Review.ReviewRating']").val(value);
+            },
+            initialRating: @Model.Review.ReviewRating
+        });
+    });
+</script>
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: '#toolbar-container'
+        },
+        placeholder: 'Enter Review Content',
+        theme: 'snow'
+    });
+
+    var form = document.querySelector('#reviewEdit');
+    form.onsubmit = function () {
+        var content = document.querySelector("input[name='Review.ReviewContent']");
+        content.value = JSON.stringify(quill.getContents());
+    };
+    @Html.Raw(reviewContent);
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

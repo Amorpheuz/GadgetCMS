@@ -26,6 +26,9 @@ namespace GadgetCMS.Pages.Review
         [BindProperty]
         public Data.Review Review { get; set; }
 
+        [BindProperty]
+        public string ArticleName { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -36,6 +39,8 @@ namespace GadgetCMS.Pages.Review
             string userId = _userManager.GetUserId(User);
             int idx = Int32.Parse(id);
             Review = await _context.Review.FindAsync(userId,idx);
+            ViewData["ReviewContent"] = Review.ReviewContent;
+            ArticleName = _context.Article.FirstOrDefault(a => a.ArticleId == Review.ArticleId).ArticleName;
 
             if (Review == null)
             {
@@ -48,6 +53,10 @@ namespace GadgetCMS.Pages.Review
         {
             if (!ModelState.IsValid)
             {
+                if(Review.ReviewContent != null)
+                {
+                    ViewData["ReviewContent"] = Review.ReviewContent;
+                }
                 return Page();
             }
 
