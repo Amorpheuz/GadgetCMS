@@ -8,15 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
 using GadgetCMS.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.Review
 {
     public class DeleteModel : PageModel
     {
         private readonly GadgetCMSContext _context;
+        private readonly UserManager<GadgetCMSUser> _userManager;
 
-        public DeleteModel(GadgetCMSContext context)
+        public DeleteModel(GadgetCMSContext context, UserManager<GadgetCMSUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -33,6 +37,13 @@ namespace GadgetCMS.Pages.Review
             Review = await _context.Review
                 .Include(r => r.Article)
                 .Include(r => r.GadgetCmsUser).FirstOrDefaultAsync(m => m.ArticleId == id && m.GadgetCmsUser.Email == userEmail);
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.Id != Review.UserId)
+            {
+                return RedirectToPage("./Details", new { id, userEmail });
+            }
 
             if (Review == null)
             {
@@ -51,15 +62,21 @@ namespace GadgetCMS.Pages.Review
                 return NotFound();
             }
 
-            Review = await _context.Review.FindAsync(userId,articleId);
+            var user = await _userManager.GetUserAsync(User);
 
-            if (Review != null)
+            if (user.Id == userId)
             {
-                _context.Review.Remove(Review);
-                await _context.SaveChangesAsync();
-            }
+                Review = await _context.Review.FindAsync(userId, articleId);
 
-            return RedirectToPage("./Index");
+                if (Review != null)
+                {
+                    _context.Review.Remove(Review);
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToPage("/Article/Details", new { id = articleId });
+            }
+            return NotFound();
         }
     }
 }
