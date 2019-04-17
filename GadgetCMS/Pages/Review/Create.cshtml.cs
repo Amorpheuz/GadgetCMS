@@ -50,7 +50,7 @@ namespace GadgetCMS.Pages.Review
             _context.Review.Add(Review);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Article/Details",new { id = Review.ArticleId});
         }
     }
 }
