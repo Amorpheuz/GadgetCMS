@@ -1,4 +1,4 @@
-﻿@model System.Collections.Generic.List<GadgetCMS.Data.Review>
+﻿@model List<Review>
 @using System.Security.Cryptography
 @using System.Text
 @using GadgetCMS.Areas.Identity.Data
@@ -16,7 +16,14 @@
     </div>
     <div class="col d-flex justify-content-end">
         <div>
-            <a asp-page="/Review/Create" asp-route-articleId="@articleId" class="btn btn-primary">Add Opinion</a>
+            @if (ViewBag.UserHasComment != null)
+            {
+                <a asp-page="/Review/Edit" asp-route-id="@articleId" class="btn btn-primary">Edit Opinion</a>
+            }
+            else
+            {
+                <a asp-page="/Review/Create" asp-route-articleId="@articleId" class="btn btn-primary">Add Opinion</a>
+            }
         </div>
     </div>
 </div>
