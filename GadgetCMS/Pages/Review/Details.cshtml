@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var articleContent = "quill.setContents(" + Model.Review.ReviewContent + ")";
 }
 
 <h1>Details</h1>
@@ -15,16 +16,29 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Review.Article)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Review.Article.ArticleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Review.GadgetCmsUser)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Review.GadgetCmsUser.Email)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Review.ReviewRating)
         </dt>
         <dd class="col-sm-10">
-            @await Component.InvokeAsync("RatingDisplay", new { articleId = Model.Review.ArticleId, userId = Model.Review.UserId})
+            @await Component.InvokeAsync("RatingDisplay", new { articleId = Model.Review.ArticleId, userId = Model.Review.UserId })
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Review.ReviewContent)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.ReviewContent)
+            <div id="editor-container">
+            </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Review.ReviewLastUpdate)
@@ -38,24 +52,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Review.ReviewCreated)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.ReviewVisible)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.ReviewVisible)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.Article)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.Article.ArticleName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.GadgetCmsUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.GadgetCmsUser.Email)
-        </dd>
     </dl>
 </div>
 <div>
@@ -65,3 +61,14 @@
     } |
     <a asp-page="./Index">Back to List</a>
 </div>
+<script src="~/lib/quill/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor-container', {
+        placeholder: 'Loading Text....'
+    });
+    $(document).ready(function () {
+        quill.enable(false);
+        $(".ql-editor").css("padding", "0");
+    });
+    @Html.Raw(articleContent);
+</script>

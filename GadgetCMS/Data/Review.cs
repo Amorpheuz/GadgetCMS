@@ -26,9 +26,11 @@ namespace GadgetCMS.Data
         [DisplayName("Content")]
         public string ReviewContent { get; set; }
         
+        [DisplayName("Last Updated On")]
         public DateTime ReviewLastUpdate { get; set; }
 
         [Required]
+        [DisplayName("Created On")]
         public DateTime ReviewCreated { get; set; }
 
         [Required]
@@ -41,6 +43,7 @@ namespace GadgetCMS.Data
         [ForeignKey("ArticleId")]
         public Article Article { get; set; }
         [ForeignKey("UserId")]
+        [DisplayName("User")]
         public GadgetCMSUser GadgetCmsUser { get; set; }
 
     }
