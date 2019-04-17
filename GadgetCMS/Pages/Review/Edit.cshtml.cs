@@ -78,7 +78,7 @@ namespace GadgetCMS.Pages.Review
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Article/Details",new { id = Review.ArticleId});
         }
 
         private bool ReviewExists(string id)
