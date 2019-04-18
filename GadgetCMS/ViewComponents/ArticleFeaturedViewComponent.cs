@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            articlesList = _context.Article.OrderByDescending(c => c.ArticleCreated).ToList();
+            articlesList = _context.Article.Include(c => c.ArticlePictures).OrderByDescending(c => c.ArticleCreated).ToList();
             return View("Default",articlesList);
         }
     }

@@ -17,38 +17,80 @@ else
     {
         if (i <= 5)
         {
-            <div class="row">
+            <div class="card mb-2">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <p>@articles.ArticleAuthor</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p>@articles.ArticleCreated.ToShortDateString()</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h6 class="font-weight-bold"><a href="#" class="stretched-link">@articles.ArticleName</a></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="text-muted">@articles.ArticleSubtitle</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @{
+                                        var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
+                                        var imgSrc = $"data:image/gif;base64,{base64}";
+                                    }
+                                    <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+
+            @*<div class="row">
                 <div class="col-md-1">
 
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-11 card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="font-smaller">@articles.ArticleAuthor</p>
+                            <p>@articles.ArticleAuthor</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="font-smaller">@articles.ArticleCreated</p>
+                            <p>@articles.ArticleCreated</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <h6>@articles.ArticleName</h6>
+                        <div class="col-md-8">
+                            <a href="#" class="stretched-link"><h6 class="font-weight-bold">@articles.ArticleName</h6></a>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/09/12/11/naturo-monkey-selfie.jpg?w968h681" class="img-fluid" style="height:100px;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="font-smaller">@articles.ArticleRating</p>
+                            <p class="text-muted">@articles.ArticleSubtitle</p>
                         </div>
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <p class="font-smaller"><a href="#">Edit</a></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-
-                </div>
+                
             </div>
-            @*<h6>@articles.ArticleName</h6>*@
+            <h6>@articles.ArticleName</h6>*@
             @*<ul>
                 <li><a href="#">Edit</a></li>
             </ul>*@

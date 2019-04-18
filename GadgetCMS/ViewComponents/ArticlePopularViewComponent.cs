@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,9 @@ namespace GadgetCMS.ViewComponents
                 articlesPopular = _context.Article.Where(cg => cg.ArticleId == articles).FirstOrDefault();
                 articlesPopularParent.Add(articlesPopular);
             }
+
+            articlesPopularParent = _context.Article.Include(c => c.ArticlePictures).ToList();
+
             return View("Default", articlesPopularParent);
         }
     }
