@@ -11,7 +11,7 @@ namespace GadgetCMS.Pages.Category
 {
     public class DeleteModel : PageModel
     {
-        private readonly GadgetCMS.Data.ApplicationDbContext _context;
+        public readonly GadgetCMS.Data.ApplicationDbContext _context;
 
         public DeleteModel(GadgetCMS.Data.ApplicationDbContext context)
         {
@@ -28,7 +28,7 @@ namespace GadgetCMS.Pages.Category
                 return NotFound();
             }
 
-            Category = await _context.Category.FirstOrDefaultAsync(m => m.CategoryId == id);
+            Category = await _context.Category.Include(c => c.CategoryParentParameters).FirstOrDefaultAsync(m => m.CategoryId == id);
 
             if (Category == null)
             {

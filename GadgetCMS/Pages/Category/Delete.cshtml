@@ -25,6 +25,18 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Category.CategoryDescription)
         </dd>
+        <dt class="col-sm-2">
+            Parent Parameters
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var itemSub in Model.Category.CategoryParentParameters)
+            {
+                string PPName = Model._context.ParentParameter.Where(c => c.ParentParameterId == itemSub.ParentParameterId).Select(d => d.ParentParameterName).FirstOrDefault();
+                var temp = PPName + " ";
+                @temp
+            }
+        </dd>
+        
     </dl>
     
     <form method="post">

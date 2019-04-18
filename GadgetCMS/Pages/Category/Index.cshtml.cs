@@ -11,7 +11,7 @@ namespace GadgetCMS.Pages.Category
 {
     public class IndexModel : PageModel
     {
-        private readonly GadgetCMS.Data.ApplicationDbContext _context;
+        public readonly GadgetCMS.Data.ApplicationDbContext _context;
 
         public IndexModel(GadgetCMS.Data.ApplicationDbContext context)
         {
@@ -22,7 +22,7 @@ namespace GadgetCMS.Pages.Category
 
         public async Task OnGetAsync()
         {
-            Category = await _context.Category.ToListAsync();
+            Category = await _context.Category.Include(c => c.CategoryParentParameters).ToListAsync();
         }
     }
 }
