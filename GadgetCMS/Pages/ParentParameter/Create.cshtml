@@ -4,6 +4,17 @@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var pName = new List<string>();
+    var pDesc = new List<string>();
+    var pUnit = new List<string>();
+    var pError = false;
+    if (ViewBag.PError != null)
+    {
+        pName = ViewBag.PName;
+        pDesc = ViewBag.PDesc;
+        pUnit = ViewBag.PUnit;
+        pError = true;
+    }
 }
 
 <h1>Create</h1>
@@ -11,8 +22,8 @@
 <h4>ParentParameter</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="col-md-12">
+        <form method="post" id="ppCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ParentParameter.ParentParameterName" class="control-label"></label>
@@ -25,6 +36,58 @@
                 <span asp-validation-for="ParentParameter.ParentParameterDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h3>Parameters</h3>
+                        <span id="parameterError" class="text-danger">
+                            @if (pError == true)
+                            {
+                                <text>@ViewBag.PError</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-primary" onclick="addRow()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="parameterTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Parameter Name</th>
+                                <th scope="col">Parameter Description</th>
+                                <th scope="col">Parameter Unit</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="parameterBody">
+                            @{
+                                if (pError == true)
+                                {
+                                    for (int i = 0; i < pName.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input asp-for="ParentParameter.Parameters.First().ParameterName" class="form-control" value="@pName.ElementAt(i)" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="ParentParameter.Parameters.First().ParameterDescription" class="form-control" value="@pName.ElementAt(i)" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="ParentParameter.Parameters.First().ParameterUnit" class="form-control" value="@pName.ElementAt(i)" />
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btnDelete"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -34,6 +97,42 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
+<script type="text/html" id="rowTemplate">
+    <tr>
+        <td>
+            <input asp-for="ParentParameter.Parameters.First().ParameterName" class="form-control" />
+        </td>
+        <td>
+            <input asp-for="ParentParameter.Parameters.First().ParameterDescription" class="form-control" />
+        </td>
+        <td>
+            <input asp-for="ParentParameter.Parameters.First().ParameterUnit" class="form-control" />
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btnDelete"><i class="fa fa-minus" aria-hidden="true"></i></button>
+        </td>
+    </tr>
+</script>
+<script>
+    function addRow() {
+        var template = $('#rowTemplate').html();
+        $('#parameterBody').append(template);
+    }
+    $("#parameterTable").on('click', '.btnDelete', function () {
+        $(this).closest('tr').remove();
+    });
+
+    $("#ppCreate").submit(function () {
+        var isValid = true;
+        $('input[type="text"]').each(function () {
+            if ($.trim($(this).val()) == '') {
+                isValid = false;
+                $(this).addClass("is-invalid");
+            }
+        });
+        return isValid;
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
