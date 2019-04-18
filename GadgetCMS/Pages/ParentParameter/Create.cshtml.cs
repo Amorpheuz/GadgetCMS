@@ -78,7 +78,7 @@ namespace GadgetCMS.Pages.ParentParameter
             return RedirectToPage("./Index");
         }
 
-        public void InitParameter(List<string> pName, List<string> pDesc, List<string> pUnit)
+        private void InitParameter(List<string> pName, List<string> pDesc, List<string> pUnit)
         {
             ViewData["PError"]= "Please fill all the Parameter Details";
             ViewData["PName"] = pName;
