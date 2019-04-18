@@ -125,7 +125,7 @@ namespace GadgetCMS.Pages.Article
             //}
 
             category_selection_int = Int32.Parse(categorySelection);
-            articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+            articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
 
 
             return new PartialViewResult
@@ -174,7 +174,7 @@ namespace GadgetCMS.Pages.Article
 
             category_selection_int = Int32.Parse(categorySelection);
 
-            articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+            articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
             articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
 
             

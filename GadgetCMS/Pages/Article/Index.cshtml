@@ -141,26 +141,32 @@
     </div>
 </div>*@
 
+
+
 <!--Alkesh-->
+
+
 <div class="input-group mb-3">
-    @*<form>*@
-    @*<label asp-for="Article.CategoryId" class="control-label"></label>*@
+    
+    @*<label class="control-label">Select Category</label>*@
     <select asp-for="Article.CategoryId" class="form-control custom-select" name="Category" id="SelectCategory" asp-items="ViewBag.CategoryId"></select>
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="submit">Select</button>
+        <button class="btn btn-outline-secondary" type="button" id="submit">Select Category</button>
     </div>
-    @*<button class="btn btn-primary" id="submit"> Submit </button>*@
-    <button class="btn btn-primary" id="btn_FiltersApply">Apply</button>
-    @*</form>*@
+   
+    <button class="btn btn-outline-secondary" id="btn_FiltersApply">Apply Filters</button>
+    
 
 </div>
-
+<script>
+    document.getElementById('btn_FiltersApply').style.visibility = 'hidden';
+</script>
 <div class="row">
 
-    <div class="col-md-8 card" id="ArList">
+    <div class="col-md-8" id="ArList">
 
     </div>
-    <div class="col-md-4 card" id="FilList">
+    <div class="col-md-4" id="FilList">
 
     </div>
 
@@ -175,7 +181,7 @@
                     var categorySelect = document.getElementById('SelectCategory').value;
                     $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect);
                     $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect);
-
+                     document.getElementById('btn_FiltersApply').style.visibility = 'visible';
                     return false;
 
                 });
