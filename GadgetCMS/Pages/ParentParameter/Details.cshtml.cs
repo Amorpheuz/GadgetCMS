@@ -27,7 +27,7 @@ namespace GadgetCMS.Pages.ParentParameter
                 return NotFound();
             }
 
-            ParentParameter = await _context.ParentParameter.FirstOrDefaultAsync(m => m.ParentParameterId == id);
+            ParentParameter = await _context.ParentParameter.Include(m => m.Parameters).FirstOrDefaultAsync(m => m.ParentParameterId == id);
 
             if (ParentParameter == null)
             {

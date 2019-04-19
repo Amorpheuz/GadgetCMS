@@ -12,19 +12,47 @@
     <h4>ParentParameter</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.ParentParameter.ParentParameterName)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.ParentParameter.ParentParameterName)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.ParentParameter.ParentParameterDescription)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.ParentParameter.ParentParameterDescription)
         </dd>
     </dl>
+    <h3>@Html.DisplayNameFor(model => model.ParentParameter.Parameters)</h3>
+    <div class="table-responsive">
+        <table class="table" id="parameterTable">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Parameter Name</th>
+                    <th scope="col">Parameter Description</th>
+                    <th scope="col">Parameter Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var j = 0; j < Model.ParentParameter.Parameters.Count; j++)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterUnit)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.ParentParameter.ParentParameterId">Edit</a> |
