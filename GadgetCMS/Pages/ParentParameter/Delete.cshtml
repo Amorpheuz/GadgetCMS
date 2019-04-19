@@ -26,7 +26,35 @@
             @Html.DisplayFor(model => model.ParentParameter.ParentParameterDescription)
         </dd>
     </dl>
-    
+
+    <h3>@Html.DisplayNameFor(model => model.ParentParameter.Parameters)</h3>
+    <div class="table-responsive">
+        <table class="table" id="parameterTable">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Parameter Name</th>
+                    <th scope="col">Parameter Description</th>
+                    <th scope="col">Parameter Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var j = 0; j < Model.ParentParameter.Parameters.Count; j++)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => Model.ParentParameter.Parameters[j].ParameterUnit)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <form method="post">
         <input type="hidden" asp-for="ParentParameter.ParentParameterId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
