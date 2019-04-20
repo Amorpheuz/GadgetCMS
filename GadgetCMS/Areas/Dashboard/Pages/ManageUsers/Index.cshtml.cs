@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class IndexModel : PageModel
     {
         private readonly UserManager<GadgetCMSUser> userManager;
@@ -30,7 +30,8 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
         public IEnumerable<GadgetCMSUser> UsersOfRoleModerator;
         public IEnumerable<GadgetCMSUser> UsersOfRoleAdmin;
         public IQueryable<IdentityRole> Roles;
-        public GadgetCMSUser CurUser;
+        public string CurUserEmail;
+        public IList<string> CurUserRole;
 
         public async Task OnGet()
         {
@@ -39,7 +40,10 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             UsersOfRoleModerator = await userManager.GetUsersInRoleAsync("Moderator");
             UsersOfRoleAdmin = await userManager.GetUsersInRoleAsync("Admin");
 
-            CurUser = await userManager.GetUserAsync(HttpContext.User);
+            var temp = await userManager.GetUserAsync(HttpContext.User);
+
+            CurUserEmail = temp.Email;
+            CurUserRole = await userManager.GetRolesAsync(temp);
 
             Roles = roleManager.Roles;
         }
@@ -51,7 +55,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             string curRole = Request.Form["curRole"].ToString();
 
             GadgetCMSUser gadgetCmsUser = await userManager.FindByIdAsync(user);
-
+            
             var removeResult = await userManager.RemoveFromRoleAsync(gadgetCmsUser, curRole);
             var addResult = await userManager.AddToRoleAsync(gadgetCmsUser, uRole);
 
