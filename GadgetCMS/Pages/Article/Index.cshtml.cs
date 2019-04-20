@@ -124,7 +124,7 @@ namespace GadgetCMS.Pages.Article
             };
         }
 
-        public PartialViewResult OnGetSelectCategory(string categorySelection)
+        public PartialViewResult OnGetSelectCategory(string categorySelection,string searchQuery)
         {
             //categoryValues = categorySelection.Split(";");
 
@@ -137,7 +137,16 @@ namespace GadgetCMS.Pages.Article
             //}
 
             category_selection_int = Int32.Parse(categorySelection);
-            articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+
+            if(searchQuery != null)
+            {
+                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
+            }
+            else
+            {
+                 articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+            }
+           
 
 
             return new PartialViewResult
@@ -181,15 +190,24 @@ namespace GadgetCMS.Pages.Article
             
         }
 
-        public PartialViewResult OnGetFilterArticlesFinal(string categorySelection,string values)
+        public PartialViewResult OnGetFilterArticlesFinal(string categorySelection,string values,string searchQuery)
         {
 
             category_selection_int = Int32.Parse(categorySelection);
 
-            articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
-            articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
+            if(searchQuery != null)
+            {
+                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
+                articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
+            }
+            else
+            {
+                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+                articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
 
-            
+            }
+
+
             FilteredArticle = new FilteredArticle(_context)
             {
                 ParameterValues = values,

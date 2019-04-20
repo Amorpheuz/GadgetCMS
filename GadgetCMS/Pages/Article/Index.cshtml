@@ -209,36 +209,46 @@
     <script>
             $(function () {
 
-            $('#SearchResult').on('input', function () {
-                var searchQuery = document.getElementById('SearchResult').value;
-                searchQuery = searchQuery.replace(/\s/g, "%20");
-                $('#demo').load('/Article/Index?handler=SearchQuery&&value=' + searchQuery);
-                return false;
-            });
-
-            $('#submit').on('click', function () {
-                var categorySelect = document.getElementById('SelectCategory').value;
-                $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect);
-                $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect);
-                document.getElementById('btn_FiltersApply').style.visibility = 'visible';
-                return false;
-
-            });
-            $('#btn_FiltersApply').on('click',
-                function () {
-                    var categorySelect = document.getElementById('SelectCategory').value;
-                    var userselectedvalues = '';
-                    var values = document.getElementById('checkboxcount').value;
-                    for (var i = 0; i < values; i++) {
-                        if (document.getElementById('CheckboxCheck' + i).checked === true) {
-                            userselectedvalues += document.getElementById('CheckboxCheck' + i).value + ";";
-                        }
-                    }
-                    userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
-                    $('#ArList').load('/Article/Index?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
-                        userselectedvalues);
+                $('#SearchResult').on('input', function () {
+                    var searchQuery = document.getElementById('SearchResult').value;
+                    searchQuery = searchQuery.replace(/\s/g, "%20");
+                    $('#demo').load('/Article/Index?handler=SearchQuery&&value=' + searchQuery);
                     return false;
                 });
+            
+                $('#submit').on('click', function () {
+                    var searchQuery = document.getElementById('SearchResult').value;
+                    searchQuery = searchQuery.replace(/\s/g, "%20");
+
+                    var categorySelect = document.getElementById('SelectCategory').value;
+                    $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
+                    $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
+                    document.getElementById('btn_FiltersApply').style.visibility = 'visible';
+
+                    return false;
+
+                });
+
+                $('#btn_FiltersApply').on('click',
+                    function () {
+                        var categorySelect = document.getElementById('SelectCategory').value;
+                        var userselectedvalues = '';
+                        var values = document.getElementById('checkboxcount').value;
+                        for (var i = 0; i < values; i++) {
+                            if (document.getElementById('CheckboxCheck' + i).checked === true) {
+
+                                userselectedvalues += document.getElementById('CheckboxCheck' + i).value + ";";
+
+                            }
+                        }
+                        var searchQuery = document.getElementById('SearchResult').value;
+                        searchQuery = searchQuery.replace(/\s/g, "%20");
+                        userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
+                        $('#ArList').load('/AdvancedSearch/SearchAjax?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
+                            userselectedvalues + '&&searchQuery=' + searchQuery);
+                        return false;
+                 });
+            
         });
 
 
