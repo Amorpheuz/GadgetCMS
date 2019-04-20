@@ -25,10 +25,11 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             _context = context;
         }
 
-        public IEnumerable<GadgetCMSUser> UsersOfRoleMember;
-        public IEnumerable<GadgetCMSUser> UsersOfRoleEditor;
-        public IEnumerable<GadgetCMSUser> UsersOfRoleModerator;
-        public IEnumerable<GadgetCMSUser> UsersOfRoleAdmin;
+        private IEnumerable<GadgetCMSUser> UsersOfRoleMember;
+        private IEnumerable<GadgetCMSUser> UsersOfRoleEditor;
+        private IEnumerable<GadgetCMSUser> UsersOfRoleModerator;
+        private IEnumerable<GadgetCMSUser> UsersOfRoleAdmin;
+        public List<UserWithRole> UserWithRoles;
         public IQueryable<IdentityRole> Roles;
         public string CurUserEmail;
         public IList<string> CurUserRole;
@@ -39,6 +40,48 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             UsersOfRoleEditor = await userManager.GetUsersInRoleAsync("Editor");
             UsersOfRoleModerator = await userManager.GetUsersInRoleAsync("Moderator");
             UsersOfRoleAdmin = await userManager.GetUsersInRoleAsync("Admin");
+
+            UserWithRoles = new List<UserWithRole>();
+
+            foreach (var item in UsersOfRoleMember)
+            {
+                UserWithRoles.Add(new UserWithRole {
+                    UserId = item.Id,
+                    UserEmail = item.Email,
+                    UserRole = "Member",
+                    UserBan = item.BanStatus
+                });
+            }
+            foreach (var item in UsersOfRoleEditor)
+            {
+                UserWithRoles.Add(new UserWithRole
+                {
+                    UserId = item.Id,
+                    UserEmail = item.Email,
+                    UserRole = "Editor",
+                    UserBan = item.BanStatus
+                });
+            }
+            foreach (var item in UsersOfRoleModerator)
+            {
+                UserWithRoles.Add(new UserWithRole
+                {
+                    UserId = item.Id,
+                    UserEmail = item.Email,
+                    UserRole = "Moderator",
+                    UserBan = item.BanStatus
+                });
+            }
+            foreach (var item in UsersOfRoleAdmin)
+            {
+                UserWithRoles.Add(new UserWithRole
+                {
+                    UserId = item.Id,
+                    UserEmail = item.Email,
+                    UserRole = "Admin",
+                    UserBan = item.BanStatus
+                });
+            }
 
             var temp = await userManager.GetUserAsync(HttpContext.User);
 
@@ -61,7 +104,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
 
             if (removeResult.Succeeded && addResult.Succeeded)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("./ManageUsers");
             }
             else if(removeResult.Succeeded && !addResult.Succeeded)
             {
@@ -73,5 +116,13 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                 return RedirectToPage("/Error");
             }
         }
+    }
+
+    public class UserWithRole
+    {
+        public string UserId { get; set; }
+        public string UserEmail { get; set; }
+        public string UserRole { get; set; }
+        public bool UserBan { get; set; }
     }
 }
