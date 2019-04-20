@@ -116,6 +116,40 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                 return RedirectToPage("/Error");
             }
         }
+
+        public async Task<IActionResult> OnPostBanUserAsync()
+        {
+            string userId = Request.Form["UserID"].ToString();
+
+            var reqUser = await userManager.GetUserAsync(HttpContext.User);
+            var reqUserRole = await userManager.GetRolesAsync(reqUser);
+
+            if (reqUserRole.Contains("Admin") || reqUserRole.Contains("Moderator"))
+            {
+                var user = await _context.Users.FindAsync(userId);
+                user.BanStatus = true;
+                await userManager.UpdateAsync(user);
+                return RedirectToPage("./ManageUsers");
+            }
+            return RedirectToPage("./ManageUsers");
+        }
+
+        public async Task<IActionResult> OnPostUnbanUserAsync()
+        {
+            string userId = Request.Form["UserID"].ToString();
+
+            var reqUser = await userManager.GetUserAsync(HttpContext.User);
+            var reqUserRole = await userManager.GetRolesAsync(reqUser);
+
+            if (reqUserRole.Contains("Admin") || reqUserRole.Contains("Moderator"))
+            {
+                var user = await _context.Users.FindAsync(userId);
+                user.BanStatus = false;
+                await userManager.UpdateAsync(user);
+                return RedirectToPage("./ManageUsers");
+            }
+            return RedirectToPage("./ManageUsers");
+        }
     }
 
     public class UserWithRole

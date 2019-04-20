@@ -26,45 +26,51 @@
         <tbody>
             @foreach (var item in Model.UserWithRoles)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => item.UserEmail)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.UserRole)
-                </td>
-                @if ((item.UserRole == "Admin" || item.UserRole == "Moderator") && Model.CurUserRole.FirstOrDefault() == "Moderator")
-                {
-                    <td></td>
-                    <td></td>
-                }
-                else
-                {
+                <tr>
                     <td>
-                        @if (item.UserEmail != Model.CurUserEmail && Model.CurUserRole.FirstOrDefault() == "Admin")
-                        {
-                            <form method="POST" class="form-inline">
-                                <div class="form-group mr-1">
-                                    <select name="Roles" asp-items="@new SelectList(Model.Roles)" id="roleSelect" class="custom-select custom-select-sm"></select>
-                                </div>
-                                <input type="hidden" name="UserID" value="@item.UserId" />
-                                <input type="hidden" name="curRole" value="@item.UserRole" />
-                                <input type="submit" value="Save" class="btn btn-primary btn-no-margin btn-sm" />
-                            </form>
-                        }
+                        @Html.DisplayFor(model => item.UserEmail)
                     </td>
                     <td>
-                        @if (item.UserBan == false && item.UserEmail != Model.CurUserEmail)
-                        {
-                            <button type="button" class="btn btn-danger btn-sm">Ban</button>
-                        }
-                        else if(item.UserEmail != Model.CurUserEmail)
-                        {
-                            <button type="button" class="btn btn-success btn-sm">Unban</button>
-                        }
+                        @Html.DisplayFor(model => item.UserRole)
                     </td>
-                }
-            </tr>
+                    @if ((item.UserRole == "Admin" || item.UserRole == "Moderator") && Model.CurUserRole.FirstOrDefault() == "Moderator")
+                    {
+                        <td></td>
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>
+                            @if (item.UserEmail != Model.CurUserEmail && Model.CurUserRole.FirstOrDefault() == "Admin")
+                            {
+                                <form method="POST" class="form-inline">
+                                    <div class="form-group mr-1">
+                                        <select name="Roles" asp-items="@new SelectList(Model.Roles)" id="roleSelect" class="custom-select custom-select-sm"></select>
+                                    </div>
+                                    <input type="hidden" name="UserID" value="@item.UserId" />
+                                    <input type="hidden" name="curRole" value="@item.UserRole" />
+                                    <input type="submit" value="Save" class="btn btn-primary btn-no-margin btn-sm" />
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (item.UserBan == false && item.UserEmail != Model.CurUserEmail)
+                            {
+                                <form method="post">
+                                    <input type="hidden" name="UserID" value="@item.UserId" />
+                                    <button type="submit" class="btn btn-danger btn-sm" asp-page-handler="BanUser">Ban</button>
+                                </form>
+                            }
+                            else if(item.UserEmail != Model.CurUserEmail)
+                            {
+                                <form method="post">
+                                    <input type="hidden" name="UserID" value="@item.UserId" />
+                                    <button type="submit" class="btn btn-success btn-sm" asp-page-handler="UnbanUser">Unban</button>
+                                </form>
+                            }
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
     </table>

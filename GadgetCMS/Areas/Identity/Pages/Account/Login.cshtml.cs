@@ -84,6 +84,13 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 var user = _signInManager.UserManager.FindByEmailAsync(Input.Email).Result;
                 if (result.Succeeded)
                 {
+                    if(user.BanStatus == true)
+                    {
+                        await _signInManager.SignOutAsync();
+                        _logger.LogInformation("User logged out.");
+                        ModelState.AddModelError(string.Empty, "User is Banned.");
+                        return Page();
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
