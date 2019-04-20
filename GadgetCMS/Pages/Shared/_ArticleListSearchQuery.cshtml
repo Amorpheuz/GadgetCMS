@@ -1,0 +1,17 @@
+﻿@model List<Data.Article>
+
+@if (Model != null)
+{
+    foreach (var articlesfetch in Model)
+    {
+        //foreach(var articlesfetchSub in articlesfetch)
+        //    {
+        <h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>
+    }
+
+    //}
+}
+else
+{
+    <h5>No Search Results Found</h5>
+}
