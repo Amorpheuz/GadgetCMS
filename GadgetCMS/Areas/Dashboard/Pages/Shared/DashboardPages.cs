@@ -10,7 +10,11 @@ namespace GadgetCMS.Areas.Dashboard.Pages.Shared
     {
         public static string Index => "Index";
 
+        public static string ManageUsers => "ManageUsers";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+
+        public static string ManageUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, ManageUsers);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {
