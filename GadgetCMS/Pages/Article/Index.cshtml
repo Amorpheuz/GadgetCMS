@@ -6,188 +6,36 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<!--Yash-->
-@*<div class="row">
-        <div class="col-md-5">
-            <h1>
-                Article <small class="text-muted">
-                    @if (ViewBag.ViewType != null)
-                    {
-                        if (ViewBag.ViewType == "Category")
-                        {
-                            <text>- @Model.Article[0].Category.CategoryName</text>
-                        }
-                        else if (ViewBag.ViewType == "Company")
-                        {
-                            <text>- @ViewBag.Company</text>
-                        }
-                    }
-                </small>
-            </h1>
-        </div>
-        <div class="col-md-7">
-            <ul class="nav nav-pills">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                       aria-expanded="false">Sort Articles</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Recent</a>
-                        <a class="dropdown-item" href="#">Popular</a>
-                        <a class="dropdown-item" href="#">Rating</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Compare</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-page="./Create">Create New</a>
-                </li>
-                @if (ViewBag.ViewType != null)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link bg-danger text-white" asp-page="./Index">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                            Clear Filters
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8">
-            @foreach (var item in Model.Article)
-            {
-                if (item.ArticleVisible == true)
-                {
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-9">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            @Html.DisplayFor(modelItem => item.ArticleAuthor)
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @Html.DisplayFor(modelItem => item.ArticleCreated)
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <a asp-page="./Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3 d-flex justify-content-center">
-                                    @{
-                                        var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
-                                        var imgSrc = $"data:image/gif;base64,{base64}";
-                                    }
-                                    <img src="@imgSrc" class="img-fluid" style="height:100px" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-        <div class="col-md-4">
-            @{
-                if (ViewBag.ViewType != null)
-                {
-                    if (ViewBag.ViewType == "Company")
-                    {
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @await Component.InvokeAsync("CategoryNames", ViewBag.Company)
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @await Component.InvokeAsync("CompanyNames", 0)
-                            </div>
-                        </div>
-                        ViewBag.ViewType = null;
-                    }
-                    if (ViewBag.ViewType == "Category")
-                    {
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @await Component.InvokeAsync("CategoryNames", "0")
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @await Component.InvokeAsync("CompanyNames", Model.Article[0].CategoryId)
-                            </div>
-                        </div>
-                        ViewBag.ViewType = null;
-                    }
-                }
-                else
-                {
-                    <div class="row">
-                        <div class="col-sm-12">
-                            @await Component.InvokeAsync("CategoryNames", "0")
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            @await Component.InvokeAsync("CompanyNames", 0)
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>*@
-
-
-
-<!--Alkesh-->
-
 <div class="row">
-    @*<div class="col-md-1">
-
-        </div>*@
-    <div class="col-md-9">
+    <div class="col-md-5">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search" id="SearchResult" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <input type="text" class="form-control" placeholder="Search" id="SearchResult" aria-describedby="search-button">
             <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="button" id="button-addon2">Search</button>
+                <button class="btn btn-outline-primary m-0" type="button" id="search-button">Search</button>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-
+    <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-4">
+                <select asp-for="Article.CategoryId" class="custom-selec form-control" name="Category" id="SelectCategory" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary mt-0 mb-0 h-100" type="button" id="submit">Select Category</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-default mt-0 mb-0 h-100" id="btn_FiltersApply">Apply Filters</button>
+            </div>
+        </div>            
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-lg-12">
         <div id="demo">
 
         </div>
-    </div>
-    <div class="col-md-3">
-
-    </div>
-</div>
-
-
-<div class="row">
-
-
-    <div class="input-group mb-3">
-
-        @*<label class="control-label">Select Category</label>*@
-        <select asp-for="Article.CategoryId" class="form-control custom-select" name="Category" id="SelectCategory" asp-items="ViewBag.CategoryId"></select>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="submit">Select Category</button>
-        </div>
-
-        <button class="btn btn-outline-secondary" id="btn_FiltersApply">Apply Filters</button>
-
-
     </div>
 </div>
 <script>
