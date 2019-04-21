@@ -34,18 +34,26 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
         public string CurUserEmail;
         public IList<string> CurUserRole;
 
-        public async Task OnGet()
+        public string EmailSort { get; set; }
+        public string RoleSort { get; set; }
+        public string BanSort { get; set; }
+
+        public async Task OnGet(string sortOrder)
         {
+            EmailSort = String.IsNullOrEmpty(sortOrder) ? "email_desc" : "";
+            RoleSort = sortOrder == "Role" ? "role_desc" : "Role";
+            BanSort = sortOrder == "Ban" ? "ban_desc" : "Ban";
+
             UsersOfRoleMember = await userManager.GetUsersInRoleAsync("Member");
             UsersOfRoleEditor = await userManager.GetUsersInRoleAsync("Editor");
             UsersOfRoleModerator = await userManager.GetUsersInRoleAsync("Moderator");
             UsersOfRoleAdmin = await userManager.GetUsersInRoleAsync("Admin");
 
-            UserWithRoles = new List<UserWithRole>();
+            var UwR = new List<UserWithRole>();
 
             foreach (var item in UsersOfRoleMember)
             {
-                UserWithRoles.Add(new UserWithRole {
+                UwR.Add(new UserWithRole {
                     UserId = item.Id,
                     UserEmail = item.Email,
                     UserRole = "Member",
@@ -54,7 +62,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             }
             foreach (var item in UsersOfRoleEditor)
             {
-                UserWithRoles.Add(new UserWithRole
+                UwR.Add(new UserWithRole
                 {
                     UserId = item.Id,
                     UserEmail = item.Email,
@@ -64,7 +72,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             }
             foreach (var item in UsersOfRoleModerator)
             {
-                UserWithRoles.Add(new UserWithRole
+                UwR.Add(new UserWithRole
                 {
                     UserId = item.Id,
                     UserEmail = item.Email,
@@ -74,7 +82,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             }
             foreach (var item in UsersOfRoleAdmin)
             {
-                UserWithRoles.Add(new UserWithRole
+                UwR.Add(new UserWithRole
                 {
                     UserId = item.Id,
                     UserEmail = item.Email,
@@ -82,6 +90,32 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                     UserBan = item.BanStatus
                 });
             }
+
+            var sort = UwR.AsEnumerable();
+
+            switch (sortOrder)
+            {
+                case "email_desc":
+                    sort = sort.OrderByDescending(s => s.UserEmail);
+                    break;
+                case "Role":
+                    sort = sort.OrderBy(s => s.UserRole);
+                    break;
+                case "role_desc":
+                    sort = sort.OrderByDescending(s => s.UserRole);
+                    break;
+                case "Ban":
+                    sort = sort.OrderBy(s => s.UserBan);
+                    break;
+                case "ban_desc":
+                    sort = sort.OrderByDescending(s => s.UserBan);
+                    break;
+                default:
+                    sort = sort.OrderBy(s => s.UserEmail);
+                    break;
+            }
+
+            UserWithRoles = sort.ToList();
 
             var temp = await userManager.GetUserAsync(HttpContext.User);
 

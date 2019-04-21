@@ -10,16 +10,22 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">
-                    Email
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.EmailSort">
+                        Email
+                    </a>
                 </th>
                 <th scope="col">
-                    Role
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.RoleSort">
+                        Role
+                    </a>
                 </th>
                 <th scope="col">
                     Change Role
                 </th>
                 <th scope="col">
-                    Ban/Unban User
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.BanSort">
+                        Ban/Unban User
+                    </a>
                 </th>
             </tr>
         </thead>
