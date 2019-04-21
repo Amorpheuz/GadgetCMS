@@ -29,24 +29,24 @@ else
                                 }
                                 <img src="@imgSrc" class="d-block w-100 img-fluid" alt="..." style="height:450px;">
                                 <div class="carousel-caption d-md-block" style="background:rgba(0,0,0,0.4);">
-                                    <h5  style="color:white;">@articles.ArticleName</h5>
+                                    <a asp-page="./Article/Details" asp-route-id="@articles.ArticleId"><h5 style="color:white;">@articles.ArticleName</h5></a>
                                     <p class="font-italic">@articles.ArticleSubtitle</p>
                                 </div>
                             </div>
                         }
                         else
                         {
-            <div class="carousel-item">
-                @{
-                    var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
-                    var imgSrc = $"data:image/gif;base64,{base64}";
-                }
-                <img src="@imgSrc" class="d-block w-100 img-fluid" alt="..." style="height:450px;">
-                <div class="carousel-caption d-md-block" style="background:rgba(0,0,0,0.4);width:70%;">
-                    <h5 style="color:white;">@articles.ArticleName</h5>
-                    <p class="font-italic">@articles.ArticleSubtitle</p>
-                </div>
-            </div>
+                            <div class="carousel-item">
+                                @{
+                                    var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="d-block w-100 img-fluid" alt="..." style="height:450px;">
+                                <div class="carousel-caption d-md-block" style="background:rgba(0,0,0,0.4);width:70%;">
+                                    <a asp-page="./Article/Details" asp-route-id="@articles.ArticleId"><h5 style="color:white;">@articles.ArticleName</h5></a>
+                                    <p class="font-italic">@articles.ArticleSubtitle</p>
+                                </div>
+                            </div>
                         }
                     }
 
@@ -65,12 +65,12 @@ else
         </div>
     </div>
     @*@foreach (var articles in Model)
-    {
-        if (i <= 5)
         {
-            <h6>@articles.ArticleName</h6>
-        }
+            if (i <= 5)
+            {
+                <h6>@articles.ArticleName</h6>
+            }
 
-        i++;
-    }*@
+            i++;
+        }*@
 }

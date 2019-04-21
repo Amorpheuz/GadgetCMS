@@ -6,7 +6,8 @@
     {
         //foreach(var articlesfetchSub in articlesfetch)
         //    {
-        <h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>
+        <a asp-page="./Details" asp-route-id="@articlesfetch.ArticleId">@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</a> <br />
+        
     }
 
     //}

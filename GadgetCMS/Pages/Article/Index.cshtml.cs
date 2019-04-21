@@ -115,7 +115,7 @@ namespace GadgetCMS.Pages.Article
         public PartialViewResult OnGetSearchQuery(string value)
         {
             
-            articles_list = _context.Article.Where(s => s.ArticleContent.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
+            articles_list = _context.Article.Where(s => s.ArticleName.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
            
             return new PartialViewResult
             {

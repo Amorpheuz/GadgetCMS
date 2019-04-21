@@ -2,9 +2,9 @@
 
 @if (Model != null)
 {
-   
-        foreach (var articlesfetch in Model)
-        {
+
+    foreach (var articlesfetch in Model)
+    {
 
         <div class="card mb-2">
             <div class="card-body">
@@ -21,7 +21,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <h6 class="font-weight-bold"><a href="#" class="stretched-link">@articlesfetch.ArticleName</a></h6>
+                                <h6 class="font-weight-bold"><a asp-page="./Details" asp-route-id="@articlesfetch.ArticleId">@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</a></h6>
                             </div>
                         </div>
                         <div class="row">
@@ -49,7 +49,7 @@
 
 
         @*<h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>*@
-        }
+    }
 
 }
 else
