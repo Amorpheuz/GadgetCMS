@@ -5,17 +5,27 @@
     ViewBag.Title = "User Management";
 }
 <h2>User Management</h2>
+<form asp-page="./ManageUsers" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by Email:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-page="./ManageUsers">Back to full List</a>
+        </p>
+    </div>
+</form>
 <div class="table-responsive">
     <table class="table">
         <thead class="thead-light">
             <tr>
                 <th scope="col">
-                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.EmailSort">
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.EmailSort" asp-route-currentFilter="@Model.CurrentFilter">
                         Email
                     </a>
                 </th>
                 <th scope="col">
-                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.RoleSort">
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.RoleSort" asp-route-currentFilter="@Model.CurrentFilter">
                         Role
                     </a>
                 </th>
@@ -23,7 +33,7 @@
                     Change Role
                 </th>
                 <th scope="col">
-                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.BanSort">
+                    <a asp-page="./ManageUsers" asp-route-sortOrder="@Model.BanSort" asp-route-currentFilter="@Model.CurrentFilter">
                         Ban/Unban User
                     </a>
                 </th>
@@ -67,7 +77,7 @@
                                     <button type="submit" class="btn btn-danger btn-sm" asp-page-handler="BanUser">Ban</button>
                                 </form>
                             }
-                            else if(item.UserEmail != Model.CurUserEmail)
+                            else if (item.UserEmail != Model.CurUserEmail)
                             {
                                 <form method="post">
                                     <input type="hidden" name="UserID" value="@item.UserId" />
@@ -81,3 +91,22 @@
         </tbody>
     </table>
 </div>
+@{
+    var prevDisabled = !Model.UserWithRoles.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.UserWithRoles.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./ManageUsers"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.UserWithRoles.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./ManageUsers"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.UserWithRoles.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
 {
@@ -29,7 +30,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
         private IEnumerable<GadgetCMSUser> UsersOfRoleEditor;
         private IEnumerable<GadgetCMSUser> UsersOfRoleModerator;
         private IEnumerable<GadgetCMSUser> UsersOfRoleAdmin;
-        public List<UserWithRole> UserWithRoles;
+        public UserPaginatedList<UserWithRole> UserWithRoles;
         public IQueryable<IdentityRole> Roles;
         public string CurUserEmail;
         public IList<string> CurUserRole;
@@ -37,12 +38,23 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
         public string EmailSort { get; set; }
         public string RoleSort { get; set; }
         public string BanSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
-        public async Task OnGet(string sortOrder)
+        public async Task OnGet(string sortOrder,string currentFilter, string searchString, int? pageIndex)
         {
+            CurrentSort = sortOrder;
             EmailSort = String.IsNullOrEmpty(sortOrder) ? "email_desc" : "";
             RoleSort = sortOrder == "Role" ? "role_desc" : "Role";
             BanSort = sortOrder == "Ban" ? "ban_desc" : "Ban";
+            if (searchString != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
             UsersOfRoleMember = await userManager.GetUsersInRoleAsync("Member");
             UsersOfRoleEditor = await userManager.GetUsersInRoleAsync("Editor");
@@ -91,7 +103,12 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                 });
             }
 
-            var sort = UwR.AsEnumerable();
+            var sort = UwR.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                sort = sort.Where(s => s.UserEmail.Contains(searchString));
+            }
 
             switch (sortOrder)
             {
@@ -115,7 +132,9 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                     break;
             }
 
-            UserWithRoles = sort.ToList();
+            int pageSize = 5;
+            UserWithRoles = UserPaginatedList<UserWithRole>.Create(
+                sort.AsNoTracking(), pageIndex ?? 1, pageSize);
 
             var temp = await userManager.GetUserAsync(HttpContext.User);
 
