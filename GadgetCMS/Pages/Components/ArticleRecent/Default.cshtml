@@ -3,8 +3,8 @@
     int i = 0;
 }
 <style>
-    .font-smaller{
-        font-size:smaller;
+    .font-smaller {
+        font-size: smaller;
     }
 </style>
 @if (Model.FirstOrDefault() == null)
@@ -32,7 +32,7 @@ else
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h6 class="font-weight-bold"><a href="#" class="stretched-link">@articles.ArticleName</a></h6>
+                                    <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@articles.ArticleId" class="stretched-link">@articles.ArticleName</a></h6>
                                 </div>
                             </div>
                             <div class="row">
@@ -55,46 +55,46 @@ else
                     </div>
 
                 </div>
-                
+
             </div>
 
             @*<div class="row">
-                <div class="col-md-1">
+                    <div class="col-md-1">
+
+                    </div>
+                    <div class="col-md-11 card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>@articles.ArticleAuthor</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>@articles.ArticleCreated</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <a href="#" class="stretched-link"><h6 class="font-weight-bold">@articles.ArticleName</h6></a>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/09/12/11/naturo-monkey-selfie.jpg?w968h681" class="img-fluid" style="height:100px;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-muted">@articles.ArticleSubtitle</p>
+                            </div>
+                            @*<div class="col-md-6">
+                                <p class="font-smaller"><a href="#">Edit</a></p>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-                <div class="col-md-11 card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>@articles.ArticleAuthor</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>@articles.ArticleCreated</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <a href="#" class="stretched-link"><h6 class="font-weight-bold">@articles.ArticleName</h6></a>
-                        </div>
-                        <div class="col-md-4">
-                            <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/09/12/11/naturo-monkey-selfie.jpg?w968h681" class="img-fluid" style="height:100px;" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="text-muted">@articles.ArticleSubtitle</p>
-                        </div>
-                        @*<div class="col-md-6">
-                            <p class="font-smaller"><a href="#">Edit</a></p>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <h6>@articles.ArticleName</h6>*@
+                <h6>@articles.ArticleName</h6>*@
             @*<ul>
-                <li><a href="#">Edit</a></li>
-            </ul>*@
-            <hr width="80%"/>
+                    <li><a href="#">Edit</a></li>
+                </ul>*@
+            <hr width="80%" />
         }
 
         i++;

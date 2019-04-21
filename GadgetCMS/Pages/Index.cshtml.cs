@@ -21,13 +21,13 @@ namespace GadgetCMS.Pages
 
         }
 
-        public List<Data.Article> Articles {get;set;} 
+        public List<Data.Article> Articles { get; set; }
 
         public PartialViewResult OnGetSearchQuery(string value)
         {
-            
-            Articles = _context.Article.Where(s => s.ArticleContent.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
-           
+
+            Articles = _context.Article.Where(s => s.ArticleName.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
+
             return new PartialViewResult
             {
                 ViewName = "_ArticleListSearchQuery",

@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <h6 class="font-weight-bold"><a href="#" class="stretched-link">@Model.Articles.Where(c => c.ArticleId == articleidsfetch.ArticleId).Select(a => a.ArticleName).FirstOrDefault()</a></h6>
+                                            <h6 class="font-weight-bold"><a asp-page="./Details" asp-route-id="@Model.Articles.Where(c => c.ArticleId == articleidsfetch.ArticleId).Select(d => d.ArticleId).FirstOrDefault()" class="stretched-link">@Model.Articles.Where(c => c.ArticleId == articleidsfetch.ArticleId).Select(a => a.ArticleName).FirstOrDefault()</a></h6>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -84,7 +84,7 @@
 
 
 
-                    
+
                     @*<a asp-page="../Article/Details" asp-route-id="@articleidsfetch.ArticleId">@articleidsfetch.ArticleId</a> <br />*@
                 }
                 //}
