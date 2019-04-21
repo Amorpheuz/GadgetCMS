@@ -2,10 +2,55 @@
 
 @if (Model != null)
 {
-    foreach (var articlesfetch in Model)
-    {
-        <h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>
-    }
+   
+        foreach (var articlesfetch in Model)
+        {
+
+        <div class="card mb-2">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p>@articlesfetch.ArticleAuthor</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>@articlesfetch.ArticleCreated.ToShortDateString()</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="font-weight-bold"><a href="#" class="stretched-link">@articlesfetch.ArticleName</a></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-muted">@articlesfetch.ArticleSubtitle</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @{
+                                    var base64 = Convert.ToBase64String(articlesfetch.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        @*<h5>@Html.DisplayFor(modelItem => articlesfetch.ArticleName)</h5>*@
+        }
+
 }
 else
 {

@@ -1,7 +1,9 @@
 ﻿@model GadgetCMS.Data.ApplicationDbContext
+@using Microsoft.EntityFrameworkCore;
 @{
     IQueryable<int> articleIds = Model.Review.Select(g => g.ArticleId).Distinct();
     List<double> ratingsAverage = new List<double>();
+    Data.Article articles = new Data.Article();
     int i = 0;
 }
 @if (articleIds.Count() == 0)
@@ -22,7 +24,50 @@ else
         {
             if (ratingsAverage[i] >= 4.5)
             {
-                <h6>@articleIdsFE2 - @ratingsAverage[i]</h6>
+
+                articles = Model.Article.Include(c => c.ArticlePictures).Where(d => d.ArticleId == articleIdsFE2).FirstOrDefault();
+
+                <div class="card mb-2">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <p>@articles.ArticleAuthor</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p>@articles.ArticleCreated.ToShortDateString()</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a href="#"><h6 class="font-weight-bold">@articles.ArticleName</h6></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="text-muted">@articles.ArticleSubtitle</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 d-flex justify-content-center">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @{
+                                            var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
+                                            var imgSrc = $"data:image/gif;base64,{base64}";
+                                        }
+                                        <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
             }
             i++;
         }
@@ -31,6 +76,6 @@ else
             <h6>Trouble Fetching Ratings, Please Try Again.</h6>
         }
     }
-    <button type="button" class="btn btn-primary position-right" >Know More</button>
+    <button type="button" class="btn btn-primary position-right">Know More</button>
 }
 

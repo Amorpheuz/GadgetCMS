@@ -24,6 +24,7 @@
                 <input asp-for="Category.CategoryDescription" class="form-control" />
                 <span asp-validation-for="Category.CategoryDescription" class="text-danger"></span>
             </div>
+            <select multiple asp-for="Category.CategoryParentParameters" class="form-control custom-select" asp-items="ViewBag.ParentParameters" name="AddParentParameters"></select>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -26,11 +26,36 @@
                 <span asp-validation-for="Category.CategoryDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <select asp-for="Category.CategoryParentParameters" class="form-control custom-select" asp-items="ViewBag.ParentParameters" name="AddParentParameters" id="AddParentParameters"></select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+
+@if (Model.ParentParametersMain != null)
+{
+    foreach (var ppDetsMain in Model.ParentParametersMain)
+    {
+        foreach (var ppDetsSub in ppDetsMain)
+        {
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+            <script>
+                        $(document).ready(function()
+                        {
+                           $('#AddParentParameters option[value="@ppDetsSub.ParentParameterId"]').attr('selected', true);
+
+                        });
+            </script>
+
+            @ppDetsSub.ParentParameterName
+        }
+    }
+}
+
 
 <div>
     <a asp-page="./Index">Back to List</a>

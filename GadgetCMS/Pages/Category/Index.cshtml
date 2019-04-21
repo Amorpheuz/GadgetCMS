@@ -20,7 +20,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category[0].CategoryDescription)
             </th>
-            <th></th>
+            <th>
+                Parent Parameters
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +33,14 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryDescription)
+            </td>
+            <td>
+                @foreach (var itemSub in item.CategoryParentParameters)
+                {
+                    string PPName = Model._context.ParentParameter.Where(c => c.ParentParameterId == itemSub.ParentParameterId).Select(d => d.ParentParameterName).FirstOrDefault();
+                    <p>@PPName</p>
+                }
+
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.CategoryId">Edit</a> |
