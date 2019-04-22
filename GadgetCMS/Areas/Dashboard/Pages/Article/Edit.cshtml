@@ -5,13 +5,13 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "../Shared/_Layout.cshtml";
     var articleContent = "quill.setContents(" + Model.Article.ArticleContent + ")";
     var user = await UserManager.GetUserAsync(User);
     var i = 0;
 }
 
-<h1>Edit</h1>
+<h3>Edit</h3>
 
 <hr />
 <div class="row">
@@ -186,13 +186,13 @@
     </div>
 </div>
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="../Articles">Back to List</a> | <a asp-page="/Article/Details" asp-route-id="@Model.Article.ArticleId">Details</a>
 </div>
 
 <script>
     function delImage(PictureId) {
         var options = {};
-        options.url = "/Article/Edit/" + PictureId + "?handler=DeletePic";
+        options.url = "/Dashboard/Article/Edit/" + PictureId + "?handler=DeletePic";
         options.type = "POST";
         options.contentType = "application/json";
         options.dataType = "json";
@@ -221,7 +221,7 @@
         var captions = $('#upCaption').val();
         formData.append("UploadCaptions", captions);
         var options = {};
-        options.url = "/Article/Edit?handler=AddPic";
+        options.url = "/Dashboard/Article/Edit?handler=AddPic";
         options.type = "POST";
         options.data = formData;
         options.processData = false;

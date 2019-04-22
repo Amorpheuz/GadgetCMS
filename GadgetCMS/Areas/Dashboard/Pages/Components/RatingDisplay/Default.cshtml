@@ -1,0 +1,14 @@
+﻿@model GadgetCMS.ViewComponents.RingControlModel
+
+<select id="@Model.RatingControlIdValue"
+        asp-items="@Model.SelectedListItems"></select>
+<script>
+    $(document).ready(function () {
+        $('#@Model.RatingControlIdValue').barrating('show', {
+            theme: 'fontawesome-stars-o',
+            readonly: true,
+            initialRating: @Model.RatingControlValue,
+            showSelectedRating: true
+    });
+    });
+</script>

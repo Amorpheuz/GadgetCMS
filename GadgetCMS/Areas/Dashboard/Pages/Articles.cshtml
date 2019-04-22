@@ -8,7 +8,7 @@
 
 <h2>Articles</h2>
 <p>
-    <a href="#">Create New</a>
+    <a asp-page="./Article/Create">Create New</a>
 </p>
 
 <form asp-page="./Articles" method="get" class="form-inline">
@@ -67,9 +67,9 @@
                         @Html.DisplayFor(modelItem => item.ArticleCreated)
                     </td>
                     <td>
-                        <a href="#">Edit</a> |
-                        <a href="#">Details</a> |
-                        <a href="#">Delete</a>
+                        <a asp-page="./Article/Edit" asp-route-id="@item.ArticleId">Edit</a> |
+                        <a asp-page="/Article/Details" asp-route-id="@item.ArticleId">Details</a> |
+                        <a asp-page="./Article/Delete" asp-route-id="@item.ArticleId">Delete</a>
                     </td>
                 </tr>
             }

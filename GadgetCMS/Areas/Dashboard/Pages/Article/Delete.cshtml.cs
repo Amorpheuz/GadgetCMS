@@ -53,7 +53,7 @@ namespace GadgetCMS.Pages.Article
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Articles");
         }
     }
 }

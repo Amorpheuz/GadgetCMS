@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "../Shared/_Layout.cshtml";
     var user = await UserManager.GetUserAsync(User);
     var captionError = ViewBag.CaptionError;
     var imageCheck = ViewBag.ImageCheck;
@@ -16,7 +16,7 @@
     }
     var valError = ViewBag.ValError;
 }
-<h1>Create</h1>
+<h3>Create</h3>
 
 <hr />
 <div class="row">
@@ -183,7 +183,7 @@
     </div>
 </div>
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="../Articles">Back to List</a>
 </div>
 <script>
     document.getElementById("submiter").onclick = function () {
@@ -228,7 +228,7 @@
         $("#catSelect").change(function () {
             var options = {};
             var catId = $(this).children("option:selected").val();
-            options.url = "/article/Create?handler=FetchParameter&id=" + catId;
+            options.url = "/dashboard/article/Create?handler=FetchParameter&id=" + catId;
             options.type = "GET";
             options.datatype = "json";
             options.success = function (data) {

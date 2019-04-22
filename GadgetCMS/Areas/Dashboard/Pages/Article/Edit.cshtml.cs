@@ -90,7 +90,7 @@ namespace GadgetCMS.Pages.Article
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Articles");
         }
 
         public IActionResult OnPostDeletePic(int PictureId)
