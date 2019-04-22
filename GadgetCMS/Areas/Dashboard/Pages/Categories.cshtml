@@ -1,0 +1,115 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.CategoriesModel
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "Shared/_Layout.cshtml";
+}
+
+<h2>Categories</h2>
+<p>
+    <a asp-page="#">Create New</a>
+</p>
+
+<form asp-page="./Categories" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group">
+                <label class="label mr-2">Find by Parent Parameter Name or Parameter Name: </label>
+                <input type="text" class="form-control" name="SearchString" value="@Model.CurrentFilter" placeholder="Enter term..." />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-page="./Categories">Back to full List</a>
+            </div>
+        </p>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">
+                    <a asp-page="./Categories" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Categories[0].CategoryName)
+                    </a>
+                </th>
+                <th scope="col">
+                    Parent Parameters
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Categories)
+            {
+                var btnId = "collapse" + item.CategoryId;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        <p>
+                            <a class="btn btn-outline-primary" data-toggle="collapse" href="#@btnId" role="button" aria-expanded="false" aria-controls="collapseEg">
+                                Show Parent Parameters
+                            </a>
+                        </p>
+                    </td>
+                    <td>
+                        <a asp-page="#">Edit</a> |
+                        <a asp-page="#">Details</a> |
+                        <a asp-page="#">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="collapse" id="@btnId">
+                            <div class="card card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">
+                                                    Parent Parameter Name
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var miniItem in item.CategoryParentParameters)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a asp-page="/ParentParameter/Details" asp-route-id="@miniItem.ParentParameterId">
+                                                            @Html.DisplayFor(model => miniItem.ParentParameter.ParentParameterName)
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    var prevDisabled = !Model.Categories.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Categories.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Categories"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Categories.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Categories"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Categories.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
