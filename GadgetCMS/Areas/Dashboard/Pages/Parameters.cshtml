@@ -5,7 +5,7 @@
     Layout = "Shared/_Layout.cshtml";
 }
 
-<h2>Articles</h2>
+<h2>Parameters</h2>
 <p>
     <a asp-page="./Parameter/Create">Create New</a>
 </p>
@@ -27,7 +27,7 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">
-                    <a asp-page="./Articles" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    <a asp-page="./Parameters" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
                         @Html.DisplayNameFor(model => model.ParentParameters[0].ParentParameterName)
                     </a>
                 </th>
@@ -47,7 +47,7 @@
                     </td>
                     <td>
                         <p>
-                            <a class="btn btn-outline-primary" data-toggle="collapse" href="#@btnId" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" href="#@btnId" role="button" aria-expanded="false" aria-controls="collapseEg">
                                 Show Parameters
                             </a>
                         </p>
