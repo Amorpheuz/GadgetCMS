@@ -1,0 +1,98 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.ArticlesModel
+@{
+    ViewData["Title"] = "Articles";
+    Layout = "Shared/_Layout.cshtml";
+}
+
+
+<h2>Articles</h2>
+<p>
+    <a href="#">Create New</a>
+</p>
+
+<form asp-page="./Articles" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group">
+                <label class="label mr-2">Find by Name, Author or Category: </label>
+                <input type="text" class="form-control" name="SearchString" value="@Model.CurrentFilter" placeholder="Enter term..." />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-page="./Articles">Back to full List</a>
+            </div>
+        </p>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">
+                    <a asp-page="./Articles" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Articles[0].ArticleName)
+                    </a>
+                </th>
+                <th scope="col">
+                    <a asp-page="./Articles" asp-route-sortOrder="@Model.AuthorSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Articles[0].ArticleAuthor)
+                    </a>
+                </th>
+                <th scope="col">
+                    <a asp-page="./Articles" asp-route-sortOrder="@Model.CategorySort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Articles[0].Category.CategoryName)
+                    </a>
+                </th>
+                <th scope="col">
+                    <a asp-page="./Articles" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Articles[0].ArticleCreated)
+                    </a>
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Articles)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleAuthor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleCreated)
+                    </td>
+                    <td>
+                        <a href="#">Edit</a> |
+                        <a href="#">Details</a> |
+                        <a href="#">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    var prevDisabled = !Model.Articles.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Articles.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Articles"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Articles.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Articles"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Articles.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
