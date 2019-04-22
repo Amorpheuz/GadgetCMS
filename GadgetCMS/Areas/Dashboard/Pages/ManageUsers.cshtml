@@ -5,13 +5,15 @@
     ViewBag.Title = "User Management";
 }
 <h2>User Management</h2>
-<form asp-page="./ManageUsers" method="get">
+<form asp-page="./ManageUsers" method="get" class="form-inline">
     <div class="form-actions no-color">
         <p>
-            Find by Email:
-            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-page="./ManageUsers">Back to full List</a>
+            <div class="form-group">
+                <label class="label mr-2">Find by Email </label>
+                <input type="text" class="form-control" name="SearchString" value="@Model.CurrentFilter" placeholder="Enter Email..."/>
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-page="./ManageUsers">Back to full List</a>
+            </div>
         </p>
     </div>
 </form>
