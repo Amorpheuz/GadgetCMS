@@ -132,7 +132,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 10;
             UserWithRoles = UserPaginatedList<UserWithRole>.Create(
                 sort.AsNoTracking(), pageIndex ?? 1, pageSize);
 
