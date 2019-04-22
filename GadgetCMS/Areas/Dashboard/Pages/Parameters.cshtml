@@ -1,0 +1,120 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.ParametersModel
+@{
+    ViewData["Title"] = "Parameters";
+    Layout = "Shared/_Layout.cshtml";
+}
+
+<h2>Articles</h2>
+<p>
+    <a asp-page="#">Create New</a>
+</p>
+
+<form asp-page="./Parameters" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group">
+                <label class="label mr-2">Find by Parent Parameter Name or Parameter Name: </label>
+                <input type="text" class="form-control" name="SearchString" value="@Model.CurrentFilter" placeholder="Enter term..." />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-page="./Parameters">Back to full List</a>
+            </div>
+        </p>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">
+                    <a asp-page="./Articles" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.ParentParameters[0].ParentParameterName)
+                    </a>
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.ParentParameters[0].Parameters)
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ParentParameters)
+            {
+                var btnId = "collapse" + item.ParentParameterId;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ParentParameterName)
+                    </td>
+                    <td>
+                        <p>
+                            <a class="btn btn-outline-primary" data-toggle="collapse" href="#@btnId" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Show Parameters
+                            </a>
+                        </p>
+                    </td>
+                    <td>
+                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Edit</a> |
+                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Details</a> |
+                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="collapse" id="@btnId">
+                            <div class="card card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">
+                                                    @Html.DisplayNameFor(model => item.Parameters[0].ParameterName)
+                                                </th>
+                                                <th scope="col">
+                                                    @Html.DisplayNameFor(model => item.Parameters[0].ParameterUnit)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var miniItem in item.Parameters)
+                                            {
+
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(model => miniItem.ParameterName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(model => miniItem.ParameterName)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    var prevDisabled = !Model.ParentParameters.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.ParentParameters.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Parameters"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.ParentParameters.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Parameters"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.ParentParameters.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
