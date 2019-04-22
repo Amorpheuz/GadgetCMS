@@ -1,4 +1,4 @@
-@{
+﻿@{
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -40,6 +40,7 @@
         $(document).ready(function () {
             $('#mainBody').removeClass("container");
             $('#mainBody').addClass("container-fluid");
+            $('#mainBody').css("padding-left",0);
 
             $("#menu-toggle").click(function(e) {
               e.preventDefault();
