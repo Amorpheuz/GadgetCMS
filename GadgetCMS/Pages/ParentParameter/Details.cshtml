@@ -1,5 +1,6 @@
 ﻿@page
 @model GadgetCMS.Pages.ParentParameter.DetailsModel
+@inject SignInManager<GadgetCMS.Areas.Identity.Data.GadgetCMSUser> SignInManager
 
 @{
     ViewData["Title"] = "Details";
@@ -55,6 +56,13 @@
     </div>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.ParentParameter.ParentParameterId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Editor"))
+        {
+            <a asp-page="/Parameter/Edit" asp-route-id="@Model.ParentParameter.ParentParameterId" asp-area="Dashboard">Edit</a>
+            <text> | </text>
+            <a asp-page="/Parameters" asp-area="Dashboard">Back to List</a>
+        }
+    }            
 </div>

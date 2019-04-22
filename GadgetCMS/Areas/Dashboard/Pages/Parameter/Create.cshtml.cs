@@ -75,7 +75,7 @@ namespace GadgetCMS.Pages.ParentParameter
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Parameters");
         }
 
         private void InitParameter(List<string> pName, List<string> pDesc, List<string> pUnit)

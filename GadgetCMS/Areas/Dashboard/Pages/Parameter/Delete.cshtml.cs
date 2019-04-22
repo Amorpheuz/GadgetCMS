@@ -52,7 +52,7 @@ namespace GadgetCMS.Pages.ParentParameter
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Parameters");
         }
     }
 }

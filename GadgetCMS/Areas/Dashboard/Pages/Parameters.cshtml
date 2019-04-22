@@ -7,7 +7,7 @@
 
 <h2>Articles</h2>
 <p>
-    <a asp-page="#">Create New</a>
+    <a asp-page="./Parameter/Create">Create New</a>
 </p>
 
 <form asp-page="./Parameters" method="get" class="form-inline">
@@ -53,9 +53,9 @@
                         </p>
                     </td>
                     <td>
-                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Edit</a> |
-                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Details</a> |
-                        <a asp-page="#" asp-route-id="@item.ParentParameterId">Delete</a>
+                        <a asp-page="./Parameter/Edit" asp-route-id="@item.ParentParameterId">Edit</a> |
+                        <a asp-page="/ParentParameter/Details" asp-route-id="@item.ParentParameterId">Details</a> |
+                        <a asp-page="./Parameter/Delete" asp-route-id="@item.ParentParameterId">Delete</a>
                     </td>
                 </tr>
                 <tr>
@@ -83,7 +83,7 @@
                                                         @Html.DisplayFor(model => miniItem.ParameterName)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(model => miniItem.ParameterName)
+                                                        @Html.DisplayFor(model => miniItem.ParameterUnit)
                                                     </td>
                                                 </tr>
                                             }

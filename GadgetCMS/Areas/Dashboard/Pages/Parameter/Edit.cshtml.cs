@@ -116,7 +116,7 @@ namespace GadgetCMS.Pages.ParentParameter
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Parameters");
         }
 
         private bool ParentParameterExists(int id)
