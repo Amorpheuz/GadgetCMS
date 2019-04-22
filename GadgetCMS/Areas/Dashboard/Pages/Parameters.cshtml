@@ -80,7 +80,9 @@
 
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(model => miniItem.ParameterName)
+                                                        <a asp-page="/Parameter/Details" asp-route-id="@miniItem.ParameterId">
+                                                            @Html.DisplayFor(model => miniItem.ParameterName)
+                                                        </a>
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(model => miniItem.ParameterUnit)
