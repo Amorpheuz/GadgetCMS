@@ -30,7 +30,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
         private IEnumerable<GadgetCMSUser> UsersOfRoleEditor;
         private IEnumerable<GadgetCMSUser> UsersOfRoleModerator;
         private IEnumerable<GadgetCMSUser> UsersOfRoleAdmin;
-        public UserPaginatedList<UserWithRole> UserWithRoles;
+        public PaginatedList<UserWithRole> UserWithRoles;
         public IQueryable<IdentityRole> Roles;
         public string CurUserEmail;
         public IList<string> CurUserRole;
@@ -133,7 +133,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages.ManageUsers
             }
 
             int pageSize = 10;
-            UserWithRoles = UserPaginatedList<UserWithRole>.Create(
+            UserWithRoles = PaginatedList<UserWithRole>.Create(
                 sort.AsNoTracking(), pageIndex ?? 1, pageSize);
 
             var temp = await userManager.GetUserAsync(HttpContext.User);

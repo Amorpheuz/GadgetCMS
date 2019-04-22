@@ -18,7 +18,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages
             _context = context;
         }
 
-        public ArticlesPaginatedList<Article> Articles { get; set; }
+        public PaginatedList<Data.Article> Articles { get; set; }
 
         public string NameSort { get; set; }
         public string AuthorSort { get; set; }
@@ -86,7 +86,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages
             }
 
             int pageSize = 10;
-            Articles = ArticlesPaginatedList<Article>.CreateAsync(
+            Articles = PaginatedList<Data.Article>.Create(
                 sorter.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
     }
