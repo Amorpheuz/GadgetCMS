@@ -3,13 +3,14 @@
 @using System.Text
 @using GadgetCMS.Areas.Identity.Data
 @inject UserManager<GadgetCMSUser> UserManager
+@inject SignInManager<GadgetCMSUser> SignInManager
 
 
 @{
     var counter = 0;
     var articleId = 0;
     if (Model.FirstOrDefault() != null)
-    {        
+    {
         articleId = Model.FirstOrDefault().ArticleId;
     }
 }
@@ -20,7 +21,11 @@
     </div>
     <div class="col d-flex justify-content-end">
         <div>
-            @if (Model.FirstOrDefault() != null)
+            @if (Model.FirstOrDefault() == null && SignInManager.IsSignedIn(User))
+            {
+                <a asp-page="/Review/Create" asp-route-articleId="@articleId" class="btn btn-primary">Add Opinion</a>
+            }
+            else if (Model.FirstOrDefault() != null)
             {
                 @if (ViewBag.UserHasComment != null)
                 {
@@ -109,8 +114,8 @@ else
                 var html = qdc.convert();
                 document.getElementById('@ider').innerHTML = html;
             </script>
-                        counter++;
-                    }
+            counter++;
+        }
     </ul>
 }
 
