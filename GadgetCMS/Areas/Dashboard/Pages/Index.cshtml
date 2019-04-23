@@ -3,4 +3,180 @@
 @{
     Layout = "Shared/_Layout.cshtml";
 }
-<h1>Hi</h1>
+    <div class="row">
+        <div class="col p-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Articles</h4>
+                    <p class="card-text">
+                        Articles Created on a particular Day. <a asp-page="./Articles" class="card-link">Show Articles</a>
+                    </p>
+                </div>
+                <div id="articleHeatMap">
+
+                </div>
+            </div>
+        </div>
+        <div class="col p-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Reviews</h4>
+                    <p class="card-text">
+                        Reviews posted on a particular Day. <a asp-page="./Reviews" class="card-link">Show Reviews</a>
+                    </p>
+                </div>
+                <div id="reviewHeatMap">
+
+                </div>
+            </div>
+        </div>
+            
+
+    </div>
+        <div class="row">
+            <div class="col p-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Categories</h4>
+                        <p class="card-text">
+                            Number of articles in a category. <a asp-page="./Categories" class="card-link">Show Categories</a>
+                        </p>
+                    </div>
+                    <div id="categoryHeatMap">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col p-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Reviews depend on day</h4>
+                        <p class="card-text">
+                            Reviews posted on a particular Day of the Week within past 4 months.
+                        </p>
+                    </div>
+                    <div id="cr8HeatMap">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="~/lib/charts-master/dist/frappe-charts.min.iife.js"></script>
+        <script>
+    var now = new Date();
+    var startDate = new Date(now.getFullYear(), now.getMonth()-4, 1)
+    let artData = {
+        dataPoints: {
+            @for (int i = 0; i < Model.ArticleDates.Count; i++)
+            {
+                <text>"@Model.ArticleDates[i].ArtDate" : @Model.ArticleDates[i].ArtCount </text>
+                if(i != (Model.ArticleDates.Count - 1) )
+                {
+                    <text>,</text>
+                }
+            }
+        },
+        start: startDate,
+        end: now
+    }
+
+    let chart = new frappe.Chart("#articleHeatMap", {
+        type: 'heatmap',
+        data: artData,
+        title: "Articles Created",
+        colors: ['#B1BCF7', '#8393EE', '#5e72e4', '#3E56D8', '#1B36C8']
+    });
+
+    let revData = {
+        dataPoints: {
+            @for (int i = 0; i < Model.ReviewDates.Count; i++)
+            {
+                <text>"@Model.ReviewDates[i].RevDate" : @Model.ReviewDates[i].RevCount </text>
+                if(i != (Model.ReviewDates.Count - 1) )
+                {
+                    <text>,</text>
+                }
+            }
+        },
+        start: startDate,
+        end: now
+    }
+
+    let chart1 = new frappe.Chart("#reviewHeatMap", {
+        type: 'heatmap',
+        data: revData,
+        title: "Reviews Created",
+        colors: ['#B1BCF7', '#8393EE', '#5e72e4', '#3E56D8', '#1B36C8']
+    });
+
+    let catData = {
+        labels: [
+            @for (int i = 0; i < Model.CategoryDatas.Count; i++)
+            {
+                <text>"@Model.CategoryDatas[i].CatName"</text>
+                if(i != (Model.CategoryDatas.Count - 1) )
+                {
+                    <text>,</text>
+                }
+            }
+        ],
+        datasets: [
+            {
+                values: [
+                    @for (int i = 0; i < Model.CategoryDatas.Count; i++)
+                    {
+                        @Model.CategoryDatas[i].CatCount
+                        if(i != (Model.CategoryDatas.Count - 1) )
+                        {
+                            <text>,</text>
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+
+    let chart2 = new frappe.Chart("#categoryHeatMap", {
+        type: 'percentage',
+        data: catData,
+        title: "Articles in Categories"
+    });
+
+    let cr8data = {
+        labels: [@for (int i = 0; i < Model.RevCreateDatas.Count; i++)
+            {
+                <text>"@Model.RevCreateDatas[i].RevCreateDoW"</text>
+                if(i != (Model.RevCreateDatas.Count - 1) )
+                {
+                    <text>,</text>
+                }
+            }],
+        datasets: [
+            {
+                values: [@for (int i = 0; i < Model.RevCreateDatas.Count; i++)
+                    {
+                        @Model.RevCreateDatas[i].RevCreateCount
+                        if(i != (Model.RevCreateDatas.Count - 1) )
+                        {
+                            <text>,</text>
+                        }
+                    }]
+            }
+        ]
+    }
+    let chart3 = new frappe.Chart("#cr8HeatMap", {
+        type: 'bar',
+        data: cr8data,
+        title: "Reviews on a Day",
+        colors:['#5e72e4']
+    });
+
+
+    var revChart = document.getElementById("reviewHeatMap");
+    revChart.style.width = "";
+    revChart.style.overflow = "auto";
+    var artChart = document.getElementById("articleHeatMap");
+    artChart.style.width = "";
+    artChart.style.overflow = "auto";
+</script>
