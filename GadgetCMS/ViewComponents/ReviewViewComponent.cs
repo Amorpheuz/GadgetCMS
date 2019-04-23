@@ -32,9 +32,12 @@ namespace GadgetCMS.ViewComponents
             var user = await _userManager.GetUserAsync(HttpContext.User);
             foreach (var item in Reviews)
             {
-                if(item.GadgetCmsUser.Email == user.Email)
+                if(user != null)
                 {
-                    ViewData["UserHasComment"] = true;
+                    if (item.GadgetCmsUser.Email == user.Email)
+                    {
+                        ViewData["UserHasComment"] = true;
+                    }
                 }
             }            
             return View(Reviews);

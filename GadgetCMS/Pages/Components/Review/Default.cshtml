@@ -25,7 +25,7 @@
             {
                 <a asp-page="/Review/Create" asp-route-articleId="@articleId" class="btn btn-primary">Add Opinion</a>
             }
-            else if (Model.FirstOrDefault() != null)
+            else if (Model.FirstOrDefault() != null && SignInManager.IsSignedIn(User))
             {
                 @if (ViewBag.UserHasComment != null)
                 {
@@ -85,17 +85,18 @@ else
                         </div>
                         <div class="col-sm-4 d-flex justify-content-end">
                             <div>
-                                @if (item.UserId == UserManager.GetUserId(User))
+                                @if (SignInManager.IsSignedIn(User))
                                 {
-                                    <a asp-page="/Review/Edit" asp-route-id="@item.ArticleId">Edit</a>
-                                    <text> | </text>
+                                    @if (item.UserId == UserManager.GetUserId(User))
+                                    {
+                                        <a asp-page="/Review/Edit" asp-route-id="@item.ArticleId">Edit</a>
+                                        <text> | </text>
+                                        <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
+                                        <text> | </text>
+                                    }
                                 }
                                 <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
-                                @if (item.UserId == UserManager.GetUserId(User))
-                                {
-                                    <text> | </text>
-                                    <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
-                                }
+
                             </div>
                         </div>
                     </div>
