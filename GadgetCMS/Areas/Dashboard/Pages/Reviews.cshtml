@@ -66,7 +66,7 @@
                     </td>
                     <td>
                         <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a> |
-                        <a asp-page="#" asp-route-id="@item.ArticleId" class="text-danger">Delete</a>
+                        <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email" asp-page-handler="ModDelete" class="text-danger">Delete</a>
                     </td>
                 </tr>
             }

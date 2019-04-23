@@ -64,6 +64,7 @@ namespace GadgetCMS.Pages.Review
 
             var user = await _userManager.GetUserAsync(User);
 
+
             if (user.Id == userId)
             {
                 Review = await _context.Review.FindAsync(userId, articleId);
@@ -77,6 +78,35 @@ namespace GadgetCMS.Pages.Review
                 return RedirectToPage("/Article/Details", new { id = articleId });
             }
             return NotFound();
+        }
+
+        public async Task<IActionResult> OnGetModDeleteAsync(int? id, string userEmail)
+        {
+            if(userEmail == null || id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var userId = user.Id;
+
+            var userIsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            var userIsMod = await _userManager.IsInRoleAsync(user, "Moderator");
+
+            if (userIsAdmin || userIsMod)
+            {
+                Review = await _context.Review.FindAsync(userId, id);
+
+                if (Review != null)
+                {
+                    _context.Review.Remove(Review);
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToPage("/Reviews", new { area = "Dashboard"});
+            }
+            return NotFound();
+
         }
     }
 }
