@@ -39,7 +39,8 @@ namespace GadgetCMS.ViewComponents
                         ViewData["UserHasComment"] = true;
                     }
                 }
-            }            
+            }
+            ViewData["ArtId"] = ArticleId;
             return View(Reviews);
         }
     }

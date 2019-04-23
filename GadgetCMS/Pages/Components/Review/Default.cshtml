@@ -23,7 +23,7 @@
         <div>
             @if (Model.FirstOrDefault() == null && SignInManager.IsSignedIn(User))
             {
-                <a asp-page="/Review/Create" asp-route-articleId="@articleId" class="btn btn-primary">Add Opinion</a>
+                <a asp-page="/Review/Create" asp-route-articleId="@ViewBag.ArtId" class="btn btn-primary">Add Opinion</a>
             }
             else if (Model.FirstOrDefault() != null && SignInManager.IsSignedIn(User))
             {
