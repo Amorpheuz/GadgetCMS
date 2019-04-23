@@ -29,7 +29,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages
 
         public IActionResult OnGet()
         {
-            var tempArticles = _context.Article.Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).GroupBy(a => a.ArticleCreated).Select(g => new { g.Key, Count = g.Count() });
+            var tempArticles = _context.Article.Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).GroupBy(a => a.ArticleCreated.Date).Select(g => new { g.Key, Count = g.Count() });
 
             ArticleDates = new List<ArticleData>();
             foreach (var item in tempArticles)
@@ -44,7 +44,7 @@ namespace GadgetCMS.Areas.Dashboard.Pages
                     );
             }
 
-            var tempReviews = _context.Review.Where(a => DateTime.Compare(a.ReviewCreated, DateTime.Today.AddMonths(-4)) >= 0).GroupBy(a => a.ReviewCreated).Select(g => new { g.Key, Count = g.Count() });
+            var tempReviews = _context.Review.Where(a => DateTime.Compare(a.ReviewCreated, DateTime.Today.AddMonths(-4)) >= 0).GroupBy(a => a.ReviewCreated.Date).Select(g => new { g.Key, Count = g.Count() });
 
 
             ReviewDates = new List<ReviewData>();

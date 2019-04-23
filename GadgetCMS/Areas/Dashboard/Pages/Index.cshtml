@@ -1,6 +1,7 @@
 ﻿@page
 @model GadgetCMS.Areas.Dashboard.Pages.IndexModel
 @{
+    ViewData["Title"] = "Dashboard";
     Layout = "Shared/_Layout.cshtml";
 }
     <div class="row">
@@ -29,8 +30,7 @@
 
                 </div>
             </div>
-        </div>
-            
+        </div>          
 
     </div>
         <div class="row">
@@ -67,16 +67,14 @@
     var now = new Date();
     var startDate = new Date(now.getFullYear(), now.getMonth()-4, 1)
     let artData = {
-        dataPoints: {
-            @for (int i = 0; i < Model.ArticleDates.Count; i++)
+        dataPoints: {@for (int i = 0; i < Model.ArticleDates.Count; i++)
             {
                 <text>"@Model.ArticleDates[i].ArtDate" : @Model.ArticleDates[i].ArtCount </text>
                 if(i != (Model.ArticleDates.Count - 1) )
                 {
                     <text>,</text>
                 }
-            }
-        },
+            }},
         start: startDate,
         end: now
     }
@@ -89,16 +87,14 @@
     });
 
     let revData = {
-        dataPoints: {
-            @for (int i = 0; i < Model.ReviewDates.Count; i++)
+        dataPoints: {@for (int i = 0; i < Model.ReviewDates.Count; i++)
             {
                 <text>"@Model.ReviewDates[i].RevDate" : @Model.ReviewDates[i].RevCount </text>
                 if(i != (Model.ReviewDates.Count - 1) )
                 {
                     <text>,</text>
                 }
-            }
-        },
+            }},
         start: startDate,
         end: now
     }
@@ -111,18 +107,15 @@
     });
 
     let catData = {
-        labels: [
-            @for (int i = 0; i < Model.CategoryDatas.Count; i++)
+        labels: [@for (int i = 0; i < Model.CategoryDatas.Count; i++)
             {
                 <text>"@Model.CategoryDatas[i].CatName"</text>
                 if(i != (Model.CategoryDatas.Count - 1) )
                 {
                     <text>,</text>
                 }
-            }
-        ],
-        datasets: [
-            {
+            }],
+        datasets: [{
                 values: [
                     @for (int i = 0; i < Model.CategoryDatas.Count; i++)
                     {
@@ -133,8 +126,7 @@
                         }
                     }
                 ]
-            }
-        ]
+            }]
     }
 
     let chart2 = new frappe.Chart("#categoryHeatMap", {
