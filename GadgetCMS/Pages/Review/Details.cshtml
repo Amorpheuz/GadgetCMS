@@ -59,6 +59,8 @@
     {
         <a asp-page="./Edit" asp-route-id="@Model.Review.Article.ArticleId">Edit</a>
         <text> | </text>
+        <a asp-page="/Account/Manage/MyReviews" asp-area="Identity">Back to List</a>
+        <text> | </text>
     }
     <a asp-page="/Article/Details" asp-route-id="@Model.Review.ArticleId">Back to Article</a>
 </div>
