@@ -1,0 +1,95 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.ReviewsModel
+@{
+    ViewData["Title"] = "Reviews";
+    Layout = "Shared/_Layout.cshtml";
+}
+
+<h2>Reviews</h2>
+
+<form asp-page="./Reviews" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group">
+                <label class="label mr-2">Find by Review Title, Author or Article Name: </label>
+                <input type="text" class="form-control" name="SearchString" value="@Model.CurrentFilter" placeholder="Enter term..." />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-page="./Reviews">Back to full List</a>
+            </div>
+        </p>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">
+                    <a asp-page="./Reviews" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Reviews[0].ReviewTitle)
+                    </a>
+                </th>
+                <th scope="col">
+                    <a asp-page="./Reviews" asp-route-sortOrder="@Model.AuthorSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Reviews[0].GadgetCmsUser.Email)
+                    </a>
+                </th>
+                <th scope="col">
+                    <a asp-page="./Reviews" asp-route-sortOrder="@Model.ArticleSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Reviews[0].Article.ArticleName)
+                    </a>
+
+                </th>
+                <th scope="col">
+                    <a asp-page="./Reviews" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Reviews[0].ReviewCreated)
+                    </a>
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reviews)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.ReviewTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.GadgetCmsUser.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Article.ArticleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ReviewCreated)
+                    </td>
+                    <td>
+                        <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a> |
+                        <a asp-page="#" asp-route-id="@item.ArticleId" class="text-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    var prevDisabled = !Model.Reviews.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Reviews.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Reviews"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Reviews.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Reviews"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Reviews.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
