@@ -1,12 +1,12 @@
 ﻿@page
-@model GadgetCMS.Pages.Category.CreateModel
+@model GadgetCMS.Pages.Category.EditModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Category</h4>
 <hr />
@@ -14,6 +14,7 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Category.CategoryId" />
             <div class="form-group">
                 <label asp-for="Category.CategoryName" class="control-label"></label>
                 <input asp-for="Category.CategoryName" class="form-control" />
@@ -24,16 +25,37 @@
                 <input asp-for="Category.CategoryDescription" class="form-control" />
                 <span asp-validation-for="Category.CategoryDescription" class="text-danger"></span>
             </div>
-            <select multiple asp-for="Category.CategoryParentParameters" class="form-control custom-select" asp-items="ViewBag.ParentParameters" name="AddParentParameters"></select>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <select asp-for="Category.CategoryParentParameters" class="form-control custom-select" asp-items="ViewBag.ParentParameters" name="AddParentParameters" id="AddParentParameters"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+@if (Model.ParentParametersMain != null)
+{
+    foreach (var ppDetsMain in Model.ParentParametersMain)
+    {
+        foreach (var ppDetsSub in ppDetsMain)
+        {
+            <script>
+                        $(document).ready(function()
+                        {
+                           $('#AddParentParameters option[value="@ppDetsSub.ParentParameterId"]').attr('selected', true);
+
+                        });
+            </script>
+
+        }
+    }
+}
+
+
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="../Categories">Back to List</a>
 </div>
 
 @section Scripts {

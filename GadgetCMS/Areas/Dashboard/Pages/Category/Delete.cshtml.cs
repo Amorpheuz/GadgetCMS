@@ -52,7 +52,7 @@ namespace GadgetCMS.Pages.Category
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Categories");
         }
     }
 }

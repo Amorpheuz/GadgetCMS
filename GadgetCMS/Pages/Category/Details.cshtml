@@ -1,6 +1,6 @@
 ﻿@page
 @model GadgetCMS.Pages.Category.DetailsModel
-
+@inject SignInManager<GadgetCMS.Areas.Identity.Data.GadgetCMSUser> SignInManager
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -37,7 +37,20 @@
         </dd>
     </dl>
 </div>
+
 <div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Editor"))
+        {
+            <a asp-page="/Category/Edit" asp-route-id="@Model.Category.CategoryId" asp-area="Dashboard">Edit</a>
+            <text> | </text>
+            <a asp-page="/Categories" asp-area="Dashboard">Back to List</a>
+        }
+    }
+</div>
+
+@*<div>
     <a asp-page="./Edit" asp-route-id="@Model.Category.CategoryId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
-</div>
+</div>*@
