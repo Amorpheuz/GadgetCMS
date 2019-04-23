@@ -110,7 +110,7 @@ namespace GadgetCMS.Pages.Category
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Categories");
         }
 
         private bool CategoryExists(int id)
