@@ -21,7 +21,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var reviewsVar = _context.Review.GroupBy(c => c.ArticleId).OrderByDescending(gp => gp.Count()).ToList();
+            var reviewsVar = _context.Review.GroupBy(c => c.ArticleId).OrderBy(gp => gp.Count()).ToList();
             foreach (var reviewsFE in reviewsVar)
             {
                 string articleId = reviewsFE.Select(cg => cg.ArticleId).FirstOrDefault().ToString();
@@ -31,11 +31,9 @@ namespace GadgetCMS.ViewComponents
 
             foreach (var articles in reviews)
             {
-                articlesPopular = _context.Article.Where(cg => cg.ArticleId == articles).FirstOrDefault();
+                articlesPopular = _context.Article.Where(cg => cg.ArticleId == articles).Include(c => c.ArticlePictures).FirstOrDefault();
                 articlesPopularParent.Add(articlesPopular);
             }
-
-            articlesPopularParent = _context.Article.Include(c => c.ArticlePictures).ToList();
 
             return View("Default", articlesPopularParent);
         }

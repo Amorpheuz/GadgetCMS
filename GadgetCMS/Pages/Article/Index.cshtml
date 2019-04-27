@@ -92,7 +92,7 @@
                         var searchQuery = document.getElementById('SearchResult').value;
                         searchQuery = searchQuery.replace(/\s/g, "%20");
                         userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
-                        $('#ArList').load('/AdvancedSearch/SearchAjax?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
+                        $('#ArList').load('/Article/Index?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
                             userselectedvalues + '&&searchQuery=' + searchQuery);
                         return false;
                  });
