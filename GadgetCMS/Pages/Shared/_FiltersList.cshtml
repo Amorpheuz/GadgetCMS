@@ -27,25 +27,31 @@
                             {
                                 if (!articleparameters_param.Contains(articleParametersfetch.ParameterVal))
                                 {
-                                    idset = "CheckboxCheck" + checkboxcountA.ToString();
-                                    <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
-                                    @articleParametersfetch.ParameterVal
-                                    articleparameters_param.Add(articleParametersfetch.ParameterVal);
-                                    checkboxcountA++;
-                                    <br />
+                                    if (articleParametersfetch.ParameterVal != '-'.ToString())
+                                    {
+                                        idset = "CheckboxCheck" + checkboxcountA.ToString();
+                                        <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
+                                        @articleParametersfetch.ParameterVal
+                                        articleparameters_param.Add(articleParametersfetch.ParameterVal);
+                                        checkboxcountA++;
+                                        <br />
+                                    }
+
                                 }
 
 
                             }
                             else
                             {
-                                idset = "CheckboxCheck" + checkboxcountA.ToString();
-                                <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
-
-                                articleparameters_param.Add(articleParametersfetch.ParameterVal.ToString());
-                                @articleParametersfetch.ParameterVal
-                                checkboxcountA++;
-                                <br />
+                                if (articleParametersfetch.ParameterVal != '-'.ToString())
+                                    {
+                                        idset = "CheckboxCheck" + checkboxcountA.ToString();
+                                        <input type="checkbox" name="CheckboxCheck" id="@idset" value="@articleParametersfetch.ParameterVal" />
+                                        @articleParametersfetch.ParameterVal
+                                        articleparameters_param.Add(articleParametersfetch.ParameterVal);
+                                        checkboxcountA++;
+                                        <br />
+                                    }
                             }
 
 

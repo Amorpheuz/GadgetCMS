@@ -1,0 +1,211 @@
+﻿@page
+@model GadgetCMS.Pages.CompareModel
+@{
+    ViewData["Title"] = "Compare";
+}
+
+<head>
+    <style>
+        tr.noBorder td {
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <h3>Compare Product</h3>
+    <br />
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <select class="form-control" asp-for="Article.CategoryId" asp-items="ViewBag.CategoryId" id="SelectCategory">
+                <option>Please Select A Category</option>
+            </select>
+            <hr />
+        </div>
+        <div class="col-md-1">
+
+        </div>
+    </div>
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table align-items-center" id="tableDiv">
+                    <thead class="thead-light">
+
+                        <tr class="noBorder">
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <select id="FirstArticleList" class="form-control form-control-sm">
+                                    <option>Please Select Article</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="SecondArticleList" class="form-control form-control-sm">
+                                    <option>Please Select Article</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="ThirdArticleList" class="form-control form-control-sm">
+                                    <option>Please Select Article</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Sr No.</th>
+                            <th scope="col">Parameter Name</th>
+                            <th scope="col">Gadget One</th>
+                            <th scope="col">Gadget Two</th>
+                            <th scope="col">Gadget Three</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableDivBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        $('#SelectCategory').on('change', function () {
+
+            if (document.getElementById('SelectCategory').value != 'Please Select A Category') {
+
+
+                if (document.getElementById('tableDiv').rows.length > 1) {
+                    $('#tableDiv tbody').empty();
+                    $('#FirstArticleList').empty();
+                    $('#FirstArticleList').append("<option>Please Select Article</option>");
+                    $('#SecondArticleList').empty();
+                    $('#SecondArticleList').append("<option>Please Select Article</option>");
+                    $('#ThirdArticleList').empty();
+                    $('#ThirdArticleList').append("<option>Please Select Article</option>");
+                }
+
+                var options = {};
+                var categorySelect = document.getElementById('SelectCategory').value;
+                options.url = '/Compare?handler=SelectCategory&category=' + categorySelect;
+                options.dataType = "json";
+                options.success = function (data) {
+                    var i = 0;
+
+                    data.articles.forEach(function (arName) {
+                        $('#FirstArticleList').append("<option>" + arName.articleName + "</option>");
+                        $('#SecondArticleList').append("<option>" + arName.articleName + "</option>");
+                        $('#ThirdArticleList').append("<option>" + arName.articleName + "</option>");
+                    });
+                    data.parameters.forEach(function (pp) {
+                        pp.forEach(function (ppSub) {
+
+                            $('#tableDivBody').append("<tr><td>"+(i+1)+"</td><td id='" + i + "parameter'>" + ppSub.parameterName + "</td><td id='" + i + "first'></td><td id='" + i + "second'></td><td id='" + i + "third'></td></tr>");
+                            i++;
+
+                        });
+                    });
+
+                };
+                options.error = function () {
+                    alert("Error while making Ajax call!");
+                };
+                $.ajax(options);
+
+            }
+
+
+        });
+        $('#FirstArticleList').on('change', function () {
+            var options = {};
+            var arName = document.getElementById('FirstArticleList').value;
+            if (arName === 'Please Select Article') {
+                alert('Select an Article First');
+            }
+            else {
+                var categorySelect = document.getElementById('SelectCategory').value;
+                options.url = '/Compare?handler=BindArticle&name=' + arName;
+                options.dataType = "json";
+                options.success = function (data) {
+                    var i = 0;
+                    data.forEach(function (element) {
+                        if (!document.getElementById(i + 'first').textContent > 0) {
+                            document.getElementById(i + 'first').innerHTML = "";
+                            document.getElementById(i + 'first').append(element.parameterVal);
+                            i++;
+                        }
+                        else {
+                            document.getElementById(i + 'first').innerHTML = "";
+                            document.getElementById(i + 'first').append(element.parameterVal);
+                            i++;
+                        }
+                    });
+                };
+                options.error = function () {
+                    alert("Error while making Ajax call!");
+                };
+                $.ajax(options);
+            }
+
+        });
+        $('#SecondArticleList').on('change', function () {
+            var options = {};
+            var arName = document.getElementById('SecondArticleList').value;
+            var categorySelect = document.getElementById('SelectCategory').value;
+            options.url = '/Compare?handler=BindArticle&name=' + arName;
+            options.dataType = "json";
+            options.success = function (data) {
+                var i = 0;
+
+                data.forEach(function (element) {
+                    if (!document.getElementById(i + 'second').textContent > 0) {
+                        document.getElementById(i + 'second').innerHTML = "";
+                        document.getElementById(i + 'second').append(element.parameterVal);
+                        i++;
+                    }
+                    else {
+                        document.getElementById(i + 'second').innerHTML = "";
+                        document.getElementById(i + 'second').append(element.parameterVal);
+                        i++;
+                    }
+                });
+            };
+            options.error = function () {
+                alert("Error while making Ajax call!");
+            };
+            $.ajax(options);
+        });
+        $('#ThirdArticleList').on('change', function () {
+            var options = {};
+            var arName = document.getElementById('ThirdArticleList').value;
+            var categorySelect = document.getElementById('SelectCategory').value;
+            options.url = '/Compare?handler=BindArticle&name=' + arName;
+            options.dataType = "json";
+            options.success = function (data) {
+                var i = 0;
+
+                data.forEach(function (element) {
+                    if (!document.getElementById(i + 'third').textContent > 0) {
+                        document.getElementById(i + 'third').innerHTML = "";
+                        document.getElementById(i + 'third').append(element.parameterVal);
+                        i++;
+                    }
+                    else {
+                        document.getElementById(i + 'third').innerHTML = "";
+                        document.getElementById(i + 'third').append(element.parameterVal);
+                        i++;
+                    }
+                });
+            };
+            options.error = function () {
+                alert("Error while making Ajax call!");
+            };
+            $.ajax(options);
+        });
+    </script>
+
+</body>
