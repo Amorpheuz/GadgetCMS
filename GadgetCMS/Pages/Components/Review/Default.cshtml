@@ -128,8 +128,10 @@ else
     </ul>
 }
 
-<script src="~/lib/charts-master/dist/frappe-charts.min.iife.js"></script>
-<script>
+@if (Model.FirstOrDefault() != null)
+{
+    <script src="~/lib/charts-master/dist/frappe-charts.min.iife.js"></script>
+    <script>
     let revData = {
         labels: ["Positive Reviews", "Negative Reviews"],
         datasets: [
@@ -142,5 +144,6 @@ else
         type: 'percentage',
         colors: ['green', 'red']
     });
-</script>
+    </script>
+}
 
