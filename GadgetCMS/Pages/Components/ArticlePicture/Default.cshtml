@@ -8,3 +8,16 @@
         <img src="@imgSrc" class="caro-image" alt="@item.ArticlePictureCaption"/>
     }
 </div>
+<script>
+    $('.carousel').on('fullscreenChange.flickity', function (event, isFullscreen) {
+        if (isFullscreen) {
+            $('header').hide();
+            $('footer').hide();
+        }
+        else {
+            $('header').show();
+            $('footer').show();
+        }
+    });
+
+</script>
