@@ -16,11 +16,14 @@ namespace GadgetCMS.Pages.Review
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly UserManager<GadgetCMSUser> _userManager;
+        private readonly MLModelEngine<SentimentData, SentimentPrediction> _modelEngine;
 
-        public EditModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager)
+
+        public EditModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager, MLModelEngine<SentimentData, SentimentPrediction> modelEngine)
         {
             _userManager = userManager;
             _context = context;
+            _modelEngine = modelEngine;
         }
 
         [BindProperty]
@@ -60,6 +63,8 @@ namespace GadgetCMS.Pages.Review
                 return Page();
             }
 
+            string evalText = Request.Form["editContent"];
+            Review.ReviewType = OnGetPredictSentiment(evalText);
             _context.Attach(Review).State = EntityState.Modified;
 
             try
@@ -84,6 +89,12 @@ namespace GadgetCMS.Pages.Review
         private bool ReviewExists(string id)
         {
             return _context.Review.Any(e => e.UserId == id);
+        }
+        private bool OnGetPredictSentiment(string SentimentText)
+        {
+            SentimentData sampleData = new SentimentData() { SentimentText = SentimentText };
+            SentimentPrediction prediction = _modelEngine.Predict(sampleData);
+            return prediction.Prediction;
         }
     }
 }
