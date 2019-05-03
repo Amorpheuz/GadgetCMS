@@ -58,72 +58,75 @@ else
     <ul class="list-unstyled">
         @foreach (var item in Model)
         {
-            var ider = "review" + counter;
-            <li class="media mb-1">
-                @{
-                    var email = @item.GadgetCmsUser.Email;
-                    var emailHash = "";
-                    using (MD5 md5Hash = MD5.Create())
-                    {
-                        var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(email));
-                        var sBuilder = new StringBuilder();
-                        foreach (var t in data)
+            if (item.ReviewVisible == true)
+            {
+                var ider = "review" + counter;
+                <li class="media mb-1">
+                    @{
+                        var email = @item.GadgetCmsUser.Email;
+                        var emailHash = "";
+                        using (MD5 md5Hash = MD5.Create())
                         {
-                            sBuilder.Append(t.ToString("x2"));
+                            var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(email));
+                            var sBuilder = new StringBuilder();
+                            foreach (var t in data)
+                            {
+                                sBuilder.Append(t.ToString("x2"));
+                            }
+                            emailHash = "https://www.gravatar.com/avatar/" + sBuilder.ToString() + "?d=identicon&s=85";
                         }
-                        emailHash = "https://www.gravatar.com/avatar/" + sBuilder.ToString() + "?d=identicon&s=85";
+                        <img alt="@email" src="@emailHash" class="align-self-center mr-3 rounded-circle">
                     }
-                    <img alt="@email" src="@emailHash" class="align-self-center mr-3 rounded-circle">
-                }
-                <div class="media-body">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h5 class="mt-0">@item.ReviewTitle</h5>
+                    <div class="media-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h5 class="mt-0">@item.ReviewTitle</h5>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-end">
+                                @await Component.InvokeAsync("RatingDisplay", new { articleId = item.Article.ArticleId, userId = item.GadgetCmsUser.Id })
+                            </div>
                         </div>
-                        <div class="col-sm-4 d-flex justify-content-end">
-                            @await Component.InvokeAsync("RatingDisplay", new { articleId = item.Article.ArticleId, userId = item.GadgetCmsUser.Id })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <p class="text-muted"><i class="fa fa-user" aria-hidden="true"></i> @item.GadgetCmsUser.Email</p>
-                        </div>
-                        <div class="col-sm-4 d-flex justify-content-center">
-                            <p><i class="fa fa-calendar" aria-hidden="true"></i> @item.ReviewCreated.ToShortDateString()</p>
-                        </div>
-                        <div class="col-sm-4 d-flex justify-content-end">
-                            <div>
-                                @if (SignInManager.IsSignedIn(User))
-                                {
-                                    @if (item.UserId == UserManager.GetUserId(User))
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p class="text-muted"><i class="fa fa-user" aria-hidden="true"></i> @item.GadgetCmsUser.Email</p>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-center">
+                                <p><i class="fa fa-calendar" aria-hidden="true"></i> @item.ReviewCreated.ToShortDateString()</p>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-end">
+                                <div>
+                                    @if (SignInManager.IsSignedIn(User))
                                     {
-                                        <a asp-page="/Review/Edit" asp-route-id="@item.ArticleId">Edit</a>
-                                        <text> | </text>
-                                        <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
-                                        <text> | </text>
+                                        @if (item.UserId == UserManager.GetUserId(User))
+                                        {
+                                            <a asp-page="/Review/Edit" asp-route-id="@item.ArticleId">Edit</a>
+                                            <text> | </text>
+                                            <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
+                                            <text> | </text>
+                                        }
                                     }
-                                }
-                                <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
+                                    <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="@ider">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div id="@ider">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <hr class="w-75 mb-1" />
-            <script>
+                </li>
+                <hr class="w-75 mb-1" />
+                <script>
                 var delta = @Html.Raw(item.ReviewContent);
                 var qdc = new window.QuillDeltaToHtmlConverter(delta.ops, {});
                 var html = qdc.convert();
                 document.getElementById('@ider').innerHTML = html;
-            </script>
-            counter++;
+                </script>
+                counter++;
+            }
         }
     </ul>
 }

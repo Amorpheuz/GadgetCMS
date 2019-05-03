@@ -80,7 +80,7 @@ namespace GadgetCMS.Pages.Review
             return NotFound();
         }
 
-        public async Task<IActionResult> OnGetModDeleteAsync(int? id, string userEmail)
+        public async Task<IActionResult> OnGetModDeleteAsync(int? id, string userEmail, string actionType)
         {
             if(userEmail == null || id == null)
             {
@@ -99,7 +99,15 @@ namespace GadgetCMS.Pages.Review
 
                 if (Review != null)
                 {
-                    _context.Review.Remove(Review);
+                    if (actionType == "delete")
+                    {
+                        Review.ReviewVisible = false;
+                    }
+                    else if(actionType == "undo")
+                    {
+                        Review.ReviewVisible = true;
+                    }
+                    _context.Attach(Review).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
 
