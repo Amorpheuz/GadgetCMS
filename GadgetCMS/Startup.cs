@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using reCAPTCHA.AspNetCore;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace GadgetCMS
 {
@@ -68,6 +69,12 @@ namespace GadgetCMS
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettingsv2"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
+
+            services.AddSingleton<MLModelEngine<SentimentData, SentimentPrediction>>((ctx) =>
+            {
+                string modelFilePathName = Configuration["MLModel:MLModelFilePath"];
+                return new MLModelEngine<SentimentData, SentimentPrediction>(modelFilePathName);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,11 +15,13 @@ namespace GadgetCMS.Pages.Review
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly UserManager<GadgetCMSUser> _userManager;
+        private readonly MLModelEngine<SentimentData, SentimentPrediction> _modelEngine;
 
-        public CreateModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager)
+        public CreateModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager, MLModelEngine<SentimentData, SentimentPrediction> modelEngine)
         {
             _context = context;
             _userManager = userManager;
+            _modelEngine = modelEngine;
         }
 
         public IActionResult OnGet(int articleId)
@@ -37,7 +39,7 @@ namespace GadgetCMS.Pages.Review
         {
             if (!ModelState.IsValid)
             {
-                if(Review.ReviewContent != null)
+                if (Review.ReviewContent != null)
                 {
                     ViewData["ReviewContent"] = Review.ReviewContent;
                 }
@@ -47,10 +49,20 @@ namespace GadgetCMS.Pages.Review
                 return Page();
             }
 
+            string evalText = Request.Form["editContent"];
+
+            Review.ReviewType = OnGetPredictSentiment(evalText);
             _context.Review.Add(Review);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Article/Details",new { id = Review.ArticleId});
+            return RedirectToPage("/Article/Details", new { id = Review.ArticleId });
+        }
+
+        private bool OnGetPredictSentiment(string SentimentText)
+        {
+            SentimentData sampleData = new SentimentData() { SentimentText = SentimentText };
+            SentimentPrediction prediction = _modelEngine.Predict(sampleData);
+            return prediction.Prediction;
         }
     }
 }

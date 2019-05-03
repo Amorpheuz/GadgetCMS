@@ -22,7 +22,7 @@ namespace GadgetCMS.ViewComponents
         }
 
         public List<Data.Review> Reviews { get; set; }
-                
+                        
         public async Task<IViewComponentResult> InvokeAsync(int ArticleId)
         {
             Reviews = await _context.Review
@@ -40,6 +40,10 @@ namespace GadgetCMS.ViewComponents
                     }
                 }
             }
+
+            ViewData["PosReviews"] = _context.Review.Where(r => r.ReviewType == true && r.ArticleId == ArticleId).Count();
+            ViewData["NegReviews"] = _context.Review.Where(r => r.ReviewType == false && r.ArticleId == ArticleId).Count();
+
             ViewData["ArtId"] = ArticleId;
             return View(Reviews);
         }

@@ -36,6 +36,8 @@ namespace GadgetCMS.Data
         [Required]
         public bool ReviewVisible { get; set; }
 
+        public bool ReviewType { get; set; }
+
         [Required]
         [DisplayName("Review Title")]
         public string ReviewTitle { get; set; }

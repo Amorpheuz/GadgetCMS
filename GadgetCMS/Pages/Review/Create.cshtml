@@ -20,6 +20,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="Review.UserId" value="@userId" hidden />
             <input asp-for="Review.ArticleId" value="@articleId" hidden />
+            <input type="hidden" id="editContent" name="editContent" />
             <div class="form-row">
                 <div class="form-group col">
                     <label asp-for="Review.ArticleId" class="control-label"></label>
@@ -133,7 +134,10 @@
     var form = document.querySelector('#reviewCreate');
     form.onsubmit = function () {
         var content = document.querySelector("input[name='Review.ReviewContent']");
+        var text = document.querySelector("input[name='editContent']");
+        var formText = quill.getText();
         content.value = JSON.stringify(quill.getContents());
+        text.value = formText;
     };
     @Html.Raw(reviewContent);
 </script>

@@ -19,6 +19,14 @@
     <div class="col">
         <h2>Reviews</h2>
     </div>
+    <div class="col">
+        @if (Model.FirstOrDefault() != null)
+        {
+            <div id="reviewCompChart">
+
+            </div>
+        }
+    </div>
     <div class="col d-flex justify-content-end">
         <div>
             @if (Model.FirstOrDefault() == null && SignInManager.IsSignedIn(User))
@@ -120,5 +128,19 @@ else
     </ul>
 }
 
+<script src="~/lib/charts-master/dist/frappe-charts.min.iife.js"></script>
+<script>
+    let revData = {
+        labels: ["Positive Reviews", "Negative Reviews"],
+        datasets: [
+            {values: [@ViewBag.PosReviews, @ViewBag.NegReviews]}
+        ]
+    }
 
+    new frappe.Chart("#reviewCompChart", {
+        data: revData,
+        type: 'percentage',
+        colors: ['green', 'red']
+    });
+</script>
 
