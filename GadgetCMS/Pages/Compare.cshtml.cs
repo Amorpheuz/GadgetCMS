@@ -66,8 +66,17 @@ namespace GadgetCMS.Pages
             }
            
             List<Data.ArticleParameter> articleParameters = _context.ArticleParameter.Where(c => c.ArticleId == articleId).ToList();
+            
+            var base64 = Convert.ToBase64String(_context.ArticlePicture.Where(c => c.ArticleId == articleId).First().ArticlePictureBytes);
+            var imgSrc = $"data:image/gif;base64,{base64}";
 
-            return new JsonResult(articleParameters);
+            ArticleValuesWithPhoto articleValuesWithPhoto = new ArticleValuesWithPhoto
+            {
+                ArticleParameters = articleParameters,
+                ImgSrc = imgSrc
+            };
+
+            return new JsonResult(articleValuesWithPhoto);
         }
     }
 
@@ -76,5 +85,11 @@ namespace GadgetCMS.Pages
         public List<Data.CategoryParentParameter> CategoryParentParameters {get;set;}
         public List<List<Data.Parameter>> Parameters {get;set;}
         
+    }
+
+    public class ArticleValuesWithPhoto
+    {
+        public List<Data.ArticleParameter> ArticleParameters {get;set;}
+        public string ImgSrc {get;set;}
     }
 }
