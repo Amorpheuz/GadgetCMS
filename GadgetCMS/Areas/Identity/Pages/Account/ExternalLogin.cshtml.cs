@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -19,7 +20,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         private readonly SignInManager<GadgetCMSUser> _signInManager;
         private readonly UserManager<GadgetCMSUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public ExternalLoginModel(
             SignInManager<GadgetCMSUser> signInManager,
             UserManager<GadgetCMSUser> userManager,
@@ -80,6 +81,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+                logger.Info("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
             if (result.IsLockedOut)
@@ -127,6 +129,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        logger.Info("{user} created an account using {Name} provider.",Input.Email, info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
                 }

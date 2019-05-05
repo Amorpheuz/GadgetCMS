@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using reCAPTCHA.AspNetCore;
+using NLog;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -22,7 +23,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private IRecaptchaService _recaptcha;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public RegisterModel(
             UserManager<GadgetCMSUser> userManager,
             SignInManager<GadgetCMSUser> signInManager,
@@ -84,7 +85,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    logger.Info("{user} created a new account",Input.Email);
                     // Add a user to the default role, or any role you prefer here
                     await _userManager.AddToRoleAsync(user, "Member");
 

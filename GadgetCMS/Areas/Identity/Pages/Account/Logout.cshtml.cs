@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -16,7 +17,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<GadgetCMSUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public LogoutModel(SignInManager<GadgetCMSUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
@@ -29,8 +30,11 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            var user = await _signInManager.UserManager.FindByNameAsync(User.Identity.Name);
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            logger.Info("{user} logged out",user.Email);
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
