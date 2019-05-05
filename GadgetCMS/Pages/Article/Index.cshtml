@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    double ratingsAvg = 0;
 }
 
 <div class="row">
@@ -26,7 +27,7 @@
             <div class="col-md-4">
                 <button class="btn btn-outline-default mt-0 mb-0 h-100" id="btn_FiltersApply">Apply Filters</button>
             </div>
-        </div>            
+        </div>
     </div>
 </div>
 
@@ -52,51 +53,179 @@
 
 </div>
 
+@if (Model.articlesRecent != null)
+{
+    @foreach (var item in Model.articlesRecent)
+    {
+        <div class="card mb-2">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p>@item.ArticleAuthor</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>@item.ArticleCreated.ToShortDateString()</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-muted">@item.ArticleSubtitle</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @{
+                                    var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr width="80%" />
+    }
+    var prevDisabled = !Model.articlesRecent.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.articlesRecent.HasNextPage ? "disabled" : "";
+    <a href="./Index?handler=ArticleRecent&pageIndex=@(Model.articlesRecent.PageIndex-1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a href="./Index?handler=ArticleRecent&pageIndex=@(Model.articlesRecent.PageIndex+1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
+
+@if (Model.articlesPopularParentPaginatedList != null)
+{
+    @foreach (var item in Model.articlesPopularParentPaginatedList)
+    {
+        <div class="card mb-2">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p>@item.ArticleAuthor</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>@item.ArticleCreated.ToShortDateString()</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="text-muted">@item.ArticleSubtitle</p>
+                            </div>
+                            <div class="col-sm-4">
+                                @foreach (var itemReview in Model.reviews.Where(c => c.ArticleId == item.ArticleId).OrderByDescending(d => d.ReviewRating))
+                                {
+                                    ratingsAvg += itemReview.ReviewRating;
+                                }
+                                @{
+                                    if (ratingsAvg != 0)
+                                    {
+                                        var itemCount = Model.reviews.Where(c => c.ArticleId == item.ArticleId).Count();
+                                        ratingsAvg = ratingsAvg / itemCount;
+                                    }
+                                }
+                                @ratingsAvg
+                                @{
+                                    ratingsAvg = 0;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @{
+                                    var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr width="80%" />
+    }
+    var prevDisabled = !Model.articlesPopularParentPaginatedList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.articlesPopularParentPaginatedList.HasNextPage ? "disabled" : "";
+    <a href="./Index?handler=ArticlePopular&pageIndex=@(Model.articlesPopularParentPaginatedList.PageIndex-1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a href="./Index?handler=ArticlePopular&pageIndex=@(Model.articlesPopularParentPaginatedList.PageIndex+1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
 
 @section scripts{
     <script>
-            $(function () {
+        $(function () {
 
-                $('#SearchResult').on('input', function () {
-                    var searchQuery = document.getElementById('SearchResult').value;
-                    searchQuery = searchQuery.replace(/\s/g, "%20");
-                    $('#demo').load('/Article/Index?handler=SearchQuery&&value=' + searchQuery);
-                    return false;
-                });
-            
-                $('#submit').on('click', function () {
-                    var searchQuery = document.getElementById('SearchResult').value;
-                    searchQuery = searchQuery.replace(/\s/g, "%20");
+            $('#SearchResult').on('input', function () {
+                var searchQuery = document.getElementById('SearchResult').value;
+                searchQuery = searchQuery.replace(/\s/g, "%20");
+                $('#demo').load('/Article/Index?handler=SearchQuery&&value=' + searchQuery);
+                return false;
+            });
 
+            $('#submit').on('click', function () {
+                var searchQuery = document.getElementById('SearchResult').value;
+                searchQuery = searchQuery.replace(/\s/g, "%20");
+
+                var categorySelect = document.getElementById('SelectCategory').value;
+                $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
+                $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
+                document.getElementById('btn_FiltersApply').style.visibility = 'visible';
+
+                return false;
+
+            });
+
+            $('#btn_FiltersApply').on('click',
+                function () {
                     var categorySelect = document.getElementById('SelectCategory').value;
-                    $('#ArList').load('/Article/Index?handler=SelectCategory&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
-                    $('#FilList').load('/Article/Index?handler=FilterArticles&&categorySelection=' + categorySelect + '&&searchQuery=' + searchQuery);
-                    document.getElementById('btn_FiltersApply').style.visibility = 'visible';
+                    var userselectedvalues = '';
+                    var values = document.getElementById('checkboxcount').value;
+                    for (var i = 0; i < values; i++) {
+                        if (document.getElementById('CheckboxCheck' + i).checked === true) {
 
+                            userselectedvalues += document.getElementById('CheckboxCheck' + i).value + ";";
+
+                        }
+                    }
+                    var searchQuery = document.getElementById('SearchResult').value;
+                    searchQuery = searchQuery.replace(/\s/g, "%20");
+                    userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
+                    $('#ArList').load('/Article/Index?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
+                        userselectedvalues + '&&searchQuery=' + searchQuery);
                     return false;
-
                 });
 
-                $('#btn_FiltersApply').on('click',
-                    function () {
-                        var categorySelect = document.getElementById('SelectCategory').value;
-                        var userselectedvalues = '';
-                        var values = document.getElementById('checkboxcount').value;
-                        for (var i = 0; i < values; i++) {
-                            if (document.getElementById('CheckboxCheck' + i).checked === true) {
-
-                                userselectedvalues += document.getElementById('CheckboxCheck' + i).value + ";";
-
-                            }
-                        }
-                        var searchQuery = document.getElementById('SearchResult').value;
-                        searchQuery = searchQuery.replace(/\s/g, "%20");
-                        userselectedvalues = userselectedvalues.replace(/\s/g, "%20");
-                        $('#ArList').load('/Article/Index?handler=FilterArticlesFinal&&categorySelection=' + categorySelect + '&&values=' +
-                            userselectedvalues + '&&searchQuery=' + searchQuery);
-                        return false;
-                 });
-            
         });
 
 

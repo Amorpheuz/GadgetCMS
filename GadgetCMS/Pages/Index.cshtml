@@ -99,4 +99,10 @@
         return false;
 
     });
+    $('#btn_recentKnowMore').on('click', function () {
+        window.location.href = "./Article/Index?handler=ArticleRecent"
+    });
+    $('#btn_popularKnowMore').on('click', function () {
+        window.location.href = "./Article/Index?handler=ArticlePopular"
+    });
 </script>

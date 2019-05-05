@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-
+using GadgetCMS.Areas.Dashboard.Pages;
 namespace GadgetCMS.Pages.Article
 {
     public class IndexModel : PageModel
@@ -111,6 +111,35 @@ namespace GadgetCMS.Pages.Article
             articles_list = null;
             
         }
+
+        public PaginatedList<Data.Article> articlesRecent {get;set;}
+        public IActionResult OnGetArticleRecent(int? pageIndex)
+        {
+            IQueryable<Data.Article> studentIQ2 = from s in _context.Article.OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
+                                    select s;
+
+            int pageSize = 5;
+             articlesRecent = PaginatedList<Data.Article>.Create(
+                studentIQ2.AsNoTracking(), pageIndex ?? 1, pageSize);
+           
+            return Page();
+        }
+
+        
+        public PaginatedList<Data.Article> articlesPopularParentPaginatedList {get;set;}
+        public List<Data.Review> reviews = new List<Data.Review>();
+        public IActionResult OnGetArticlePopular(int? pageIndex)
+        {
+            reviews = _context.Review.ToList();
+
+            IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Include(c => c.ArticlePictures).Include(d => d.Reviews)
+                                    select s;
+            int pageSize = 5;
+             articlesPopularParentPaginatedList = PaginatedList<Data.Article>.Create(
+                studentIQ3.AsNoTracking(), pageIndex ?? 1, pageSize);
+            return Page();
+        }
+
 
         public PartialViewResult OnGetSearchQuery(string value)
         {
