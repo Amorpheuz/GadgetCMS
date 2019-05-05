@@ -6,13 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.ParentParameter
 {
     public class DeleteModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public DeleteModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -51,7 +55,8 @@ namespace GadgetCMS.Pages.ParentParameter
                 _context.ParentParameter.Remove(ParentParameter);
                 await _context.SaveChangesAsync();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            logger.Info("{user} deleted ParentParameter {ppName} carrying - id {ppId} on {date}",user.Email,ParentParameter.ParentParameterName,ParentParameter.ParentParameterId,DateTime.Now);
             return RedirectToPage("../Parameters");
         }
     }

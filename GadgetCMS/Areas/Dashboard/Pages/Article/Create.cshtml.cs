@@ -9,13 +9,17 @@ using GadgetCMS.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.Article
 {
     public class CreateModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public CreateModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -83,7 +87,8 @@ namespace GadgetCMS.Pages.Article
             }
             _context.Article.Add(Article);
             await _context.SaveChangesAsync();
-
+            var user2 = await _userManager.GetUserAsync(User);
+            logger.Info("{user} created article {article} - carrying id {id} on {date}",user2.Email,Article.ArticleName,Article.ArticleId,DateTime.Now);
 
             var articleId = Article.ArticleId;
             var counter = 0;

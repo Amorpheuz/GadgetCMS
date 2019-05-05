@@ -6,13 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GadgetCMS.Data;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.ParentParameter
 {
     public class CreateModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public CreateModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -28,6 +32,7 @@ namespace GadgetCMS.Pages.ParentParameter
 
         public async Task<IActionResult> OnPostAsync(List<string> ParameterName, List<string> ParameterDescription, List<string> ParameterUnit)
         {
+            var user = await _userManager.GetUserAsync(User);
             if (!ModelState.IsValid)
             {
                 InitParameter(ParameterName,ParameterDescription,ParameterUnit);
@@ -55,7 +60,9 @@ namespace GadgetCMS.Pages.ParentParameter
 
 
             _context.ParentParameter.Add(ParentParameter);
+            logger.Info("{user} added ParentParameter {ppName} carrying - id {id} on {date}",user.Email,ParentParameter.ParentParameterName,ParentParameter.ParentParameterId,DateTime.Now);
             await _context.SaveChangesAsync();
+            
 
             if (ParameterName.Count != 0)
             {
@@ -71,10 +78,14 @@ namespace GadgetCMS.Pages.ParentParameter
                                 ParentParameterId = ppId
                             }
                         );
+                    logger.Info("{user} added Parameter {pName} under ParentParameter {ppname} carrying -id {id} on {date}",user.Email,ParameterName.ElementAt(i),ParentParameter.ParentParameterName,ppId,DateTime.Now);
                 }
+
                 await _context.SaveChangesAsync();
             }
 
+            
+            
             return RedirectToPage("../Parameters");
         }
 

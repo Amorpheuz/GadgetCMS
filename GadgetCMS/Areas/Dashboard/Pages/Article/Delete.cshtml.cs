@@ -6,13 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
+using NLog;
 
 namespace GadgetCMS.Pages.Article
 {
     public class DeleteModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public DeleteModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -52,7 +57,8 @@ namespace GadgetCMS.Pages.Article
                 _context.Article.Remove(Article);
                 await _context.SaveChangesAsync();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            logger.Info("{user} deleted article {article} - carrying {id} on {date}",user.Email,Article.ArticleName,Article.ArticleId,DateTime.Now);
             return RedirectToPage("../Articles");
         }
     }

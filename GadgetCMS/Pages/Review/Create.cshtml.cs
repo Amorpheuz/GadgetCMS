@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace GadgetCMS.Pages.Review
 {
@@ -16,7 +17,7 @@ namespace GadgetCMS.Pages.Review
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly UserManager<GadgetCMSUser> _userManager;
         private readonly MLModelEngine<SentimentData, SentimentPrediction> _modelEngine;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public CreateModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager, MLModelEngine<SentimentData, SentimentPrediction> modelEngine)
         {
             _context = context;
@@ -53,6 +54,8 @@ namespace GadgetCMS.Pages.Review
 
             Review.ReviewType = OnGetPredictSentiment(evalText);
             _context.Review.Add(Review);
+            var user2 = await _userManager.GetUserAsync(User);
+            logger.Info("{user} added a review for article carrying - id {id} on {date}",user2.Email,Review.ArticleId,DateTime.Now);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Article/Details", new { id = Review.ArticleId });

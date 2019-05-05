@@ -7,12 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.Category
 {
     public class EditModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         List<int> ppIds = new List<int>();
         public string parentParamterIds = null;
         List<Data.ParentParameter> ParentParameters = new List<Data.ParentParameter>();
@@ -110,6 +115,8 @@ namespace GadgetCMS.Pages.Category
                 }
             }
 
+            var user = await _userManager.GetUserAsync(User);
+            logger.Info("{user} edited category {category} - carrying {id} on {date}",user.Email,Category.CategoryName,Category.CategoryId,DateTime.Now);
             return RedirectToPage("../Categories");
         }
 

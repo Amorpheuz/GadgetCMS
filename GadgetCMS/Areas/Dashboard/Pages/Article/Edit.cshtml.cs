@@ -9,13 +9,17 @@ using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.Article
 {
     public class EditModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public EditModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -89,7 +93,8 @@ namespace GadgetCMS.Pages.Article
                     throw;
                 }
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            logger.Info("{user} edited article {article} - carrying {id} on {date}",user.Email,Article.ArticleName,Article.ArticleId,DateTime.Now);
             return RedirectToPage("../Articles");
         }
 

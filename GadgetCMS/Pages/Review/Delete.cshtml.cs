@@ -10,6 +10,7 @@ using GadgetCMS.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using GadgetCMS.Areas.Identity.Data;
+using NLog;
 
 namespace GadgetCMS.Pages.Review
 {
@@ -17,7 +18,8 @@ namespace GadgetCMS.Pages.Review
     {
         private readonly GadgetCMSContext _context;
         private readonly UserManager<GadgetCMSUser> _userManager;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
         public DeleteModel(GadgetCMSContext context, UserManager<GadgetCMSUser> userManager)
         {
             _userManager = userManager;
@@ -72,6 +74,7 @@ namespace GadgetCMS.Pages.Review
                 if (Review != null)
                 {
                     _context.Review.Remove(Review);
+                    logger.Info("{user} removed review on article carrying - id {id} on {date}",user.Email,articleId,DateTime.Now);
                     await _context.SaveChangesAsync();
                 }
 

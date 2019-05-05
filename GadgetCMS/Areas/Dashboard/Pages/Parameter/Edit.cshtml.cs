@@ -7,13 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.ParentParameter
 {
     public class EditModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public EditModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -45,6 +49,7 @@ namespace GadgetCMS.Pages.ParentParameter
 
         public async Task<IActionResult> OnPostAsync(List<string> ParameterName, List<string> ParameterDescription, List<string> ParameterUnit, List<string> DelParams)
         {
+            var user = await _userManager.GetUserAsync(User);
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -69,6 +74,7 @@ namespace GadgetCMS.Pages.ParentParameter
             }
 
             _context.Update(ParentParameter);
+            logger.Info("{user} updated ParentParameter {ppName} carrying -id {ppId} on {date}",user.Email,ParentParameter.ParentParameterName,ParentParameter.ParentParameterId,DateTime.Now);
             _context.UpdateRange(Parameters);
 
             try
@@ -81,6 +87,7 @@ namespace GadgetCMS.Pages.ParentParameter
                         if (item != null || item != "")
                         {
                             var temp = _context.Parameter.Where(p => p.ParameterId == Convert.ToInt32(item)).Single();
+                            logger.Info("{user} edit-removed parameter {pName} carrying - id {pid} on {date}",user.Email,temp.ParameterName,temp.ParameterId,DateTime.Now);
                             _context.Parameter.Remove(temp);
                         }
                     }
@@ -100,6 +107,7 @@ namespace GadgetCMS.Pages.ParentParameter
                                     ParentParameterId = ppId
                                 }
                             );
+                        logger.Info("{user} edit-added Parameter {pName} under ParentParameter {ppname} carrying -id {id} on {date}",user.Email,ParameterName.ElementAt(i),ParentParameter.ParentParameterName,ppId,DateTime.Now);
                     }
                     await _context.SaveChangesAsync();
                 }

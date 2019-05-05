@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GadgetCMS.Data;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace GadgetCMS.Pages.Review
 {
@@ -17,7 +18,8 @@ namespace GadgetCMS.Pages.Review
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly UserManager<GadgetCMSUser> _userManager;
         private readonly MLModelEngine<SentimentData, SentimentPrediction> _modelEngine;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
 
         public EditModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager, MLModelEngine<SentimentData, SentimentPrediction> modelEngine)
         {
@@ -70,6 +72,8 @@ namespace GadgetCMS.Pages.Review
             try
             {
                 await _context.SaveChangesAsync();
+                var user = await _userManager.GetUserAsync(User);
+                logger.Info("{user} updated review on article carrying - id {id} on {date}",user.Email,Review.ArticleId,DateTime.Now);
             }
             catch (DbUpdateConcurrencyException)
             {

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GadgetCMS.Data;
+using NLog;
+using Microsoft.AspNetCore.Identity;
+using GadgetCMS.Areas.Identity.Data;
 
 namespace GadgetCMS.Pages.Category
 {
@@ -13,6 +16,8 @@ namespace GadgetCMS.Pages.Category
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         public string parentParamterIds = null;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly UserManager<GadgetCMSUser> _userManager;
         public CreateModel(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -57,7 +62,8 @@ namespace GadgetCMS.Pages.Category
                 _context.CategoryParentParameter.Add(CategoryParentParameter);
                 await _context.SaveChangesAsync();
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            logger.Info("{user} created category {category} - carrying id {id} on {date}",user.Email,Category.CategoryName,Category.CategoryId,DateTime.Now);
             return RedirectToPage("../Categories");
         }
     }
