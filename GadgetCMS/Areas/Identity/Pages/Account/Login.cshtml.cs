@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using reCAPTCHA.AspNetCore;
+using NLog;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -21,7 +22,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
         private readonly SignInManager<GadgetCMSUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private IRecaptchaService _recaptcha;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public LoginModel(SignInManager<GadgetCMSUser> signInManager, ILogger<LoginModel> logger, IRecaptchaService recaptcha)
         {
             _signInManager = signInManager;
@@ -88,10 +89,12 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignOutAsync();
                         _logger.LogInformation("User logged out.");
+                        logger.Info("{user} logged out with BanStatus - True",Input.Email);
                         ModelState.AddModelError(string.Empty, "User is Banned.");
                         return Page();
                     }
                     _logger.LogInformation("User logged in.");
+                    logger.Info("{user} logged in",Input.Email);
                     return LocalRedirect(returnUrl);
                 }
                 if (user != null)

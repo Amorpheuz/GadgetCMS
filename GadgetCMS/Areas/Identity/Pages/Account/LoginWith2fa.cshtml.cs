@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace GadgetCMS.Areas.Identity.Pages.Account
 {
@@ -17,7 +18,7 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<GadgetCMSUser> _signInManager;
         private readonly ILogger<LoginWith2faModel> _logger;
-
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public LoginWith2faModel(SignInManager<GadgetCMSUser> signInManager, ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
@@ -81,16 +82,19 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
+                logger.Info("User with ID '{UserId}' logged in with 2fa.", user.Id);
                 return LocalRedirect(returnUrl);
             }
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+                logger.Warn("User with ID '{UserId}' account locked out.", user.Id);
                 return RedirectToPage("./Lockout");
             }
             else
             {
                 _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
+                logger.Warn("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return Page();
             }

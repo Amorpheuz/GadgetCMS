@@ -60,6 +60,13 @@
                             <th scope="col">Gadget Two</th>
                             <th scope="col">Gadget Three</th>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td id="FirstArticlePhoto"></td>
+                            <td id="SecondArticlePhoto"></td>
+                            <td id="ThirdArticlePhoto"></td>
+                        </tr>
                     </thead>
                     <tbody id="tableDivBody"></tbody>
                 </table>
@@ -87,6 +94,9 @@
                     $('#SecondArticleList').append("<option>Please Select Article</option>");
                     $('#ThirdArticleList').empty();
                     $('#ThirdArticleList').append("<option>Please Select Article</option>");
+                    $('#FirstArticlePhoto').empty();
+                    $('#SecondArticlePhoto').empty();
+                    $('#ThirdArticlePhoto').empty();
                 }
 
                 var options = {};
@@ -132,7 +142,14 @@
                 options.dataType = "json";
                 options.success = function (data) {
                     var i = 0;
-                    data.forEach(function (element) {
+                    if (!document.getElementById('FirstArticlePhoto').textContent > 0) {
+                        document.getElementById('FirstArticlePhoto').innerHTML = "";
+                        $('#FirstArticlePhoto').append("<img src=" + data.imgSrc + " alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                    else {
+                        $('#FirstArticlePhoto').append("<img src="+data.imgSrc+" alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                    data.articleParameters.forEach(function (element) {
                         if (!document.getElementById(i + 'first').textContent > 0) {
                             document.getElementById(i + 'first').innerHTML = "";
                             document.getElementById(i + 'first').append(element.parameterVal);
@@ -160,8 +177,15 @@
             options.dataType = "json";
             options.success = function (data) {
                 var i = 0;
-
-                data.forEach(function (element) {
+                if (!document.getElementById('SecondArticlePhoto').textContent > 0) {
+                        document.getElementById('SecondArticlePhoto').innerHTML = "";
+                        $('#SecondArticlePhoto').append("<img src=" + data.imgSrc + " alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                    else {
+                        $('#SecondArticlePhoto').append("<img src="+data.imgSrc+" alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                
+                 data.articleParameters.forEach(function (element) {
                     if (!document.getElementById(i + 'second').textContent > 0) {
                         document.getElementById(i + 'second').innerHTML = "";
                         document.getElementById(i + 'second').append(element.parameterVal);
@@ -187,8 +211,14 @@
             options.dataType = "json";
             options.success = function (data) {
                 var i = 0;
-
-                data.forEach(function (element) {
+                if (!document.getElementById('ThirdArticlePhoto').textContent > 0) {
+                        document.getElementById('ThirdArticlePhoto').innerHTML = "";
+                        $('#ThirdArticlePhoto').append("<img src=" + data.imgSrc + " alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                    else {
+                        $('#ThirdArticlePhoto').append("<img src="+data.imgSrc+" alt='FirstArticlePicture' class='img-fluid' style='height:100px;' />");
+                    }
+                 data.articleParameters.forEach(function (element) {
                     if (!document.getElementById(i + 'third').textContent > 0) {
                         document.getElementById(i + 'third').innerHTML = "";
                         document.getElementById(i + 'third').append(element.parameterVal);
