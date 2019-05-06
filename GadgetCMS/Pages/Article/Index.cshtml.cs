@@ -122,6 +122,7 @@ namespace GadgetCMS.Pages.Article
         public PaginatedList<Data.Article> articlesRecent {get;set;}
         public IActionResult OnGetArticleRecent(int? pageIndex)
         {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
             IQueryable<Data.Article> studentIQ2 = from s in _context.Article.OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
                                     select s;
 
@@ -137,6 +138,7 @@ namespace GadgetCMS.Pages.Article
         public List<Data.Review> reviews = new List<Data.Review>();
         public IActionResult OnGetArticlePopular(int? pageIndex)
         {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
             reviews = _context.Review.ToList();
 
             IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Include(c => c.ArticlePictures).Include(d => d.Reviews)
@@ -150,7 +152,6 @@ namespace GadgetCMS.Pages.Article
 
         public PartialViewResult OnGetSearchQuery(string value)
         {
-            
             articles_list = _context.Article.Where(s => s.ArticleName.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
            
             return new PartialViewResult
@@ -180,11 +181,9 @@ namespace GadgetCMS.Pages.Article
             }
             else
             {
-                 articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
             }
            
-
-            articlesIndex = null;
             return new PartialViewResult
             {
                 ViewName = "_ArticleList",
@@ -242,7 +241,6 @@ namespace GadgetCMS.Pages.Article
                 articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
 
             }
-
 
             FilteredArticle = new FilteredArticle(_context)
             {
