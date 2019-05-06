@@ -105,11 +105,18 @@ namespace GadgetCMS.Pages.Article
         public AdvancedSearch AdvancedSearch;
         public FilteredArticle FilteredArticle;
 
-        public void OnGet()
+        public PaginatedList<Data.Article> articlesIndex {get;set;}
+        public void OnGet(int? pageIndex)
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
             articles_list = null;
-            
+            IQueryable<Data.Article> studentIQ4 = from s in _context.Article.OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
+                                    select s;
+
+            int pageSize = 10;
+             articlesIndex = PaginatedList<Data.Article>.Create(
+                studentIQ4.AsNoTracking(), pageIndex ?? 1, pageSize);
+           
         }
 
         public PaginatedList<Data.Article> articlesRecent {get;set;}
@@ -177,7 +184,7 @@ namespace GadgetCMS.Pages.Article
             }
            
 
-
+            articlesIndex = null;
             return new PartialViewResult
             {
                 ViewName = "_ArticleList",
