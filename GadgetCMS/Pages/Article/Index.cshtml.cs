@@ -135,13 +135,11 @@ namespace GadgetCMS.Pages.Article
 
         
         public PaginatedList<Data.Article> articlesPopularParentPaginatedList {get;set;}
-        public List<Data.Review> reviews = new List<Data.Review>();
         public IActionResult OnGetArticlePopular(int? pageIndex)
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
-            reviews = _context.Review.ToList();
 
-            IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Include(c => c.ArticlePictures).Include(d => d.Reviews)
+            IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Include(d => d.ArticlePictures).Include(a => a.Reviews).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0)
                                     select s;
             int pageSize = 5;
              articlesPopularParentPaginatedList = PaginatedList<Data.Article>.Create(
