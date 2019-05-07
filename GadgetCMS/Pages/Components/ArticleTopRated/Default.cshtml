@@ -5,6 +5,7 @@
     List<double> ratingsAverage = new List<double>();
     Data.Article articles = new Data.Article();
     int i = 0;
+    double ratingsAvg = 0;
 }
 @if (articleIds.Count() == 0)
 {
@@ -15,7 +16,6 @@ else
     @foreach (var articleIdsFE in articleIds)
     {
         ratingsAverage.Add(Model.Review.Where(c => c.ArticleId == articleIdsFE).Average(r => r.ReviewRating));
-
     }
 
     @foreach (var articleIdsFE2 in articleIds)
@@ -25,7 +25,7 @@ else
             if (ratingsAverage[i] >= 4.5)
             {
 
-                articles = Model.Article.Include(c => c.ArticlePictures).Where(d => d.ArticleId == articleIdsFE2).FirstOrDefault();
+                articles = Model.Article.Include(c => c.ArticlePictures).Where(d => d.ArticleId == articleIdsFE2).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).FirstOrDefault();
 
                 <div class="card mb-2">
                     <div class="card-body">
@@ -46,8 +46,25 @@ else
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-8">
                                         <p class="text-muted">@articles.ArticleSubtitle</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @foreach (var itemReview in Model.Review.Where(c => c.ArticleId == articles.ArticleId).OrderByDescending(d => d.ReviewRating))
+                                        {
+                                            ratingsAvg += itemReview.ReviewRating;
+                                        }
+                                        @{
+                                            if (ratingsAvg != 0)
+                                            {
+                                                var itemCount = Model.Review.Where(c => c.ArticleId == articles.ArticleId).Count();
+                                                ratingsAvg = ratingsAvg / itemCount;
+                                            }
+                                        }
+                                        @ratingsAvg
+                                        @{
+                                            ratingsAvg = 0;
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +84,7 @@ else
                     </div>
 
                 </div>
-
+                <hr width="80%" />
             }
             i++;
         }
@@ -76,6 +93,19 @@ else
             <h6>Trouble Fetching Ratings, Please Try Again.</h6>
         }
     }
-    <button type="button" class="btn btn-primary position-right">Know More</button>
 }
 
+
+
+@*@if(Model != null)
+{
+    @foreach(var item in Model)
+    {
+        var avgRating = item.Reviews.Average(c => c.ReviewRating);
+        if(avgRating >= 4.5)
+        {
+            <h6>@item.ArticleName</h6>
+            <h6>@item.ArticleId</h6>
+        }
+    }
+}*@
