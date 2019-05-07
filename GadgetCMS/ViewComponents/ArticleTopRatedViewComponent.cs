@@ -13,6 +13,7 @@ namespace GadgetCMS.ViewComponents
         public IQueryable<int> articleIds;
         public List<int> articleIdsParent = new List<int>();
         public List<double> ratingsAverage = new List<double>();
+        public List<Data.Article> Articles = new List<Data.Article>();
         public ArticleTopRatedViewComponent(GadgetCMS.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -20,12 +21,12 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            
-           articleIds = _context.Review.Select(g => g.ArticleId).Distinct();
-            foreach(var articleIdsFE in articleIds)
-            {
-                ratingsAverage.Add(_context.Review.Where(c => c.ArticleId == articleIdsFE).Average(r => r.ReviewRating));
-            }
+           Articles = _context.Article.Include(a => a.Reviews).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList(); 
+           //articleIds = _context.Review.Select(g => g.ArticleId).Distinct();
+           // foreach(var articleIdsFE in articleIds)
+           // {
+           //     ratingsAverage.Add(_context.Review.Where(c => c.ArticleId == articleIdsFE).Average(r => r.ReviewRating));
+           // }
             return View("Default",_context);
         }
     }

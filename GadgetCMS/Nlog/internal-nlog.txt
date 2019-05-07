@@ -184,3 +184,147 @@ File name: 'System.Messaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b
 2019-05-07 12:19:45.0437 Info Found 47 configuration items
 2019-05-07 12:19:45.1715 Info Configuration initialized.
 2019-05-07 12:19:45.2660 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+
+2019-05-07 12:11:44.7287 Info Message Template Auto Format enabled
+2019-05-07 12:11:44.7567 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 12:11:44.7924 Error Error loading extensions. Exception: System.IO.FileNotFoundException: Could not load file or assembly 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+File name: 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark, IntPtr pPrivHostBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NLog.Internal.AssemblyHelpers.LoadFromName(String assemblyName)
+   at NLog.Config.LoggingConfigurationParser.ParseExtensionWithAssembly(String assemblyName, String prefix)
+
+
+2019-05-07 12:11:44.8040 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error loading extensions: NLog.Web.AspNetCore ---> System.IO.FileNotFoundException: Could not load file or assembly 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark, IntPtr pPrivHostBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NLog.Internal.AssemblyHelpers.LoadFromName(String assemblyName)
+   at NLog.Config.LoggingConfigurationParser.ParseExtensionWithAssembly(String assemblyName, String prefix)
+   --- End of inner exception stack trace ---
+2019-05-07 12:11:44.9866 Info Adding target FileTarget(Name=allfile)
+2019-05-07 12:11:45.0285 Error Error parsing layout aspnet-request-url will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'aspnet-request-url'. Is NLog.Web not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2019-05-07 12:11:45.0552 Error Error parsing layout aspnet-mvc-action will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'aspnet-mvc-action'. Is NLog.Web not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2019-05-07 12:11:45.0682 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 12:11:45.2556 Info Found 38 configuration items
+2019-05-07 12:11:45.3385 Info Configuration initialized.
+2019-05-07 12:11:45.4786 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 12:16:16.6091 Info Message Template Auto Format enabled
+2019-05-07 12:16:16.6268 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 12:16:16.6497 Error Error loading extensions. Exception: System.IO.FileNotFoundException: Could not load file or assembly 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+File name: 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark, IntPtr pPrivHostBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NLog.Internal.AssemblyHelpers.LoadFromName(String assemblyName)
+   at NLog.Config.LoggingConfigurationParser.ParseExtensionWithAssembly(String assemblyName, String prefix)
+
+
+2019-05-07 12:16:16.6497 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Error loading extensions: NLog.Web.AspNetCore ---> System.IO.FileNotFoundException: Could not load file or assembly 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark, IntPtr pPrivHostBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, StackCrawlMark& stackMark)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NLog.Internal.AssemblyHelpers.LoadFromName(String assemblyName)
+   at NLog.Config.LoggingConfigurationParser.ParseExtensionWithAssembly(String assemblyName, String prefix)
+   --- End of inner exception stack trace ---
+2019-05-07 12:16:16.8635 Info Adding target FileTarget(Name=allfile)
+2019-05-07 12:16:16.8821 Error Error parsing layout aspnet-request-url will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'aspnet-request-url'. Is NLog.Web not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2019-05-07 12:16:16.9280 Error Error parsing layout aspnet-mvc-action will be ignored. Exception: System.ArgumentException: LayoutRenderer cannot be found: 'aspnet-mvc-action'. Is NLog.Web not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Layouts.LayoutParser.GetLayoutRenderer(ConfigurationItemFactory configurationItemFactory, String name)
+2019-05-07 12:16:16.9280 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 12:16:17.0363 Info Found 44 configuration items
+2019-05-07 12:16:17.0813 Info Configuration initialized.
+2019-05-07 12:16:17.1166 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 12:40:00.5345 Info Message Template Auto Format enabled
+2019-05-07 12:40:00.5594 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 12:40:00.8238 Info Adding target FileTarget(Name=allfile)
+2019-05-07 12:40:00.8321 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 12:40:00.9219 Info Found 47 configuration items
+2019-05-07 12:40:00.9597 Info Configuration initialized.
+2019-05-07 12:40:00.9850 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 12:45:04.7062 Info Message Template Auto Format enabled
+2019-05-07 12:45:04.7268 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 12:45:05.2260 Info Adding target FileTarget(Name=allfile)
+2019-05-07 12:45:05.2260 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 12:45:05.3260 Info Found 47 configuration items
+2019-05-07 12:45:05.3723 Info Configuration initialized.
+2019-05-07 12:45:05.5244 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:12:13.6746 Info Message Template Auto Format enabled
+2019-05-07 13:12:13.7138 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:12:14.0713 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:12:14.1221 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:12:14.2197 Info Found 47 configuration items
+2019-05-07 13:12:14.2605 Info Configuration initialized.
+2019-05-07 13:12:14.2998 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:15:59.7435 Info Message Template Auto Format enabled
+2019-05-07 13:15:59.7810 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:16:00.2834 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:16:00.3118 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:16:00.4300 Info Found 47 configuration items
+2019-05-07 13:16:00.4824 Info Configuration initialized.
+2019-05-07 13:16:00.5356 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:21:38.9751 Info Message Template Auto Format enabled
+2019-05-07 13:21:39.0200 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:21:39.3670 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:21:39.3946 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:21:39.5499 Info Found 47 configuration items
+2019-05-07 13:21:39.6272 Info Configuration initialized.
+2019-05-07 13:21:39.7116 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:44:57.7188 Info Message Template Auto Format enabled
+2019-05-07 13:44:57.7506 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:44:58.0618 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:44:58.0875 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:44:58.2217 Info Found 47 configuration items
+2019-05-07 13:44:58.2750 Info Configuration initialized.
+2019-05-07 13:44:58.3581 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:49:13.7188 Info Message Template Auto Format enabled
+2019-05-07 13:49:13.8127 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:49:14.7633 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:49:14.8080 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:49:15.0894 Info Found 47 configuration items
+2019-05-07 13:49:15.2047 Info Configuration initialized.
+2019-05-07 13:49:15.6091 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 13:52:12.6358 Info Message Template Auto Format enabled
+2019-05-07 13:52:12.6832 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 13:52:13.2247 Info Adding target FileTarget(Name=allfile)
+2019-05-07 13:52:13.2512 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 13:52:13.4212 Info Found 47 configuration items
+2019-05-07 13:52:13.4862 Info Configuration initialized.
+2019-05-07 13:52:13.6020 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 14:05:22.3626 Info Message Template Auto Format enabled
+2019-05-07 14:05:22.4086 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 14:05:22.6938 Info Adding target FileTarget(Name=allfile)
+2019-05-07 14:05:22.7231 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 14:05:22.8290 Info Found 47 configuration items
+2019-05-07 14:05:22.8768 Info Configuration initialized.
+2019-05-07 14:05:22.9762 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 14:23:11.0094 Info Message Template Auto Format enabled
+2019-05-07 14:23:11.0408 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 14:23:11.6487 Info Adding target FileTarget(Name=allfile)
+2019-05-07 14:23:11.6689 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 14:23:11.7849 Info Found 47 configuration items
+2019-05-07 14:23:11.8465 Info Configuration initialized.
+2019-05-07 14:23:11.8923 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 14:30:33.0075 Info Message Template Auto Format enabled
+2019-05-07 14:30:33.0473 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 14:30:33.6825 Info Adding target FileTarget(Name=allfile)
+2019-05-07 14:30:33.7068 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 14:30:33.8595 Info Found 47 configuration items
+2019-05-07 14:30:33.9212 Info Configuration initialized.
+2019-05-07 14:30:34.0667 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.

@@ -189,65 +189,75 @@
 <div id="articlesPopular">
     @if (Model.articlesPopularParentPaginatedList != null)
     {
-        @foreach (var item in Model.articlesPopularParentPaginatedList)
-        {
-            <div class="card mb-2">
-                <div class="card-body">
+            @foreach (var item in Model.articlesPopularParentPaginatedList)
+            {
+                <div class="card mb-2">
+                    <div class="card-body">
 
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <p>@item.ArticleAuthor</p>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <p>@item.ArticleAuthor</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p>@item.ArticleCreated.ToShortDateString()</p>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <p>@item.ArticleCreated.ToShortDateString()</p>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></h6>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></h6>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <p class="text-muted">@item.ArticleSubtitle</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    @foreach (var itemReview in Model.reviews.Where(c => c.ArticleId == item.ArticleId).OrderByDescending(d => d.ReviewRating))
-                                    {
-                                        ratingsAvg += itemReview.ReviewRating;
-                                    }
-                                    @{
-                                        if (ratingsAvg != 0)
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <p class="text-muted">@item.ArticleSubtitle</p>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        @foreach (var itemReview in Model.reviewsAvg.Where(c => c.ArticleId == item.ArticleId).OrderByDescending(d => d.ReviewRating))
                                         {
-                                            var itemCount = Model.reviews.Where(c => c.ArticleId == item.ArticleId).Count();
-                                            ratingsAvg = ratingsAvg / itemCount;
+                                            ratingsAvg += itemReview.ReviewRating;
                                         }
-                                    }
-                                    @ratingsAvg
-                                    @{
-                                        ratingsAvg = 0;
-                                    }
+                                        @{
+                                            if (ratingsAvg != 0)
+                                            {
+                                                var itemCount = Model.reviewsAvg.Where(c => c.ArticleId == item.ArticleId).Count();
+                                                ratingsAvg = ratingsAvg / itemCount;
+                                            }
+                                        }
+                                        @ratingsAvg
+                                        @{
+                                            ratingsAvg = 0;
+                                        }
+                                    </div>*@
+                                    @*<div class="col-sm-4">
+                                        @foreach(var itemReview in Model.reviewsAvg.Where(c => c.ArticleId == item.ArticleId).GroupBy(c => c.ArticleId))
+                                        {
+                                            @itemReview.Count();
+                                        }
+                                    </div>*@
+                                    <div class="col-sm-4">
+                                        @item.Reviews.Count()
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 d-flex justify-content-center">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    @{
-                                        var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
-                                        var imgSrc = $"data:image/gif;base64,{base64}";
-                                    }
-                                    <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                            <div class="col-md-3 d-flex justify-content-center">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @{
+                                            var base64 = Convert.ToBase64String(item.ArticlePictures.First().ArticlePictureBytes);
+                                            var imgSrc = $"data:image/gif;base64,{base64}";
+                                        }
+                                        <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        }
+            }
+
         var prevDisabled = !Model.articlesPopularParentPaginatedList.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.articlesPopularParentPaginatedList.HasNextPage ? "disabled" : "";
         <a href="./Index?handler=ArticlePopular&pageIndex=@(Model.articlesPopularParentPaginatedList.PageIndex-1)"

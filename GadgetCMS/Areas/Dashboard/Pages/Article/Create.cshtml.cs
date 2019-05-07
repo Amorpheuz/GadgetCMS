@@ -20,9 +20,10 @@ namespace GadgetCMS.Pages.Article
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly UserManager<GadgetCMSUser> _userManager;
-        public CreateModel(GadgetCMS.Data.ApplicationDbContext context)
+        public CreateModel(GadgetCMS.Data.ApplicationDbContext context,UserManager<GadgetCMSUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult OnGet()

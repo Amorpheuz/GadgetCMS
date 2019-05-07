@@ -43,5 +43,6 @@ namespace GadgetCMS.Areas.Dashboard.Pages
                 .Take(pageSize).ToList();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
+
     }
 }

@@ -18,9 +18,10 @@ namespace GadgetCMS.Pages.ParentParameter
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly UserManager<GadgetCMSUser> _userManager;
-        public EditModel(GadgetCMS.Data.ApplicationDbContext context)
+        public EditModel(GadgetCMS.Data.ApplicationDbContext context,UserManager<GadgetCMSUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty]
