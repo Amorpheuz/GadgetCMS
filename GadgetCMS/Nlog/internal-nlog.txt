@@ -328,3 +328,10 @@ File name: 'NLog.Web.AspNetCore, Culture=neutral, PublicKeyToken=null'
 2019-05-07 14:30:33.8595 Info Found 47 configuration items
 2019-05-07 14:30:33.9212 Info Configuration initialized.
 2019-05-07 14:30:34.0667 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
+2019-05-07 15:45:15.2476 Info Message Template Auto Format enabled
+2019-05-07 15:45:15.2641 Info Loading assembly: NLog.Web.AspNetCore
+2019-05-07 15:45:15.5628 Info Adding target FileTarget(Name=allfile)
+2019-05-07 15:45:15.5700 Info Adding target FileTarget(Name=ownFile-web)
+2019-05-07 15:45:15.6628 Info Found 47 configuration items
+2019-05-07 15:45:15.6934 Info Configuration initialized.
+2019-05-07 15:45:15.7979 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.6.3.9764. Product version: 4.6.3.
