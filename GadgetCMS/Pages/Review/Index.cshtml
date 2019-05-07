@@ -1,84 +1,198 @@
 ﻿@page
+@using System.Security.Cryptography
+@using System.Text
 @using GadgetCMS.Areas.Identity.Data
 @model GadgetCMS.Pages.Review.IndexModel
 @inject UserManager<GadgetCMSUser> UserManager
+@inject SignInManager<GadgetCMSUser> SignInManager
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var counter = 0;
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table-responsive table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].ReviewRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].ReviewContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].ReviewLastUpdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].ReviewCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].ReviewVisible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].Article)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review[0].GadgetCmsUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Review)
+<div class="row">
+    <div class="col">
+        <h2>
+            Reviews -
+            @if (Model.Reviews.FirstOrDefault() != null)
+            {
+                <text>@Model.Reviews.First().Article.ArticleName</text>
+            }
+        </h2>
+    </div>
+    <div class="col-md-3">
+        @if (Model.Reviews.FirstOrDefault() != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewRating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewContent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewLastUpdate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewCreated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewVisible)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Article.ArticleName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GadgetCmsUser.Email)
-                </td>
-                <td>
-                    @if (item.UserId == UserManager.GetUserId(User))
-                    {
-                        <a asp-page="./Edit" asp-route-id="@item.ArticleId">Edit</a>
-                        <text> | </text>
-                    }
-                    <a asp-page="./Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
-                    @if (item.UserId == UserManager.GetUserId(User))
-                    {
-                        <text> | </text>
-                        <a asp-page="./Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
-                    }
-                </td>
-            </tr>
+            <div id="reviewCompChart">
+
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <div>
+            @if (Model.Reviews.FirstOrDefault() == null && SignInManager.IsSignedIn(User))
+            {
+                <a asp-page="/Review/Create" asp-route-articleId="@ViewBag.ArtId" class="btn btn-primary">Add Opinion</a>
+            }
+            else if (Model.Reviews.FirstOrDefault() != null && SignInManager.IsSignedIn(User))
+            {
+                @if (ViewBag.UserHasComment != null)
+                {
+                    <a asp-page="/Review/Edit" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">Edit Opinion</a>
+                }
+                else
+                {
+                    <a asp-page="/Review/Create" asp-route-articleId="@ViewBag.ArtId" class="btn btn-primary">Add Opinion</a>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+            @Html.DisplayNameFor(model => model.Reviews[0].ReviewTitle)
+        </a>
+    </div>
+    <div class="col">
+        <a asp-page="./Reviews" asp-route-sortOrder="@Model.AuthorSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+            @Html.DisplayNameFor(model => model.Reviews[0].GadgetCmsUser.Email)
+        </a>
+    </div>
+    <div class="col">
+        <a asp-page="./Reviews" asp-route-sortOrder="@Model.ArticleSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+            @Html.DisplayNameFor(model => model.Reviews[0].Article.ArticleName)
+        </a>
+    </div>
+    <div class="col">
+        <a asp-page="./Reviews" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+            @Html.DisplayNameFor(model => model.Reviews[0].ReviewCreated)
+        </a>
+    </div>
+</div>
+
+@if (Model.Reviews.FirstOrDefault() == null)
+{
+    <text>No Reviews Yet</text>
+}
+else
+{
+    <script src="~/lib/quill-delta-to-html/QuillDeltaToHtmlConverter.bundle.js"></script>
+    <ul class="list-unstyled">
+        @foreach (var item in Model.Reviews)
+        {
+            if (item.ReviewVisible == true)
+            {
+                var ider = "review" + counter;
+                <li class="media mb-1">
+                    @{
+                        var email = @item.GadgetCmsUser.Email;
+                        var emailHash = "";
+                        using (MD5 md5Hash = MD5.Create())
+                        {
+                            var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(email));
+                            var sBuilder = new StringBuilder();
+                            foreach (var t in data)
+                            {
+                                sBuilder.Append(t.ToString("x2"));
+                            }
+                            emailHash = "https://www.gravatar.com/avatar/" + sBuilder.ToString() + "?d=identicon&s=85";
+                        }
+                        <img alt="@email" src="@emailHash" class="align-self-center mr-3 rounded-circle">
+                    }
+                    <div class="media-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h5 class="mt-0">@item.ReviewTitle</h5>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-end">
+                                @await Component.InvokeAsync("RatingDisplay", new { articleId = item.Article.ArticleId, userId = item.GadgetCmsUser.Id })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p class="text-muted"><i class="fa fa-user" aria-hidden="true"></i> @item.GadgetCmsUser.Email</p>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-center">
+                                <p><i class="fa fa-calendar" aria-hidden="true"></i> @item.ReviewCreated.ToShortDateString()</p>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-end">
+                                <div>
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        @if (item.UserId == UserManager.GetUserId(User))
+                                        {
+                                            <a asp-page="/Review/Edit" asp-route-id="@item.ArticleId">Edit</a>
+                                            <text> | </text>
+                                            <a asp-page="/Review/Delete" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Delete</a>
+                                            <text> | </text>
+                                        }
+                                    }
+                                    <a asp-page="/Review/Details" asp-route-id="@item.ArticleId" asp-route-userEmail="@item.GadgetCmsUser.Email">Details</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="@ider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <hr class="w-75 mb-1" />
+                <script>
+                    var delta = @Html.Raw(item.ReviewContent);
+                    var qdc = new window.QuillDeltaToHtmlConverter(delta.ops, {});
+                    var html = qdc.convert();
+                    document.getElementById('@ider').innerHTML = html;
+                </script>
+                counter++;
+            }
+        }
+    </ul>
+}
+
+@{
+    var prevDisabled = !Model.Reviews.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Reviews.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Reviews.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-id="@ViewBag.ArtId"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Reviews.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-id="@ViewBag.ArtId"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+@if (Model.Reviews.FirstOrDefault() != null)
+{
+    <script src="~/lib/charts-master/dist/frappe-charts.min.iife.js"></script>
+    <script>
+    let revData = {
+        labels: ["Positive Reviews", "Negative Reviews"],
+        datasets: [
+            {values: [@ViewBag.PosReviews, @ViewBag.NegReviews]}
+        ]
+    }
+
+    new frappe.Chart("#reviewCompChart", {
+        data: revData,
+        type: 'percentage',
+        colors: ['green', 'red']
+    });
+    </script>
+}
