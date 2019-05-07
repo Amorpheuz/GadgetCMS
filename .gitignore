@@ -261,3 +261,5 @@ paket-files/
 __pycache__/
 *.pyc
 GadgetCMS/LogZip/Logs\.zip
+
+GadgetCMS/Nlog/internal-nlog\.txt

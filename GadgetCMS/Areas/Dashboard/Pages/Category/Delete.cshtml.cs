@@ -17,9 +17,10 @@ namespace GadgetCMS.Pages.Category
         public GadgetCMS.Data.ApplicationDbContext _context;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly UserManager<GadgetCMSUser> _userManager;
-        public DeleteModel(GadgetCMS.Data.ApplicationDbContext context)
+        public DeleteModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty]
