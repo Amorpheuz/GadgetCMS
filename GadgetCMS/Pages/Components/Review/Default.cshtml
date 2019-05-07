@@ -130,6 +130,11 @@ else
         }
     </ul>
 }
+@if (Model.FirstOrDefault() != null)
+{
+    <a asp-page="/Review/Index" asp-route-id="@Model.First().Article.ArticleId" class="btn btn-outline-primary">More User Opinions</a>
+}
+
 
 @if (Model.FirstOrDefault() != null)
 {
