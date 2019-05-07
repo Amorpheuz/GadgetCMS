@@ -146,6 +146,7 @@ namespace GadgetCMS.Pages.Article
             int pageSize = 5;
              articlesPopularParentPaginatedList = PaginatedList<Data.Article>.Create(
                 studentIQ3.AsNoTracking(), pageIndex ?? 1, pageSize);
+
             return Page();
         }
 
