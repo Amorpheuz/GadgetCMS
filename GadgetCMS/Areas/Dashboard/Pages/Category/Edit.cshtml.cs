@@ -22,9 +22,10 @@ namespace GadgetCMS.Pages.Category
         public string parentParamterIds = null;
         List<Data.ParentParameter> ParentParameters = new List<Data.ParentParameter>();
         public List<List<Data.ParentParameter>> ParentParametersMain = new List<List<Data.ParentParameter>>();
-        public EditModel(GadgetCMS.Data.ApplicationDbContext context)
+        public EditModel(GadgetCMS.Data.ApplicationDbContext context,UserManager<GadgetCMSUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty]
