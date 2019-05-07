@@ -120,10 +120,10 @@ else
                 </li>
                 <hr class="w-75 mb-1" />
                 <script>
-                var delta = @Html.Raw(item.ReviewContent);
-                var qdc = new window.QuillDeltaToHtmlConverter(delta.ops, {});
-                var html = qdc.convert();
-                document.getElementById('@ider').innerHTML = html;
+                    var delta = @Html.Raw(item.ReviewContent);
+                    var qdc = new window.QuillDeltaToHtmlConverter(delta.ops, {});
+                    var html = qdc.convert();
+                    document.getElementById('@ider').innerHTML = html;
                 </script>
                 counter++;
             }

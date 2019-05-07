@@ -27,7 +27,7 @@ namespace GadgetCMS.ViewComponents
         {
             Reviews = await _context.Review
                 .Include(r => r.Article)
-                .Include(r => r.GadgetCmsUser).Where(r => r.ArticleId == ArticleId).ToListAsync();
+                .Include(r => r.GadgetCmsUser).Where(r => r.ArticleId == ArticleId).OrderByDescending(r => r.ReviewCreated).Take(5).ToListAsync();
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
             foreach (var item in Reviews)
