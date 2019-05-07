@@ -11,6 +11,7 @@ namespace GadgetCMS.ViewComponents
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
         public Data.Article articlesPopular = new Data.Article();
+        public List<Data.Article> articlesPopularY =  new List<Data.Article>();
         public List<Data.Article> articlesPopularParent = new List<Data.Article>();
         public List<int> reviews = new List<int>();
         
@@ -35,7 +36,9 @@ namespace GadgetCMS.ViewComponents
                 articlesPopularParent.Add(articlesPopular);
             }
 
-            return View("Default", articlesPopularParent);
+            articlesPopularY = _context.Article.Include(a => a.Reviews).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList();
+
+            return View("Default", articlesPopularY);
         }
     }
 }
