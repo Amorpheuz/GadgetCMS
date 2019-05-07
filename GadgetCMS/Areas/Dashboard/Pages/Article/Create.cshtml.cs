@@ -12,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using Microsoft.AspNetCore.Identity;
 using GadgetCMS.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GadgetCMS.Pages.Article
 {
+    [Authorize(Roles = "Admin,Moderator,Editor")]
     public class CreateModel : PageModel
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;

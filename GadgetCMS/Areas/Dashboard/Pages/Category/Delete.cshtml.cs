@@ -9,15 +9,17 @@ using GadgetCMS.Data;
 using NLog;
 using Microsoft.AspNetCore.Identity;
 using GadgetCMS.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GadgetCMS.Pages.Category
 {
+    [Authorize(Roles = "Admin,Moderator,Editor")]
     public class DeleteModel : PageModel
     {
         public GadgetCMS.Data.ApplicationDbContext _context;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly UserManager<GadgetCMSUser> _userManager;
-        public DeleteModel(GadgetCMS.Data.ApplicationDbContext context,UserManager<GadgetCMSUser> userManager)
+        public DeleteModel(GadgetCMS.Data.ApplicationDbContext context, UserManager<GadgetCMSUser> userManager)
         {
             _context = context;
             _userManager = userManager;

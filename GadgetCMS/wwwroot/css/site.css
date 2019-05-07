@@ -40,7 +40,14 @@ button.accept-policy {
 }
 
 .footer {
+    position:relative;
+    width:100%;
+    bottom:0;
     z-index: -1;
+}
+
+.footer .container{
+    z-index: 0;
 }
 
 .btn {

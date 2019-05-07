@@ -20,6 +20,8 @@ namespace GadgetCMS.Areas.Dashboard.Pages.Shared
 
         public static string Reviews => "Reviews";
 
+        public static string DownloadNLogFiles => "DownloadNLogFiles";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ManageUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, ManageUsers);
@@ -31,6 +33,8 @@ namespace GadgetCMS.Areas.Dashboard.Pages.Shared
         public static string CategoriesUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Categories);
 
         public static string ReviewsUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Reviews);
+
+        public static string DownloadNLogFilesNavClass(ViewContext viewContext) => PageNavClass(viewContext, DownloadNLogFiles);
 
 
         private static string PageNavClass(ViewContext viewContext, string page)
