@@ -7,9 +7,11 @@ using GadgetCMS.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GadgetCMS.Areas.Dashboard.Pages
 {
+    [Authorize(Roles = "Admin,Moderator,Editor")]
     public class ReviewsModel : PageModel
     {
         private readonly GadgetCMSContext _context;

@@ -9,9 +9,11 @@ using GadgetCMS.Data;
 using NLog;
 using Microsoft.AspNetCore.Identity;
 using GadgetCMS.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GadgetCMS.Pages.Category
 {
+    [Authorize(Roles = "Admin,Moderator,Editor")]
     public class DeleteModel : PageModel
     {
         public GadgetCMS.Data.ApplicationDbContext _context;
