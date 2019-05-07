@@ -1,0 +1,27 @@
+﻿@page
+@model GadgetCMS.Areas.Dashboard.Pages.DownloadNLogFilesModel
+@{
+}
+
+<h2>Download Log Files</h2>
+<button id="downloadNlogFiles">Download</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#downloadNlogFiles').click(function () {
+        download();
+    });
+    function download() {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'Nlog/nlog-own.txt');
+      element.setAttribute('download','download');
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    }
+
+</script>
