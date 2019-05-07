@@ -51,35 +51,35 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col">
-        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
-            @Html.DisplayNameFor(model => model.Reviews[0].ReviewTitle)
-        </a>
-    </div>
-    <div class="col">
-        <a asp-page="./Reviews" asp-route-sortOrder="@Model.AuthorSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
-            @Html.DisplayNameFor(model => model.Reviews[0].GadgetCmsUser.Email)
-        </a>
-    </div>
-    <div class="col">
-        <a asp-page="./Reviews" asp-route-sortOrder="@Model.ArticleSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
-            @Html.DisplayNameFor(model => model.Reviews[0].Article.ArticleName)
-        </a>
-    </div>
-    <div class="col">
-        <a asp-page="./Reviews" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
-            @Html.DisplayNameFor(model => model.Reviews[0].ReviewCreated)
-        </a>
-    </div>
-</div>
-
 @if (Model.Reviews.FirstOrDefault() == null)
 {
     <text>No Reviews Yet</text>
 }
 else
 {
+    <div class="col">
+        <h3>Sort: </h3>
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+                @Html.DisplayNameFor(model => model.Reviews[0].ReviewTitle)
+            </a>
+        </div>
+        <div class="col d-flex justify-content-center">
+            <a asp-page="./Index" asp-route-sortOrder="@Model.AuthorSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+                @Html.DisplayNameFor(model => model.Reviews[0].GadgetCmsUser.Email)
+            </a>
+        </div>
+        <div class="col d-flex justify-content-center">
+            <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter" asp-route-id="@ViewBag.ArtId" class="btn btn-primary">
+                @Html.DisplayNameFor(model => model.Reviews[0].ReviewCreated)
+            </a>
+        </div>
+    </div>
+
+    <hr />
+
     <script src="~/lib/quill-delta-to-html/QuillDeltaToHtmlConverter.bundle.js"></script>
     <ul class="list-unstyled">
         @foreach (var item in Model.Reviews)
