@@ -181,3 +181,18 @@ body {
         margin-left: -15rem;
     }
 }
+
+.rounded-edges-div {
+    border: solid;
+    border-radius: 25px;
+    border-color: black;
+    padding: 5%;
+}
+
+.position-right {
+    float: right;
+}
+
+.font-smaller {
+    font-size: smaller;
+}
