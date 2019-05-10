@@ -21,7 +21,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-           Articles = _context.Article.Include(a => a.Reviews).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList(); 
+           //Articles = _context.Article.Where(e => e.ArticleVisible == true).Include(a => a.Reviews).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList(); 
            //articleIds = _context.Review.Select(g => g.ArticleId).Distinct();
            // foreach(var articleIdsFE in articleIds)
            // {

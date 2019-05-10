@@ -110,7 +110,7 @@ namespace GadgetCMS.Pages.Article
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
             articles_list = null;
-            IQueryable<Data.Article> studentIQ4 = from s in _context.Article.OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
+            IQueryable<Data.Article> studentIQ4 = from s in _context.Article.Where(d => d.ArticleVisible == true).OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
                                     select s;
 
             int pageSize = 10;
@@ -123,7 +123,7 @@ namespace GadgetCMS.Pages.Article
         public IActionResult OnGetArticleRecent(int? pageIndex)
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
-            IQueryable<Data.Article> studentIQ2 = from s in _context.Article.OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
+            IQueryable<Data.Article> studentIQ2 = from s in _context.Article.Where(d => d.ArticleVisible == true).OrderByDescending(s => s.ArticleCreated).Include(c => c.ArticlePictures)
                                     select s;
 
             int pageSize = 5;
@@ -139,7 +139,7 @@ namespace GadgetCMS.Pages.Article
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
 
-            IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Include(d => d.ArticlePictures).Include(a => a.Reviews).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0)
+            IQueryable<Data.Article> studentIQ3 = from s in _context.Article.Where(d => d.ArticleVisible == true).Include(d => d.ArticlePictures).Include(a => a.Reviews).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0)
                                     select s;
             int pageSize = 5;
              articlesPopularParentPaginatedList = PaginatedList<Data.Article>.Create(
@@ -151,7 +151,7 @@ namespace GadgetCMS.Pages.Article
 
         public PartialViewResult OnGetSearchQuery(string value)
         {
-            articles_list = _context.Article.Where(s => s.ArticleName.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
+            articles_list = _context.Article.Where(d => d.ArticleVisible == true).Where(s => s.ArticleName.Contains(value)).OrderByDescending(c => c.ArticleCreated).Take(5).ToList();
            
             return new PartialViewResult
             {
@@ -176,11 +176,11 @@ namespace GadgetCMS.Pages.Article
 
             if(searchQuery != null)
             {
-                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
+                articles_list = _context.Article.Where(d => d.ArticleVisible == true).Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
             }
             else
             {
-                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+                articles_list = _context.Article.Where(d => d.ArticleVisible == true).Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
             }
            
             return new PartialViewResult
@@ -194,7 +194,7 @@ namespace GadgetCMS.Pages.Article
         {
             category_selection_int = Int32.Parse(categorySelection);
 
-            articles_list =  _context.Article.Where(b => b.CategoryId == category_selection_int).ToList();
+            articles_list =  _context.Article.Where(d => d.ArticleVisible == true).Where(b => b.CategoryId == category_selection_int).ToList();
             articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
            
             fetchParentParameter = _context.CategoryParentParameter.Where(c => c.CategoryId == category_selection_int)
@@ -231,12 +231,12 @@ namespace GadgetCMS.Pages.Article
 
             if(searchQuery != null)
             {
-                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
+                articles_list = _context.Article.Where(d => d.ArticleVisible == true).Where(b => b.CategoryId == category_selection_int).Where(c => c.ArticleName.Contains(searchQuery)).Include(c => c.ArticlePictures).ToList();
                 articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
             }
             else
             {
-                articles_list = _context.Article.Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
+                articles_list = _context.Article.Where(d => d.ArticleVisible == true).Where(b => b.CategoryId == category_selection_int).Include(c => c.ArticlePictures).ToList();
                 articles_listInt = articles_list.Select(z => z.ArticleId).ToList();
 
             }
