@@ -265,3 +265,5 @@ GadgetCMS/LogZip/Logs\.zip
 GadgetCMS/Nlog/internal-nlog\.txt
 
 GadgetCMS/appsettings\.json
+
+GadgetCMS/Properties/PublishProfiles/GadgetCMS20190509111050 - Web Deploy\.pubxml
