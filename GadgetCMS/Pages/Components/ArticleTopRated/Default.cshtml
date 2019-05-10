@@ -1,11 +1,6 @@
-﻿@model GadgetCMS.Data.ApplicationDbContext
-@using Microsoft.EntityFrameworkCore;
+﻿
+@model List<Data.Article>
 @{
-    IQueryable<int> articleIds = Model.Review.Select(g => g.ArticleId).Distinct();
-    List<double> ratingsAverage = new List<double>();
-    Data.Article articles = new Data.Article();
-    int i = 0;
-    double ratingsAvg = 0;
     string GetPrettyDate(DateTime d)
     {
         // 1.
@@ -83,110 +78,53 @@
         return null;
     }
 }
-@if (articleIds.Count() == 0)
+@if (Model != null)
 {
-    <h6>No Top Rated Articles ATM.</h6>
-}
-else
-{
-    @foreach (var articleIdsFE in articleIds)
+    @foreach (var articles in Model)
     {
-        ratingsAverage.Add(Model.Review.Where(c => c.ArticleId == articleIdsFE).Average(r => r.ReviewRating));
-    }
+        <div class="card mb-2">
+            <div class="card-body">
 
-    @foreach (var articleIdsFE2 in articleIds)
-    {
-        if (ratingsAverage != null)
-        {
-            if (ratingsAverage[i] >= 4.5)
-            {
-
-                articles = Model.Article.Include(c => c.ArticlePictures).Where(e => e.ArticleVisible == true).Where(d => d.ArticleId == articleIdsFE2).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).FirstOrDefault();
-
-                if (articles != null)
-                {
-                    <div class="card mb-2">
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <p>@articles.ArticleAuthor</p>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <p>@GetPrettyDate(articles.ArticleCreated.ToLocalTime())</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@articles.ArticleId">@articles.ArticleName</a></h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <p class="text-muted">@articles.ArticleSubtitle</p>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @foreach (var itemReview in Model.Review.Where(c => c.ArticleId == articles.ArticleId).OrderByDescending(d => d.ReviewRating))
-                                            {
-                                                ratingsAvg += itemReview.ReviewRating;
-                                            }
-                                            @{
-                                                if (ratingsAvg != 0)
-                                                {
-                                                    var itemCount = Model.Review.Where(c => c.ArticleId == articles.ArticleId).Count();
-                                                    ratingsAvg = ratingsAvg / itemCount;
-                                                }
-                                            }
-                                            @ratingsAvg
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/A_Black_Star.png" height="10" width="10" />
-                                            @{
-                                                ratingsAvg = 0;
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 d-flex justify-content-center">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            @{
-                                                var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
-                                                var imgSrc = $"data:image/gif;base64,{base64}";
-                                            }
-                                            <img src="@imgSrc" class="img-fluid" style="height:100px;" />
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p>@articles.ArticleAuthor</p>
                             </div>
-
+                            <div class="col-sm-4">
+                                <p>@GetPrettyDate(articles.ArticleCreated.ToLocalTime())</p>
+                            </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="font-weight-bold"><a asp-page="./Article/Details" asp-route-id="@articles.ArticleId">@articles.ArticleName</a></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="text-muted">@articles.ArticleSubtitle</p>
+                            </div>
+                            <div class="col-sm-4">
+                                @articles.ArticleRating
+                            </div>
+                        </div>
                     </div>
-                    <hr width="80%" />
-                }
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @{
+                                    var base64 = Convert.ToBase64String(articles.ArticlePictures.First().ArticlePictureBytes);
+                                    var imgSrc = $"data:image/gif;base64,{base64}";
+                                }
+                                <img src="@imgSrc" class="img-fluid" style="height:100px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            }
-            i++;
-        }
-        else
-        {
-            <h6>Trouble Fetching Ratings, Please Try Again.</h6>
-        }
+            </div>
+
+        </div>
+        <hr width="80%" />
     }
 }
-
-
-
-@*@if(Model != null)
-    {
-        @foreach(var item in Model)
-        {
-            var avgRating = item.Reviews.Average(c => c.ReviewRating);
-            if(avgRating >= 4.5)
-            {
-                <h6>@item.ArticleName</h6>
-                <h6>@item.ArticleId</h6>
-            }
-        }
-    }*@

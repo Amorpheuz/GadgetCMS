@@ -15,56 +15,10 @@ namespace GadgetCMS.Pages.Article
     {
         private readonly GadgetCMS.Data.ApplicationDbContext _context;
 
-
-        //----------------------------------YASH-------------------------------
-        //public IndexModel(GadgetCMS.Data.ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
-
-        //public IList<Data.Article> Article { get;set; }
-
-        //public async Task OnGetAsync()
-        //{
-        //    Article = await _context.Article
-        //        .Include(a => a.Category)
-        //        .Include(a => a.ArticlePictures)
-        //        .OrderByDescending(a => a.ArticleCreated)
-        //        .ToListAsync();
-        //}
-
-        //public async Task OnGetCategoryAsync(int categoryId)
-        //{
-        //    Article = await _context.Article
-        //        .Include(a => a.Category)
-        //        .Include(a => a.ArticlePictures)
-        //        .Where(a => a.CategoryId == categoryId).ToListAsync();
-
-        //    ViewData["ViewType"] = "Category";
-        //}
-
-        //public async Task OnGetCompanyAsync(string parameterVal)
-        //{
-        //    var temp = await _context.ArticleParameter
-        //        .Include(a => a.Article)
-        //            .ThenInclude(a => a.Category)
-        //        .Include(a => a.Article)
-        //            .ThenInclude(a => a.ArticlePictures)
-        //        .Where(a => a.ParameterVal == parameterVal && a.ParameterId == 5).ToListAsync();
-
-        //    Article = temp.Select(a => a.Article).ToList();
-        //    ViewData["Company"] = parameterVal;
-        //    ViewData["ViewType"] = "Company";
-        //}
-
-
-
-
         //-------------------------ALKESH-------------------------------
         public string category_selection;
         public int category_selection_int;
         public List<Data.Article> articles_list = new List<Data.Article>();
-        //public List<Data.Article> articles_list2;
         public List<Data.Parameter> parameters_list = new List<Data.Parameter>();
         public List<List<Data.Parameter>> paramters_listMain = new List<List<Data.Parameter>>();
 

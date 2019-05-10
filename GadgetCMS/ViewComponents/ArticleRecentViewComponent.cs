@@ -18,7 +18,7 @@ namespace GadgetCMS.ViewComponents
         
         public IViewComponentResult Invoke()
         {
-            articlesRecent = _context.Article.Where(e => e.ArticleVisible == true).Include(c => c.ArticlePictures).OrderByDescending(s => s.ArticleCreated).ToList();
+            articlesRecent = _context.Article.Where(e => e.ArticleVisible == true).Include(c => c.ArticlePictures).OrderByDescending(s => s.ArticleCreated).Take(5).ToList();
             return View("Default",articlesRecent);
         }
     }

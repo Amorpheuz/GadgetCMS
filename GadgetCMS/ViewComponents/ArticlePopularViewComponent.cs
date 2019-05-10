@@ -22,21 +22,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            //var reviewsVar = _context.Review.GroupBy(c => c.ArticleId).OrderBy(gp => gp.Count()).ToList();
-            //foreach (var reviewsFE in reviewsVar)
-            //{
-            //    string articleId = reviewsFE.Select(cg => cg.ArticleId).FirstOrDefault().ToString();
-            //    int articleIdInt = Int32.Parse(articleId);
-            //    reviews.Add(articleIdInt);
-            //}
-
-            //foreach (var articles in reviews)
-            //{
-            //    articlesPopular = _context.Article.Where(e => e.ArticleVisible == true).Where(cg => cg.ArticleId == articles).Include(c => c.ArticlePictures).FirstOrDefault();
-            //    articlesPopularParent.Add(articlesPopular);
-            //}
-
-            articlesPopularY = _context.Article.Where(c => c.ArticleVisible == true).Include(a => a.Reviews).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList();
+            articlesPopularY = _context.Article.Where(c => c.ArticleVisible == true).Include(c => c.ArticlePictures).OrderByDescending(a => a.Reviews.Count()).Where(a => DateTime.Compare(a.ArticleCreated, DateTime.Today.AddMonths(-4)) >= 0).Take(5).ToList();
 
             return View("Default", articlesPopularY);
         }
