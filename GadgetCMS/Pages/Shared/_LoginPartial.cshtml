@@ -33,7 +33,7 @@
                             }<img alt="Image placeholder" src="@emailHash" class="rounded-circle">
                         }
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2" id="testDrop">
                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a>
                         @if (User.IsInRole("Admin"))
                         {
