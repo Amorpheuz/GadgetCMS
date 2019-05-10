@@ -35,7 +35,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2" id="testDrop">
                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Editor"))
                         {
                             <a class="dropdown-item" asp-area="Dashboard" asp-page="/Index">Dashboard</a>
                         }

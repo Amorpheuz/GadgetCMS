@@ -1,56 +1,67 @@
-﻿@{
+﻿@inject SignInManager<GadgetCMS.Areas.Identity.Data.GadgetCMSUser> SignInManager
+@inject UserManager<GadgetCMS.Areas.Identity.Data.GadgetCMSUser> UserManager
+@{
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-    <div class="d-flex" id="wrapper">
+<div class="d-flex" id="wrapper">
 
-        <div class="text-dark border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Dashboard Menu </div>
-            <div class="list-group list-group-flush">               
-            </div>
-            <ul class="nav nav-pills flex-column nav-fill">
-                <a class="nav-item nav-link @DashboardPages.IndexNavClass(ViewContext) m-1" id="Index" asp-page="/Index">Home</a>
-                <a class="nav-item nav-link @DashboardPages.ManageUsersNavClass(ViewContext) m-1" id="ManageUsers" asp-page="/ManageUsers">Manage Users</a>
-                <a class="nav-item nav-link @DashboardPages.ArticlesUsersNavClass(ViewContext) m-1" id="Articles" asp-page="/Articles">Articles</a>
-                <a class="nav-item nav-link @DashboardPages.ParametersUsersNavClass(ViewContext) m-1" id="Parameters" asp-page="/Parameters">Parameters</a>
-                <a class="nav-item nav-link @DashboardPages.CategoriesUsersNavClass(ViewContext) m-1" id="Categories" asp-page="/Categories">Categories</a>
-                <a class="nav-item nav-link @DashboardPages.ReviewsUsersNavClass(ViewContext) m-1" id="Reviews" asp-page="/Reviews">Reviews</a>
-                <a class="nav-item nav-link @DashboardPages.DownloadNLogFilesNavClass(ViewContext) m-1" id="DownloadNLogFiles" asp-page="/DownloadNLogFiles">Download Logs</a>
-            </ul>
+    <div class="text-dark border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">Dashboard Menu </div>
+        <div class="list-group list-group-flush">
         </div>
-        <div id="page-content-wrapper" class="p-2">
-            <div class="row">
-                <div class="col-sm-12 d-flex flex-row">
-                    <div>
-                        <button class="btn btn-primary mt-2" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></button>
-                    </div>
-                    <div>
-                        <h1>Dashboard</h1>
-                    </div>
+        <ul class="nav nav-pills flex-column nav-fill">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="nav-item nav-link @DashboardPages.IndexNavClass(ViewContext) m-1" id="Index" asp-page="/Index">Home</a>
+                if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <a class="nav-item nav-link @DashboardPages.ManageUsersNavClass(ViewContext) m-1" id="ManageUsers" asp-page="/ManageUsers">Manage Users</a>
+                }
+                if (User.IsInRole("Admin"))
+                {
+                    <a class="nav-item nav-link @DashboardPages.DownloadNLogFilesNavClass(ViewContext) m-1" id="DownloadNLogFiles" asp-page="/DownloadNLogFiles">Download Logs</a>
+                }
+                <a class="nav-item nav-link @DashboardPages.CategoriesUsersNavClass(ViewContext) m-1" id="Categories" asp-page="/Categories">Categories</a>
+                <a class="nav-item nav-link @DashboardPages.ParametersUsersNavClass(ViewContext) m-1" id="Parameters" asp-page="/Parameters">Parameters</a>
+                <a class="nav-item nav-link @DashboardPages.ArticlesUsersNavClass(ViewContext) m-1" id="Articles" asp-page="/Articles">Articles</a>
+                <a class="nav-item nav-link @DashboardPages.ReviewsUsersNavClass(ViewContext) m-1" id="Reviews" asp-page="/Reviews">Reviews</a>
+            }
+        </ul>
+    </div>
+    <div id="page-content-wrapper" class="p-2">
+        <div class="row">
+            <div class="col-sm-12 d-flex flex-row">
+                <div>
+                    <button class="btn btn-primary mt-2" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></button>
+                </div>
+                <div>
+                    <h1>Dashboard</h1>
                 </div>
             </div>
-            <hr />
-            <div class="row">
-                <div class="col-lg-9">
-                    @RenderBody()
-                </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-9">
+                @RenderBody()
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#mainBody').removeClass("container");
-            $('#mainBody').addClass("container-fluid");
-            $('#mainBody').css("padding-left",0);
+<script>
+    $(document).ready(function () {
+        $('#mainBody').removeClass("container");
+        $('#mainBody').addClass("container-fluid");
+        $('#mainBody').css("padding-left", 0);
 
-            $("#menu-toggle").click(function(e) {
-              e.preventDefault();
-              $("#wrapper").toggleClass("toggled");
-            });
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
         });
-    </script>
+    });
+</script>
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
