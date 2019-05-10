@@ -21,20 +21,20 @@ namespace GadgetCMS.Areas.Dashboard.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            string startPath = @".\Nlog";
-            string zipPath = @".\LogZip\Logs.zip";
+            string startPath = @".\wwwroot\Nlog";
+            string zipPath = @".\wwwroot\LogZip\Logs.zip";
             var filename = "Logs.zip";
 
-            if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"LogZip", filename)))
+            if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "LogZip", filename)))
             {
-                System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "LogZip", filename));
+                System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "LogZip", filename));
             }
 
             ZipFile.CreateFromDirectory(startPath,zipPath);
 
             
             var path = Path.Combine(
-                           Directory.GetCurrentDirectory(),
+                           Directory.GetCurrentDirectory(), "wwwroot",
                            "LogZip", filename);
 
             var memory = new MemoryStream();

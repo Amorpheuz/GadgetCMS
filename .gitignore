@@ -271,3 +271,5 @@ GadgetCMS/Properties/PublishProfiles/GadgetCMS20190509111050 - Web Deploy\.pubxm
 GadgetCMS/wwwroot/Nlog/internal-nlog\.txt
 
 GadgetCMS/wwwroot/LogZip/Logs\.zip
+
+GadgetCMS/Properties/PublishProfiles/GadgetCMS - Web Deploy\.pubxml
