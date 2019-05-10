@@ -18,7 +18,7 @@ namespace GadgetCMS.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-           Articles = _context.Article.Where(c => c.ArticleRating > 3.9).Include(c => c.ArticlePictures).OrderByDescending(c => c.ArticleRating).Take(5).ToList();
+           Articles = _context.Article.Where(c => c.ArticleRating > 4.4).Include(c => c.ArticlePictures).OrderByDescending(c => c.ArticleRating).Take(5).ToList();
            return View("Default",Articles);
         }
     }
