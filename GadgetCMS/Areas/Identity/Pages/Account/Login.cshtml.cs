@@ -101,6 +101,9 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 {
                     if (!_signInManager.UserManager.IsEmailConfirmedAsync(user).Result)
                     {
+                        // Clear the existing external cookie to ensure a clean login process
+                        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                         ViewData["unVerifiedMail"] = true;
                         return Page();
                     }
@@ -116,13 +119,18 @@ namespace GadgetCMS.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    
+                    // Clear the existing external cookie to ensure a clean login process
+                    await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                    ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return Page();
         }
     }
